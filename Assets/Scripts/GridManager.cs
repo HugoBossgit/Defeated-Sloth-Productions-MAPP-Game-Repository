@@ -17,20 +17,49 @@ public class GridManager : MonoBehaviour
         InitGrid();
     }
 
-
     void InitGrid()
     {
-        Vector3 positionOffset = transform.position - new Vector3(GridDimension * Distance / 2.0f, GridDimension * Distance / 2.0f, 0); // 1
-        for (int row = 0; row < GridDimension; row++)
-            for (int column = 0; column < GridDimension; column++) // 2
-            {
-                GameObject newTile = Instantiate(TilePrefab); // 3
-                SpriteRenderer renderer = newTile.GetComponent<SpriteRenderer>(); // 4
-                renderer.sprite = Sprites[Random.Range(0, Sprites.Count)]; // 5
-                newTile.transform.parent = transform; // 6
-                newTile.transform.position = new Vector3(column * Distance, row * Distance, 0) + positionOffset; // 7
+        Vector3 positionOffset = transform.position - new Vector3((GridDimension - 1) * Distance / 2.0f, (GridDimension - 1) * Distance / 2.0f, 0);
 
-                Grid[column, row] = newTile; // 8
+        for (int row = 0; row < GridDimension; row++)
+        {
+            for (int column = 0; column < GridDimension; column++)
+            {
+                List<Sprite> possibleSprites = new List<Sprite>(Sprites); // 1
+
+                // Välj vilken sprite som ska användas för den här cellen
+                Sprite left1 = GetSpriteAt(column - 1, row); // 2
+                Sprite left2 = GetSpriteAt(column - 2, row);
+                if (left2 != null && left1 == left2) // 3
+                {
+                    possibleSprites.Remove(left1); // 4
+                }
+
+                Sprite down1 = GetSpriteAt(column, row - 1); // 5
+                Sprite down2 = GetSpriteAt(column, row - 2);
+                if (down2 != null && down1 == down2)
+                {
+                    possibleSprites.Remove(down1);
+                }
+
+                GameObject newTile = Instantiate(TilePrefab);
+                SpriteRenderer renderer = newTile.GetComponent<SpriteRenderer>();
+                renderer.sprite = Sprites[Random.Range(0, Sprites.Count)];
+                newTile.transform.parent = transform;
+                newTile.transform.position = new Vector3(column * Distance, row * Distance, 0) + positionOffset;
+
+                Grid[column, row] = newTile;
             }
+        }
+    }
+
+    Sprite GetSpriteAt(int column, int row)
+    {
+        if (column < 0 || column >= GridDimension
+            || row < 0 || row >= GridDimension)
+            return null;
+        GameObject tile = Grid[column, row];
+        SpriteRenderer renderer = tile.GetComponent<SpriteRenderer>();
+        return renderer.sprite;
     }
 }
