@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor.VersionControl;
 using UnityEngine;
 
@@ -7,10 +8,45 @@ public class GridManager : MonoBehaviour
 {
     public List<Sprite> Sprites = new List<Sprite>();
     public GameObject TilePrefab;
+    public GameObject GameOverMenu;
+    public TextMeshProUGUI movesText;
+    public TextMeshProUGUI scoreText;
+
     public int GridDimension = 8;
+    public int startingMoves = 50;
     public float Distance = 1.2f;
 
     private GameObject[,] Grid;
+    private int _numMoves;
+
+    public int NumMoves
+    {
+        get
+        {
+            return _numMoves;
+        }
+
+        set
+        {
+            _numMoves = value;
+            movesText.text = _numMoves.ToString();
+        }
+    }
+
+    private int _score;
+    public int Score
+    {
+        get
+        {
+            return _score;
+        }
+
+        set
+        {
+            _score = value;
+            scoreText.text = _score.ToString();
+        }
+    }
 
     //Singleton pattern för att instansiera från Tile
     public static GridManager Instance
@@ -22,6 +58,9 @@ public class GridManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        Score = 0;
+        NumMoves = startingMoves;
+        GameOverMenu.SetActive(false);
     }
 
     private void Start()
@@ -97,7 +136,7 @@ public class GridManager : MonoBehaviour
     bool CheckMatches()
     {
         //Hashset tillåter inte duplikater och söker igenom element snabbt
-        HashSet<SpriteRenderer> matchedTiles = new HashSet<SpriteRenderer>(); 
+        HashSet<SpriteRenderer> matchedTiles = new HashSet<SpriteRenderer>();
         for (int row = 0; row < GridDimension; row++)
         {
             //Söker igenom grid från högra botten rad för rad uppåt
@@ -107,7 +146,7 @@ public class GridManager : MonoBehaviour
                 SpriteRenderer current = GetSpriteRendererAt(column, row);
 
                 //returnerar lista av renderers som är involverade i en match horizontalt
-                List<SpriteRenderer> horizontalMatches = FindColumnMatchForTile(column, row, current.sprite); 
+                List<SpriteRenderer> horizontalMatches = FindColumnMatchForTile(column, row, current.sprite);
                 if (horizontalMatches.Count >= 2)
                 {
                     //om det är 2 eller fler så har vi match
@@ -128,8 +167,11 @@ public class GridManager : MonoBehaviour
         {
             renderer.sprite = null;
         }
+        Score += matchedTiles.Count;
         return matchedTiles.Count > 0;
     }
+
+
 
     List<SpriteRenderer> FindColumnMatchForTile(int col, int row, Sprite sprite)
     {
@@ -196,18 +238,24 @@ public class GridManager : MonoBehaviour
         GameObject tile2 = Grid[tile2Position.x, tile2Position.y];
         SpriteRenderer renderer2 = tile2.GetComponent<SpriteRenderer>();
 
-        //byter plats på 1 och 2
+        // Byter plats på brickorna
         Sprite temp = renderer1.sprite;
         renderer1.sprite = renderer2.sprite;
         renderer2.sprite = temp;
 
-        bool changesOccurs = CheckMatches();
+        // Minska antalet drag med 1
+        NumMoves--;
 
-        if (!changesOccurs)
+        // Uppdatera antalet drag i UI
+        movesText.text = NumMoves.ToString();
+
+        if (!CheckMatches())
         {
             temp = renderer1.sprite;
             renderer1.sprite = renderer2.sprite;
             renderer2.sprite = temp;
+
+            ShuffleTiles();
         }
         else
         {
@@ -215,6 +263,53 @@ public class GridManager : MonoBehaviour
             {
                 FillHoles();
             } while (CheckMatches());
+            if (NumMoves <= 0)
+            {
+                NumMoves = 0; GameOver();
+            }
         }
+    }
+
+    void ShuffleTiles()
+    {
+        // Skapa en lista för att hålla de aktuella brickorna
+        List<SpriteRenderer> allTiles = new List<SpriteRenderer>();
+
+        // Lägg till alla brickor i listan
+        for (int row = 0; row < GridDimension; row++)
+        {
+            for (int column = 0; column < GridDimension; column++)
+            {
+                allTiles.Add(GetSpriteRendererAt(column, row));
+            }
+        }
+
+        // Slumpa om ordningen på brickorna
+        for (int i = 0; i < allTiles.Count; i++)
+        {
+            int randomIndex = Random.Range(i, allTiles.Count);
+            SpriteRenderer temp = allTiles[i];
+            allTiles[i] = allTiles[randomIndex];
+            allTiles[randomIndex] = temp;
+        }
+
+        // Uppdatera brickornas placering i griden med den nya ordningen
+        int index = 0;
+        for (int row = 0; row < GridDimension; row++)
+        {
+            for (int column = 0; column < GridDimension; column++)
+            {
+                SpriteRenderer currentTile = GetSpriteRendererAt(column, row);
+                currentTile.sprite = allTiles[index].sprite;
+                index++;
+            }
+        }
+    }
+
+
+    void GameOver()
+    {
+        PlayerPrefs.SetInt("score", Score);
+        GameOverMenu.SetActive(true);
     }
 }
