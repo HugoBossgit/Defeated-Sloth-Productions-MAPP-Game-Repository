@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class MainMenu_Script : MonoBehaviour
 {
-    [SerializeField] private GameObject workInProgressPanel, creditsPanel, settingsPanel;
+    [SerializeField] private GameObject workInProgressPanel, creditsPanel, settingsPanel, fadeBackgroundPanel;
 
     [SerializeField] private List<Button> classCreditsSettingsButtons;
 
@@ -17,6 +17,7 @@ public class MainMenu_Script : MonoBehaviour
         workInProgressPanel.SetActive(false);
         creditsPanel.SetActive(false);
         settingsPanel.SetActive(false);
+        fadeBackgroundPanel.SetActive(false);
     }
 
 
@@ -44,7 +45,8 @@ public class MainMenu_Script : MonoBehaviour
     public void openWorkInProgressPanel()
     {
         disableAllButtons();
-        workInProgressPanel.SetActive (true);
+        workInProgressPanel.SetActive(true);
+        fadeBackgroundPanel.SetActive(true);
     }
 
 
@@ -53,6 +55,7 @@ public class MainMenu_Script : MonoBehaviour
     {
         enableAllButtons();
         workInProgressPanel.SetActive(false);
+        fadeBackgroundPanel.SetActive(false);
     }
 
 
@@ -60,7 +63,8 @@ public class MainMenu_Script : MonoBehaviour
     public void openCreditsPanel()
     {
         disableAllButtons();
-        creditsPanel.SetActive (true);
+        creditsPanel.SetActive(true);
+        fadeBackgroundPanel.SetActive(true);
     }
 
 
@@ -68,7 +72,8 @@ public class MainMenu_Script : MonoBehaviour
     public void closeCreditsPanel()
     {
         enableAllButtons();
-        creditsPanel.SetActive (false);
+        creditsPanel.SetActive(false);
+        fadeBackgroundPanel.SetActive(false);
     }
 
 
@@ -76,7 +81,8 @@ public class MainMenu_Script : MonoBehaviour
     public void openSettingsPanel()
     {
         disableAllButtons();
-        settingsPanel.SetActive (true);
+        settingsPanel.SetActive(true);
+        fadeBackgroundPanel.SetActive(true);
     }
 
 
@@ -84,7 +90,8 @@ public class MainMenu_Script : MonoBehaviour
     public void closeSettingsPanel()
     {
         enableAllButtons();
-        settingsPanel.SetActive (false);
+        settingsPanel.SetActive(false);
+        fadeBackgroundPanel.SetActive(false);
     }
 
 
