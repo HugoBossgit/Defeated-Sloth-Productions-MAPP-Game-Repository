@@ -307,6 +307,7 @@ public class GridManager : MonoBehaviour
     }
 
 
+
     void GameOver()
     {
         PlayerPrefs.SetInt("score", Score);
