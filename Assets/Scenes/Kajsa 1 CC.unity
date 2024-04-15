@@ -166,9 +166,9 @@ MonoBehaviour:
   GameOverMenu: {fileID: 1409747748}
   movesText: {fileID: 1409747749}
   scoreText: {fileID: 1962260835}
-  GridDimension: 8
+  GridDimension: 5
   startingMoves: 20
-  Distance: 1.2
+  Distance: 1.1
 --- !u!4 &606190709
 Transform:
   m_ObjectHideFlags: 0

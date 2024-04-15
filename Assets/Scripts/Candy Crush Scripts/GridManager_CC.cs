@@ -13,7 +13,7 @@ public class GridManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
 
     public int GridDimension = 8;
-    public int startingMoves = 50;
+    public int startingMoves = 20;
     public float Distance = 1.2f;
 
     private GameObject[,] Grid;
