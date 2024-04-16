@@ -10,19 +10,68 @@ public class Picture_Memory : MonoBehaviour
 
     private Quaternion currentRotation;
 
+    [HideInInspector]
+    public bool revealed = false;
+
+    private PictureManager_Memory pictureManager;
+    private bool clicked = false;
+    private int index;
+
+    public void SetIndex(int id)
+    {
+        index = id;
+    }
+
+    public int GetIndex()
+    {
+        return index;
+    }
+
     void Start()
     {
+        revealed = false;
+        clicked = false;
+        pictureManager = GameObject.Find("PictureManager").GetComponent<PictureManager_Memory>();
         currentRotation = gameObject.transform.rotation;
     }
 
-    void Update()
+    private void Update()
     {
-        
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                if (!clicked)
+                {
+                    pictureManager.currentPuzzleState = PictureManager_Memory.PuzzleState.PuzzleRotating;
+                    StartCoroutine(LoopRotation(45, false));
+                    clicked = true;
+                }
+            }
+        }
     }
+
 
     private void OnMouseDown()
     {
-        StartCoroutine(LoopRotation(45, false));
+        if(clicked == false)
+        {
+            pictureManager.currentPuzzleState = PictureManager_Memory.PuzzleState.PuzzleRotating;
+            StartCoroutine(LoopRotation(45, false));
+            clicked = true;
+        }
+    }
+
+    public void FlipBack()
+    {
+        if (gameObject.activeSelf)
+        {
+            pictureManager.currentPuzzleState = PictureManager_Memory.PuzzleState.PuzzleRotating;
+            revealed = false;
+            StartCoroutine(LoopRotation(45, true));
+        }
     }
 
     IEnumerator LoopRotation(float angle, bool firstMat)
@@ -65,8 +114,17 @@ public class Picture_Memory : MonoBehaviour
 
         if (!firstMat)
         {
+            revealed = true;
             ApplySecondMaterial();
+            pictureManager.CheckPicture();
         }
+        else
+        {
+            pictureManager.puzzleRevealedNumber = PictureManager_Memory.RevealedState.NoRevealed;
+            pictureManager.currentPuzzleState = PictureManager_Memory.PuzzleState.CanRotate;
+        }
+
+        clicked = false;
     }
 
     public void SetFirstMaterial(Material mat, string texturePath)
@@ -89,5 +147,10 @@ public class Picture_Memory : MonoBehaviour
     public void ApplySecondMaterial()
     {
         gameObject.GetComponent<Renderer>().material = secondMaterial;
+    }
+
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
     }
 }
