@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Brick
 {
-
     private int durability;
     //private SpriteIndex spriteIndex;
     private Color color;
@@ -25,17 +25,39 @@ public class BrickTower : MonoBehaviour
     [SerializeField] private GameObject panelPrefab;
     //[SerializeField] private Sprite[] sprites;
     [SerializeField] private Color[] colors;
+    [SerializeField] private GameObject infoPanel;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject outOfTimeText;
+    [SerializeField] private GameObject gameCompleteText;
 
     private List<Brick> bricks;
     private Stack<GameObject> panels;
+    private int countdown = 5;
 
     // Start is called before the first frame update
     void Start()
     {
         bricks = new List<Brick>();
         panels = new Stack<GameObject>();
+        StartGame();
         AddBricks();
         GeneratePanels();
+    }
+
+    private void Update()
+    {
+        if (bricks.Count == 0)
+        {
+            CancelInvoke();
+            GameComplete();
+        }
+
+        if (countdown < 1)
+        {
+            CancelInvoke();
+            OutOfTime();
+        }
+
     }
 
     void AddBricks()
@@ -64,7 +86,6 @@ public class BrickTower : MonoBehaviour
 
     public void DamageTopBrick(int damage)
     {
-
         int brickCount = bricks.Count;
         if (brickCount == 0)
         {
@@ -88,5 +109,38 @@ public class BrickTower : MonoBehaviour
         {
             panels.Peek().GetComponent<Image>().color = colors[durability];
         }
+    }
+
+    void StartGame()
+    {
+        infoPanel.SetActive(true);
+        gameOverPanel.SetActive(false);
+        outOfTimeText.SetActive(false);
+        gameCompleteText.SetActive(false);
+    }
+
+    public void HideInfo()
+    {
+        infoPanel.SetActive(false);
+
+        //Start Timer
+        InvokeRepeating("CountDown", 1, 1);
+    }
+
+    void OutOfTime()
+    {
+        gameOverPanel.SetActive(true);
+        outOfTimeText.SetActive(true);
+    }
+
+    void CountDown()
+    {
+        countdown -= 1;
+    }
+
+    void GameComplete()
+    {
+        gameOverPanel.SetActive(true);
+        gameCompleteText.SetActive(true);
     }
 }
