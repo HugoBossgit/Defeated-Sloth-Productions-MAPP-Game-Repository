@@ -86,6 +86,11 @@ public class GameSettings_Memory : MonoBehaviour
         gameSettings.PairsNumber = EpairNumber.NotSet;
     }
 
+    public bool AllSettingsReady()
+    {
+        return settings == settingsNumber;
+    }
+
     public string GetMaterialDirectoryName()
     {
         return "Materials/";

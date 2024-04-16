@@ -775,6 +775,7 @@ GameObject:
   - component: {fileID: 895089088}
   - component: {fileID: 895089087}
   - component: {fileID: 895089086}
+  - component: {fileID: 895089089}
   m_Layer: 5
   m_Name: WeaponsButton
   m_TagString: Untagged
@@ -845,7 +846,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 895089087}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 895089089}
+        m_TargetAssemblyTypeName: SetGameButton_Memory, Assembly-CSharp
+        m_MethodName: SetGameOption
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Kajsa 2 Memory GameView
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &895089087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -884,6 +897,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 895089084}
   m_CullTransparentMesh: 1
+--- !u!114 &895089089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895089084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c6b27ededc9d4312a4181ae716e929f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonType: 2
+  PairNumber: 0
+  PuzzleCategories: 2
 --- !u!1 &993302033
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,6 +924,7 @@ GameObject:
   - component: {fileID: 993302037}
   - component: {fileID: 993302036}
   - component: {fileID: 993302035}
+  - component: {fileID: 993302038}
   m_Layer: 5
   m_Name: AnimalButton
   m_TagString: Untagged
@@ -966,7 +995,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 993302036}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 993302038}
+        m_TargetAssemblyTypeName: SetGameButton_Memory, Assembly-CSharp
+        m_MethodName: SetGameOption
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Kajsa 2 Memory GameView
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &993302036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1005,6 +1046,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 993302033}
   m_CullTransparentMesh: 1
+--- !u!114 &993302038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 993302033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c6b27ededc9d4312a4181ae716e929f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonType: 2
+  PairNumber: 0
+  PuzzleCategories: 1
 --- !u!1 &1109882351
 GameObject:
   m_ObjectHideFlags: 0
@@ -1316,6 +1372,50 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1554628665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1554628666}
+  - component: {fileID: 1554628667}
+  m_Layer: 0
+  m_Name: GameSettings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1554628666
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554628665}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.15184, y: 0.122831814, z: -12.720645}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1554628667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554628665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c67c38c71034416088c27f1613acc5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1642081734
 GameObject:
   m_ObjectHideFlags: 0
@@ -1328,6 +1428,7 @@ GameObject:
   - component: {fileID: 1642081738}
   - component: {fileID: 1642081737}
   - component: {fileID: 1642081736}
+  - component: {fileID: 1642081739}
   m_Layer: 5
   m_Name: 15 Pairs
   m_TagString: Untagged
@@ -1398,7 +1499,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1642081737}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1642081739}
+        m_TargetAssemblyTypeName: SetGameButton_Memory, Assembly-CSharp
+        m_MethodName: SetGameOption
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Kajsa 2 Memory GameView
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1642081737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1437,6 +1550,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1642081734}
   m_CullTransparentMesh: 1
+--- !u!114 &1642081739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642081734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c6b27ededc9d4312a4181ae716e929f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonType: 1
+  PairNumber: 15
+  PuzzleCategories: 0
 --- !u!1 &1698172069
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,6 +1577,7 @@ GameObject:
   - component: {fileID: 1698172073}
   - component: {fileID: 1698172072}
   - component: {fileID: 1698172071}
+  - component: {fileID: 1698172074}
   m_Layer: 5
   m_Name: 10 Pairs
   m_TagString: Untagged
@@ -1519,7 +1648,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1698172072}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1698172074}
+        m_TargetAssemblyTypeName: SetGameButton_Memory, Assembly-CSharp
+        m_MethodName: SetGameOption
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Kajsa 2 Memory GameView
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1698172072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1558,6 +1699,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1698172069}
   m_CullTransparentMesh: 1
+--- !u!114 &1698172074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698172069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c6b27ededc9d4312a4181ae716e929f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonType: 1
+  PairNumber: 10
+  PuzzleCategories: 0
 --- !u!1 &1709166820
 GameObject:
   m_ObjectHideFlags: 0
@@ -2042,3 +2198,4 @@ SceneRoots:
   - {fileID: 315362941}
   - {fileID: 1109882354}
   - {fileID: 1475141736}
+  - {fileID: 1554628666}
