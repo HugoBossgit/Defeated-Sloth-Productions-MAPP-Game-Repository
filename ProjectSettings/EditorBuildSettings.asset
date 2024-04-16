@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 6ac224c5a5706474da3d70ebded06334
+  - enabled: 1
+    path: Assets/Scenes/Zakarias.unity
+    guid: 97cd52875bfb8b44e9f98178f332793c
   m_configObjects: {}
