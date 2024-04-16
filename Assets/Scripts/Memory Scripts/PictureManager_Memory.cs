@@ -13,17 +13,23 @@ public class PictureManager_Memory : MonoBehaviour
     public List<Picture_Memory> pictureList;
 
     private Vector2 _offset = new Vector2(1.5f, 1.52f);
+
+    private List<Material> materialList = new List<Material>();
+    private List<string> texturePathList = new List<string>();
+
+    private Material firstMaterial;
+    private string firstTexturePath;
     
     void Start()
     {
+        LoadMaterials();
         SpawnPictureMesh(4, 5, startPosition, _offset, false);
         MovePicture(4, 5, startPosition, _offset);
     }
 
-    
-    void Update()
+    private void LoadMaterials()
     {
-        
+
     }
 
     private void SpawnPictureMesh(int rows, int columns, Vector2 pos, Vector2 offset, bool scaleDown)
