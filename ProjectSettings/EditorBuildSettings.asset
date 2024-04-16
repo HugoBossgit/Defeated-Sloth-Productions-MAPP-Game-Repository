@@ -5,15 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-    guid: 6ac224c5a5706474da3d70ebded06334
-  - enabled: 1
-    path: Assets/Scenes/WarriorGameLoop.unity
-    guid: cd51b7b75e42bd046aa6e426988fed21
   - enabled: 1
     path: Assets/Scenes/MemoryScenes/Kajsa 2 Memory SetGame.unity
     guid: 4fbee2f4ecac24416b601dd54487d591
@@ -23,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MemoryScenes/Kajsa 2 Memory MainMeny.unity
     guid: b12718e6d929c48018c0478e26624faf
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 6ac224c5a5706474da3d70ebded06334
+  - enabled: 1
+    path: Assets/Scenes/Zakarias.unity
+    guid: 97cd52875bfb8b44e9f98178f332793c
   m_configObjects: {}
