@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameSettings_Memory : MonoBehaviour
 {
+    private readonly Dictionary<EPuzzleCategories, string> puzzleCatDirectory = new Dictionary<EPuzzleCategories, string>();
     private int settings;
     private const int settingsNumber = 2;
 
@@ -13,6 +14,7 @@ public class GameSettings_Memory : MonoBehaviour
         NotSet = 0,
         E10Pairs = 10,
         E15Pairs = 15,
+        E20Pairs = 20,
     }
 
     public enum EPuzzleCategories
@@ -47,8 +49,15 @@ public class GameSettings_Memory : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SetPuzzleCatDirectory();
         gameSettings = new Settings();
         ResetGameSettings();
+    }
+
+    private void SetPuzzleCatDirectory()
+    {
+        puzzleCatDirectory.Add(EPuzzleCategories.Animals, "Animals");
+        puzzleCatDirectory.Add(EPuzzleCategories.Weapons, "Weapons");
     }
 
     public void SetPairNumber(EpairNumber number)
@@ -93,7 +102,20 @@ public class GameSettings_Memory : MonoBehaviour
 
     public string GetMaterialDirectoryName()
     {
-        return "Materials/";
+        return "Materials_Memory/";
+    }
+
+    public string GetPuzzleCategoryTextureDirectory()
+    {
+        if (puzzleCatDirectory.ContainsKey(gameSettings.PuzzleCategory))
+        {
+            return "Memory Game Graphics/PuzzleCat/" + puzzleCatDirectory[gameSettings.PuzzleCategory] + "/";
+        }
+        else
+        {
+            Debug.LogError("Error: cannot get directory name");
+            return "";
+        }
     }
 
     
