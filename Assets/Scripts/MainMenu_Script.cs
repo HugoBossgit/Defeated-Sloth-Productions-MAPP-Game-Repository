@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class MainMenu_Script : MonoBehaviour
 {
@@ -26,7 +26,7 @@ public class MainMenu_Script : MonoBehaviour
     {
         foreach (Button button in classCreditsSettingsButtons)
         {
-            button.enabled = false;
+            button.SetEnabled(false);
         }
     }
 
@@ -36,7 +36,7 @@ public class MainMenu_Script : MonoBehaviour
     {
         foreach (Button button in classCreditsSettingsButtons)
         {
-            button.enabled = true;
+            button.SetEnabled(true);
         }
     }
 
@@ -98,7 +98,7 @@ public class MainMenu_Script : MonoBehaviour
 
     public void playAsWarrior()
     {
-        
+        SceneManager.LoadScene(1);
     }
 
 
