@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private TMP_Text pointsText;
     [SerializeField] private TMP_Text livesText;
+    public Boolean gameOver;
     void Start()
     {
         
@@ -27,6 +28,10 @@ public class GameController : MonoBehaviour
     public void addPoints(int value)
     {
         points += (int)(value * multiplier);
+        if(points > 40)
+        {
+            gameOver = true;
+        }
     }
 
     public void combo(Boolean increase)
@@ -46,6 +51,10 @@ public class GameController : MonoBehaviour
     public void DecrementLives(int decrease)
     {
         lives -= decrease;
+        if(lives < 0)
+        {
+            gameOver = true;
+        }
     }
 
     public void Loss()
