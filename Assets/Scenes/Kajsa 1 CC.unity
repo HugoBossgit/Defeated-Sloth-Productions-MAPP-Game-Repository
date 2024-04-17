@@ -167,7 +167,7 @@ MonoBehaviour:
   movesText: {fileID: 1409747749}
   scoreText: {fileID: 1962260835}
   GridDimension: 5
-  startingMoves: 20
+  startingMoves: 10
   Distance: 1.1
 --- !u!4 &606190709
 Transform:
@@ -275,6 +275,10 @@ PrefabInstance:
     - target: {fileID: 3032250563677591410, guid: 7eda362bd03214bc8a24898e0c680347, type: 3}
       propertyPath: m_Name
       value: GameMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 3032250563677591412, guid: 7eda362bd03214bc8a24898e0c680347, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3032250563677591414, guid: 7eda362bd03214bc8a24898e0c680347, type: 3}
       propertyPath: m_Pivot.x
