@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class MainMenu_Script : MonoBehaviour
 {
@@ -26,7 +26,7 @@ public class MainMenu_Script : MonoBehaviour
     {
         foreach (Button button in classCreditsSettingsButtons)
         {
-            button.SetEnabled(false);
+            button.enabled = false;
         }
     }
 
@@ -36,7 +36,7 @@ public class MainMenu_Script : MonoBehaviour
     {
         foreach (Button button in classCreditsSettingsButtons)
         {
-            button.SetEnabled(true);
+            button.enabled = true;
         }
     }
 

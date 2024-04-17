@@ -7,16 +7,21 @@ using UnityEngine.UI;
 
 public class WarriorGameLoop_Script : MonoBehaviour
 {
-    [SerializeField] private GameObject gameProgressPanelGameObject, pausedGamePanel, playerHealthSliderGameObject;
-    [SerializeField] private float timeToReachEnd, timeBeforeMinigame;
+    private static float previousProgressMadeInSeconds;
+    private static bool ainaSharpshooterPlayed, kajsaCandyCrushPlayed, zakariasBrickPlayed;
+
+    [SerializeField] private GameObject gameProgressSliderGameObject, pausedGamePanel, playerHealthSliderGameObject, walkingButtonGameObject, runningButtonGameObject, gameWinPanelGameObject, gameLosePanelGameObject;
+    [SerializeField] private float timeToReachEndInSeconds;
     [SerializeField] private int playerMaxHealth;
 
     private Slider playerProgressSlider, playerHealthSlider;
 
-    private bool walking, running;
+    private Button walkingButton, runningButton;
+
+    private bool walking, running, playedEvent1, playedEvent2, playedEvent3, playedEvent4, playedEvent5, playedEvent6, gameWinIsCalled, gameLoseIsCalled, gameProgressIsActive;
 
     private float playerCurrentHealth;
-    
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -27,11 +32,15 @@ public class WarriorGameLoop_Script : MonoBehaviour
         StartTime();
 
         pausedGamePanel.SetActive(false);
+        gameWinPanelGameObject.SetActive(false);
+        gameLosePanelGameObject.SetActive(false);
 
-        if (gameProgressPanelGameObject != null)
+
+        if (gameProgressSliderGameObject != null)
         {
-            playerProgressSlider = gameProgressPanelGameObject.GetComponent<Slider>();
-            playerProgressSlider.maxValue = timeToReachEnd;
+            playerProgressSlider = gameProgressSliderGameObject.GetComponent<Slider>();
+            playerProgressSlider.maxValue = timeToReachEndInSeconds;
+            playerProgressSlider.value = previousProgressMadeInSeconds;
         }
 
         if (playerHealthSliderGameObject != null)
@@ -41,58 +50,139 @@ public class WarriorGameLoop_Script : MonoBehaviour
             playerCurrentHealth = playerMaxHealth;
             playerHealthSlider.value = playerCurrentHealth;
         }
+
+        if (walkingButtonGameObject != null)
+        {
+            walkingButton = walkingButtonGameObject.GetComponent<Button>();
+        }
+
+        if (runningButtonGameObject != null)
+        {
+            runningButton = runningButtonGameObject.GetComponent<Button>();
+        }
     }
 
     private void Update()
     {
-        if (playerCurrentHealth <= 0)
+        if (playerCurrentHealth <= 0 && !gameLoseIsCalled)
         {
+            gameLoseIsCalled = true;
             GameLose();
+        }
+
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Aina_SharpshooterGame"))
+        {
+            GameObject gameControllerObject = GameObject.Find("Game Controller");
+            GameController gameController = gameControllerObject.GetComponent<GameController>();
+            if (gameController.gameOver)
+            {
+                SceneManager.LoadScene(1);
+            }
         }
 
         playerHealthSlider.value = playerCurrentHealth;
 
-        if (playerProgressSlider != null)
+        if (playerProgressSlider != null && gameProgressIsActive)
         {
-            float playerProgressValue = Mathf.Clamp((Time.timeSinceLevelLoad), 0f, timeToReachEnd);
-            playerProgressSlider.value = playerProgressValue;
+            if (previousProgressMadeInSeconds > 0)
+            {
+                playerProgressSlider.value = previousProgressMadeInSeconds;
+                previousProgressMadeInSeconds = 0;
+            }
+            if (walking || running)
+            {
+                playerProgressSlider.value += Time.deltaTime;
+            }
         }
 
-        if (playerProgressSlider.value >= 4 && playerProgressSlider.value <= 5)
+        if (playerProgressSlider.value >= 4 && playerProgressSlider.value <= 5 && !playedEvent1)
         {
-            TakeDamage(1);
+            playedEvent1 = true;
             TimedEventHappening();
         }
 
-        if (playerProgressSlider.value >= 9 && playerProgressSlider.value <= 10)
+        if (playerProgressSlider.value >= 9 && playerProgressSlider.value <= 10 && !playedEvent2)
         {
+            playedEvent2 = true;
             TimedEventHappening();
         }
 
-        if (playerProgressSlider.value >= 14 && playerProgressSlider.value <= 15)
+        if (playerProgressSlider.value >= 14 && playerProgressSlider.value <= 15 && !playedEvent3)
         {
+            playedEvent3 = true;
             TimedEventHappening();
         }
 
-        if (playerProgressSlider.value >= 19 && playerProgressSlider.value <= 20)
+        if (playerProgressSlider.value >= 19 && playerProgressSlider.value <= 20 && !playedEvent4)
         {
+            playedEvent4 = true;
             TimedEventHappening();
         }
 
-        if (playerProgressSlider.value >= 24 && playerProgressSlider.value <= 25)
+        if (playerProgressSlider.value >= 24 && playerProgressSlider.value <= 25 && !playedEvent5)
         {
+            playedEvent5 = true;
             TimedEventHappening();
         }
 
-        if (playerProgressSlider.value >= 28 && playerProgressSlider.value <= 29)
+        if (playerProgressSlider.value >= 28 && playerProgressSlider.value <= 29 && !playedEvent6)
         {
+            playedEvent6 = true;
             TimedEventHappening();
         }
 
-        if (playerProgressSlider.value >= 30)
+        if (playerProgressSlider.value >= 30 && !gameWinIsCalled)
         {
+            gameWinIsCalled = true;
             GameWin();
         }
+    }
+
+    private void ResetMinigameLimiters()
+    {
+        ainaSharpshooterPlayed = false;
+        kajsaCandyCrushPlayed = false;
+        zakariasBrickPlayed = false;
+    }
+
+    private void DisableWalkButton()
+    {
+        walkingButton.interactable = false;
+    }
+
+    private void EnableWalkButton()
+    {
+        walkingButton.interactable = true;
+    }
+
+    private void DisableRunButton()
+    {
+        runningButton.interactable = false;
+    }
+
+    private void EnableRunButton()
+    {
+        runningButton.interactable = true;
+    }
+
+    public void ChangeToRun()
+    {
+        DisableRunButton();
+        EnableWalkButton();
+        running = true;
+        walking = false;
+        Time.timeScale = 1.5f;
+        ResumeGameProgress();
+    }
+
+    public void ChangeToWalk()
+    {
+        DisableWalkButton();
+        EnableRunButton();
+        walking = true;
+        running = false;
+        StartTime();
+        ResumeGameProgress();
     }
 
     private void TakeDamage(int damage)
@@ -102,23 +192,27 @@ public class WarriorGameLoop_Script : MonoBehaviour
 
     private void GameLose()
     {
+        gameLosePanelGameObject.SetActive(true);
+        ResetMinigameLimiters();
         Invoke(nameof(LoadMainMenu), 5f);
     }
 
-    private void LoadMainMenu()
+    public void LoadMainMenu()
     {
         SceneManager.LoadScene(0);
     }
 
     private void GameWin()
     {
-        throw new NotImplementedException();
+        ResetMinigameLimiters();
+        gameWinPanelGameObject.SetActive(true);
+        Invoke(nameof(LoadMainMenu), 5f);
     }
 
     private void TimedEventHappening()
     {
-        StopTime();
-
+        PauseGameProgress();
+        previousProgressMadeInSeconds = playerProgressSlider.value;
         if (walking)
         {
             GetRandomMinigame();
@@ -131,23 +225,61 @@ public class WarriorGameLoop_Script : MonoBehaviour
 
     private void GetRandomMinigameOrEvent()
     {
-        throw new NotImplementedException();
+        //TEMPORARY
+        if (!zakariasBrickPlayed)
+        {
+            zakariasBrickPlayed = true;
+            SceneManager.LoadScene(5);
+            return;
+        }
+        if (!kajsaCandyCrushPlayed)
+        {
+            kajsaCandyCrushPlayed = true;
+            SceneManager.LoadScene(6);
+            return;
+        }
+        if (!ainaSharpshooterPlayed)
+        {
+            ainaSharpshooterPlayed = true;
+            SceneManager.LoadScene(7);
+            return;
+        }
+        print("No More Minigames");
     }
 
     private void GetRandomMinigame()
     {
-        throw new NotImplementedException();
+        //TEMPORARY
+        if (!zakariasBrickPlayed)
+        {
+            zakariasBrickPlayed = true;
+            SceneManager.LoadScene(5);
+            return;
+        }
+        if (!kajsaCandyCrushPlayed)
+        {
+            kajsaCandyCrushPlayed = true;
+            SceneManager.LoadScene(6);
+            return;
+        }
+        if (!ainaSharpshooterPlayed)
+        {
+            ainaSharpshooterPlayed = true;
+            SceneManager.LoadScene(7);
+            return;
+        }
+        print("No More Minigames");
     }
 
     public void PauseGame()
     {
-        StopTime();
         pausedGamePanel.SetActive(true);
+        PauseGameProgress();
     }
 
     public void ResumeGame()
     {
-        StartTime();
+        ResumeGameProgress();
         pausedGamePanel.SetActive(false);
     }
 
@@ -159,5 +291,15 @@ public class WarriorGameLoop_Script : MonoBehaviour
     private void StartTime()
     {
         Time.timeScale = 1f;
+    }
+
+    private void PauseGameProgress()
+    {
+        gameProgressIsActive = false;
+    }
+
+    private void ResumeGameProgress()
+    {
+        gameProgressIsActive = true;
     }
 }
