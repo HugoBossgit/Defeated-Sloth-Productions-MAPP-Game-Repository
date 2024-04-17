@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = System.Random;
 
 public class WarriorGameLoop_Script : MonoBehaviour
 {
@@ -229,22 +230,35 @@ public class WarriorGameLoop_Script : MonoBehaviour
         if (!zakariasBrickPlayed)
         {
             zakariasBrickPlayed = true;
-            SceneManager.LoadScene(5);
+            SceneManager.LoadScene(2);
             return;
         }
-        if (!kajsaCandyCrushPlayed)
-        {
-            kajsaCandyCrushPlayed = true;
-            SceneManager.LoadScene(6);
-            return;
-        }
+        //if (!kajsaCandyCrushPlayed)
+        //{
+        //    kajsaCandyCrushPlayed = true;
+        //    SceneManager.LoadScene(6);
+        //    return;
+        //}
         if (!ainaSharpshooterPlayed)
         {
             ainaSharpshooterPlayed = true;
-            SceneManager.LoadScene(7);
+            SceneManager.LoadScene(3);
             return;
         }
-        print("No More Minigames");
+        Random rnd50 = new Random();
+        int randomNumber = rnd50.Next(0, 2);
+        if (randomNumber == 0)
+        {
+            if (playerCurrentHealth < playerMaxHealth)
+            {
+                TakeDamage(-1);
+            }
+            return;
+        }
+        if (randomNumber == 1)
+        {
+            TakeDamage(1);
+        }
     }
 
     private void GetRandomMinigame()
@@ -253,22 +267,35 @@ public class WarriorGameLoop_Script : MonoBehaviour
         if (!zakariasBrickPlayed)
         {
             zakariasBrickPlayed = true;
-            SceneManager.LoadScene(5);
+            SceneManager.LoadScene(2);
             return;
         }
-        if (!kajsaCandyCrushPlayed)
-        {
-            kajsaCandyCrushPlayed = true;
-            SceneManager.LoadScene(6);
-            return;
-        }
+        //if (!kajsaCandyCrushPlayed)
+        //{
+        //    kajsaCandyCrushPlayed = true;
+        //    SceneManager.LoadScene(6);
+        //    return;
+        //}
         if (!ainaSharpshooterPlayed)
         {
             ainaSharpshooterPlayed = true;
-            SceneManager.LoadScene(7);
+            SceneManager.LoadScene(3);
             return;
         }
-        print("No More Minigames");
+        Random rnd25 = new Random();
+        int randomNumber = rnd25.Next(0, 4);
+        if (randomNumber == 0)
+        {
+            if (playerCurrentHealth < playerMaxHealth)
+            {
+                TakeDamage(-1);
+            }
+            return;
+        }
+        if (randomNumber >= 0)
+        {
+            TakeDamage(1);
+        }
     }
 
     public void PauseGame()
