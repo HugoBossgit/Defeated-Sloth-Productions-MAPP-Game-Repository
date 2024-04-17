@@ -13,15 +13,12 @@ public class GameSettings_Memory : MonoBehaviour
     {
         NotSet = 0,
         E10Pairs = 10,
-        E15Pairs = 15,
-        E20Pairs = 20,
     }
 
     public enum EPuzzleCategories
     {
         NotSet,
         Animals,
-        Weapons,
     }
 
     public struct Settings
@@ -57,7 +54,6 @@ public class GameSettings_Memory : MonoBehaviour
     private void SetPuzzleCatDirectory()
     {
         puzzleCatDirectory.Add(EPuzzleCategories.Animals, "Animals");
-        puzzleCatDirectory.Add(EPuzzleCategories.Weapons, "Weapons");
     }
 
     public void SetPairNumber(EpairNumber number)

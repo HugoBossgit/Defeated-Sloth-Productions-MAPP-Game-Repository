@@ -50,9 +50,6 @@ public class PictureManager_Memory : MonoBehaviour
     public List<Picture_Memory> pictureList;
 
     private Vector2 _offset = new Vector2(1.5f, 1.52f);
-    private Vector2 _offsetFor15Pairs = new Vector2(1.08f, 1.22f);
-    private Vector2 _offsetFor20Pairs = new Vector2(1.08f, 1.0f);
-    private Vector3 newScaleDown = new Vector3(0.9f, 0.9f, 0.001f);
 
     private List<Material> materialList = new List<Material>();
     private List<string> texturePathList = new List<string>();
@@ -93,18 +90,6 @@ public class PictureManager_Memory : MonoBehaviour
             currentGameState = GameState.MovingOnPositions;
             SpawnPictureMesh(4, 5, startPosition, _offset, false);
             MovePicture(4, 5, startPosition, _offset);
-        }
-        else if (GameSettings_Memory.Instance.GetPairNumber() == GameSettings_Memory.EpairNumber.E15Pairs)
-        {
-            currentGameState = GameState.MovingOnPositions;
-            SpawnPictureMesh(5, 6, startPosition, _offsetFor15Pairs, false);
-            MovePicture(5, 6, startPosition, _offsetFor15Pairs);
-        }
-        else if (GameSettings_Memory.Instance.GetPairNumber() == GameSettings_Memory.EpairNumber.E20Pairs)
-        {
-            currentGameState = GameState.MovingOnPositions;
-            SpawnPictureMesh(5, 8, startPosition, _offsetFor20Pairs, true);
-            MovePicture(5, 8, startPosition, _offsetFor20Pairs);
         }
 
     }
@@ -258,11 +243,6 @@ public class PictureManager_Memory : MonoBehaviour
             for(int row = 0; row < rows; row++)
             {
                 var tempPicture = (Picture_Memory)Instantiate(picturePrefab, picSpawnPos.position, picturePrefab.transform.rotation);
-
-                if (scaleDown)
-                {
-                    tempPicture.transform.localScale = newScaleDown;
-                }
 
                 tempPicture.name = tempPicture.name + 'c' + col + 'r' + row;
                 pictureList.Add(tempPicture);

@@ -15,6 +15,7 @@ public class Picture_Memory : MonoBehaviour
 
     private PictureManager_Memory pictureManager;
     private bool clicked = false;
+    private bool isRotating = false;
     private int index;
 
     public void SetIndex(int id)
@@ -41,13 +42,14 @@ public class Picture_Memory : MonoBehaviour
         {
             Touch touch = Input.GetTouch(0);
 
-            if (touch.phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began && !isRotating) 
             {
-                if (!clicked)
+                if (!clicked && !revealed)
                 {
                     pictureManager.currentPuzzleState = PictureManager_Memory.PuzzleState.PuzzleRotating;
                     StartCoroutine(LoopRotation(45, false));
                     clicked = true;
+                    isRotating = true; 
                 }
             }
         }
@@ -63,6 +65,8 @@ public class Picture_Memory : MonoBehaviour
             clicked = true;
         }
     }
+
+
 
     public void FlipBack()
     {
@@ -152,5 +156,10 @@ public class Picture_Memory : MonoBehaviour
     public void Deactivate()
     {
         gameObject.SetActive(false);
+    }
+
+    private void ResetIsRotating()
+    {
+        isRotating = false;
     }
 }
