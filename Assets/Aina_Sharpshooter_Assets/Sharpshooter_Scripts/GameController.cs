@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private float multiplier = 1.0f;
     private int comboStarter;
     [SerializeField] private int lives = 3;
+    public bool gameOver;
 
     [SerializeField] private TMP_Text pointsText;
     [SerializeField] private GameObject tempLossText;
@@ -32,15 +33,13 @@ public class GameController : MonoBehaviour
     {
         tempInfoText.SetActive(false);
         points += (int)(value * multiplier);
-<<<<<<< Updated upstream
-=======
+
         if(points > 40)
         {
             gameOver = true;
             tempWinText.SetActive(true);
 
         }
->>>>>>> Stashed changes
     }
 
     public void combo(Boolean increase)
@@ -60,14 +59,13 @@ public class GameController : MonoBehaviour
     public void DecrementLives(int decrease)
     {
         lives -= decrease;
-<<<<<<< Updated upstream
-=======
+
         if(lives < 1)
         {
             gameOver = true;
             tempLossText.SetActive(true);
         }
->>>>>>> Stashed changes
+
     }
 
     public void Loss()
