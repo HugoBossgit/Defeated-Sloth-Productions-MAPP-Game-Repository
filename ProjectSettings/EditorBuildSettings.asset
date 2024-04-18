@@ -20,8 +20,14 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Aina_SharpshooterGame.unity
     guid: c9769f50d02bcde48b4b608068e1ff18
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Kajsa 1 CC.unity
     guid: 1326e54ee016845c6b9442290b66704c
+  - enabled: 1
+    path: Assets/Scenes/Fishing Game.unity
+    guid: b8abf3f8478ae44c1943745581d5a891
+  - enabled: 1
+    path: Assets/Scenes/Drag and Drop.unity
+    guid: b5ca1f80bca604b1ebb67b4e870ea2e3
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 878eb29bbdeed47528f7384ca52498d0, type: 2}
