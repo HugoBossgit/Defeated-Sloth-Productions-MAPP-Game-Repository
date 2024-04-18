@@ -619,7 +619,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: WarriorGameLoop
+          m_StringArgument: Drag and Drop
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &881034818
@@ -1264,15 +1264,15 @@ MonoBehaviour:
   bottomPivot: {fileID: 1815162989}
   fish: {fileID: 1629008010}
   timerMultiplicator: 2
-  failTimer: 15
+  failTimer: 907.28467
   smoothMotion: 2
   progressBarContainer: {fileID: 1215607041}
   hook: {fileID: 593092527}
   hookSize: 0.1
-  hookPower: 0.5
-  hookPullPower: 0.01
-  hookGravity: 0.005
-  hookProgressDegradationPower: 1
+  hookPower: 0.4
+  hookPullPower: 0.008
+  hookGravity: 0.003
+  hookProgressDegradationPower: 0.2
 --- !u!4 &1934793803
 Transform:
   m_ObjectHideFlags: 0
