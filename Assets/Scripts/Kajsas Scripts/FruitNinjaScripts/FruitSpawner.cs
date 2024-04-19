@@ -12,15 +12,16 @@ public class FruitSpawner : MonoBehaviour
 
     void Start()
     {
-        InvokeRepeating("spawnObject", this.spawnInterval, this.spawnInterval);
+        InvokeRepeating("spawnObject", spawnInterval, spawnInterval);
     }
 
     private void spawnObject()
     {
-        GameObject newObject = Instantiate(this.prefabToSpawn);
-        newObject.transform.position = new Vector2(Random.Range(this.objectMinX, this.objectMaxX), this.objectY);
+        //skapr instans av fruktprefab och väljer sedan X-position för given intervall
+        GameObject newObject = Instantiate(prefabToSpawn);
+        newObject.transform.position = new Vector2(Random.Range(objectMinX, objectMaxX), objectY);
 
-        Sprite objectSprite = objectSprites[Random.Range(0, this.objectSprites.Length)];
+        Sprite objectSprite = objectSprites[Random.Range(0, objectSprites.Length)];
         newObject.GetComponent<SpriteRenderer>().sprite = objectSprite;
     }
 

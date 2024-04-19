@@ -22,11 +22,13 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
+    //OnPointerDown för att interagera med UI element
     public void OnPointerDown(PointerEventData eventData)
     {
         offset = rectTransform.anchoredPosition - eventData.position;
     }
 
+    //Triggas när spelaren rör ett UI element
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!locked)
@@ -53,6 +55,7 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
                     eventTrigger.enabled = false; // Inaktivera EventTrigger
                 }
 
+                //Om alla element är låsta har man vunnit
                 if (GameObject.FindObjectsOfType<MoveUIObject_DD>().All(obj => obj.locked))
                 {
                     winPanel.SetActive(true);

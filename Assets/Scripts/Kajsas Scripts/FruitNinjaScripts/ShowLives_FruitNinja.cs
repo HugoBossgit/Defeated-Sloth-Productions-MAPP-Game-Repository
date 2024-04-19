@@ -15,23 +15,23 @@ public class ShowLives_FruitNinja : MonoBehaviour
     void Start()
     {
         lives = new List<GameObject>();
-        for (int lifeIndex = 0; lifeIndex < this.numberOfLives; lifeIndex++)
+        for (int lifeIndex = 0; lifeIndex < numberOfLives; lifeIndex++)
         {
-            GameObject life = Instantiate(lifePrefab, this.gameObject.transform);
+            GameObject life = Instantiate(lifePrefab, gameObject.transform);
             lives.Add(life);
         }
     }
 
     public void LooseLife()
     {
-        this.numberOfLives -= 1;
-        GameObject life = this.lives[this.lives.Count - 1];
-        this.lives.RemoveAt(this.lives.Count - 1);
+        numberOfLives -= 1;
+        GameObject life = lives[lives.Count - 1];
+        lives.RemoveAt(lives.Count - 1);
         Destroy(life);
-        if (this.numberOfLives == 0)
+        if (numberOfLives == 0)
         {
-            this.scoreText.SetActive(false);
-            this.gameOverGroup.SetActive(true);
+            scoreText.SetActive(false);
+            gameOverGroup.SetActive(true);
         }
     }
 }
