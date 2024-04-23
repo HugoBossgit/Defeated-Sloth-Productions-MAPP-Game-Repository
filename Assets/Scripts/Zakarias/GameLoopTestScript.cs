@@ -65,23 +65,6 @@ public class GameLooptestScript : MonoBehaviour
         }
 
         InvokeRepeating(nameof(DoPlayerProgress), 1.0f, 1.0f);
-
-
-
-        //Gameloop
-        List<GameObject> EnemyList = new List<int>();
-
-        //Data
-        int activeEnemyPointer = 2;
-
-
-
-        //Gameloop Load()
-        EnemyList[2].setactive
-        EnemyList[2].health = Data.health
-
-
-
     }
 
     private void Update()
