@@ -22,8 +22,8 @@ public class GameLooptestScript : MonoBehaviour
 
     private bool walking, running, playedEvent1, playedEvent2, playedEvent3, playedEvent4, playedEvent5, playedEvent6, gameWinIsCalled, gameLoseIsCalled, gameProgressIsActive;
 
-    private float playerCurrentHealth;
-    private float playerProgress;
+    //private float playerHealth;
+    //private float playerProgress;
 
     private void Awake()
     {
@@ -33,8 +33,6 @@ public class GameLooptestScript : MonoBehaviour
     private void Start()
     {
         StartTime();
-
-        playerProgress = 0;
 
         pausedGamePanel.SetActive(false);
         gameWinPanelGameObject.SetActive(false);
@@ -52,8 +50,8 @@ public class GameLooptestScript : MonoBehaviour
         {
             playerHealthSlider = playerHealthSliderGameObject.GetComponent<Slider>();
             playerHealthSlider.maxValue = playerMaxHealth;
-            playerCurrentHealth = playerMaxHealth;
-            playerHealthSlider.value = playerCurrentHealth;
+            Data.playerHealth = playerMaxHealth;
+            playerHealthSlider.value = Data.playerHealth;
         }
 
         if (walkingButtonGameObject != null)
@@ -67,17 +65,34 @@ public class GameLooptestScript : MonoBehaviour
         }
 
         InvokeRepeating(nameof(DoPlayerProgress), 1.0f, 1.0f);
+
+
+
+        //Gameloop
+        List<GameObject> EnemyList = new List<int>();
+
+        //Data
+        int activeEnemyPointer = 2;
+
+
+
+        //Gameloop Load()
+        EnemyList[2].setactive
+        EnemyList[2].health = Data.health
+
+
+
     }
 
     private void Update()
     {
-        if (playerCurrentHealth <= 0 && !gameLoseIsCalled)
+        if (Data.playerHealth <= 0 && !gameLoseIsCalled)
         {
             gameLoseIsCalled = true;
             GameLose();
         }
 
-        playerHealthSlider.value = playerCurrentHealth;
+        playerHealthSlider.value = Data.playerHealth;
 
         /*if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Aina_SharpshooterGame"))
         {
@@ -136,19 +151,19 @@ public class GameLooptestScript : MonoBehaviour
             }*/
             if (walking)
             {
-                playerProgress += 1;
+                Data.playerProgress += 1;
             }
             if (running) {
-                playerProgress += 1.5f;
+                Data.playerProgress += 1.5f;
             }
 
-            playerProgressSlider.value = playerProgress;
+            playerProgressSlider.value = Data.playerProgress;
 
-            if (playerProgress != 0 && playerProgress % 5 >= 0 && playerProgress % 5 <= 1) {
+            if (Data.playerProgress != 0 && Data.playerProgress % 5 >= 0 && Data.playerProgress % 5 <= 1) {
                 TimedEventHappening();
             }
 
-            if (playerProgress >= 30 && !gameWinIsCalled)
+            if (Data.playerProgress >= 30 && !gameWinIsCalled) // >= 30
             {
                 gameWinIsCalled = true;
                 GameWin();
@@ -158,10 +173,10 @@ public class GameLooptestScript : MonoBehaviour
 
     private bool GetRunOrWalkComparison() {
         if (running) {
-            return playerProgress % 5 >= 0 && playerProgress % 5 <= 1;
+            return Data.playerProgress % 5 >= 0 && Data.playerProgress % 5 <= 1;
         }
         else if (walking) {
-            return playerProgress % 5 == 0;
+            return Data.playerProgress % 5 == 0;
         }
         return false; //Should look into a way to throw an exception or something, as this could get confusing if the running and walking bools ever get desynced. Possubly you could have a running bool and the other option is walking, or aybe it a scale or something
     }
@@ -217,7 +232,7 @@ public class GameLooptestScript : MonoBehaviour
 
     private void TakeDamage(int damage)
     {
-        playerCurrentHealth = playerCurrentHealth - damage;
+        Data.playerHealth = Data.playerHealth - damage;
     }
 
     private void GameLose()
@@ -262,7 +277,7 @@ public class GameLooptestScript : MonoBehaviour
         if (rnd == 0) {
             SceneManager.LoadScene("Zakarias");
         }
-        //else if (rnd == 1) { //Disabled, no built in return to menu
+        //else if (rnd == 1) { //Disabled, no built in return to this scene
         //    SceneManager.LoadScene("Aina_SharpshooterGame");
         //}
     }
@@ -292,7 +307,7 @@ public class GameLooptestScript : MonoBehaviour
         int randomNumber = rnd50.Next(0, 2);
         if (randomNumber == 0)
         {
-            if (playerCurrentHealth < playerMaxHealth)
+            if (Data.playerHealth < playerMaxHealth)
             {
                 TakeDamage(-1);
             }
@@ -329,7 +344,7 @@ public class GameLooptestScript : MonoBehaviour
         int randomNumber = rnd25.Next(0, 4);
         if (randomNumber == 0)
         {
-            if (playerCurrentHealth < playerMaxHealth)
+            if (Data.playerHealth < playerMaxHealth)
             {
                 TakeDamage(-1);
             }
