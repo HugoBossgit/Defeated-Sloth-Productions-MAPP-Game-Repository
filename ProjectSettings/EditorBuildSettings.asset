@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 6ac224c5a5706474da3d70ebded06334
   - enabled: 1
-    path: Assets/Scenes/WarriorGameLoop.unity
+    path: Assets/Scenes/MainGameLoop.unity
     guid: cd51b7b75e42bd046aa6e426988fed21
   - enabled: 1
     path: Assets/Scenes/Zakarias.unity

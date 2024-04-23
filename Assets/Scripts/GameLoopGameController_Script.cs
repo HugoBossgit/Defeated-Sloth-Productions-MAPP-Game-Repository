@@ -5,6 +5,8 @@ using System.Runtime.ConstrainedExecution;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class GameLoopGameController_Script : MonoBehaviour
 {
@@ -13,19 +15,20 @@ public class GameLoopGameController_Script : MonoBehaviour
     [SerializeField] private GameObject playerHealthSliderGameObject;
     [SerializeField] private GameObject walkingButtonGameObject;
     [SerializeField] private GameObject runningButtonGameObject;
+    [SerializeField] private GameObject pauseButtonGameObject;
     [SerializeField] private GameObject gameWinPanelGameObject;
     [SerializeField] private GameObject gameLosePanelGameObject;
     [SerializeField] private List<GameObject> enemies;
 
-    private Slider playerProgressSlider, playerHealthSlider;
+    private UnityEngine.UI.Slider playerProgressSlider, playerHealthSlider;
 
-    private Button walkingButton, runningButton;
+    private UnityEngine.UI.Button walkingButton, runningButton, pauseButton;
 
     private bool gameIsPaused;
 
     //Antal steg till spel loopens slut i walking pace (1/1) vilket blir 60 sekunder
     private int maxGameProgress = 60;
-    private int maxPlayerHealth = 10;
+    public const int maxPlayerHealth = 10;
 
     private void Start()
     {
@@ -36,42 +39,47 @@ public class GameLoopGameController_Script : MonoBehaviour
         gameIsPaused = false;
 
 
-        if (gameProgressSliderGameObject != null)
+        if(gameProgressSliderGameObject != null)
         {
-            playerProgressSlider = gameProgressSliderGameObject.GetComponent<Slider>();
+            playerProgressSlider = gameProgressSliderGameObject.GetComponent<UnityEngine.UI.Slider>();
             playerProgressSlider.maxValue = maxGameProgress;
         }
 
-        if (playerHealthSliderGameObject != null)
+        if(playerHealthSliderGameObject != null)
         {
-            playerHealthSlider = playerHealthSliderGameObject.GetComponent<Slider>();
+            playerHealthSlider = playerHealthSliderGameObject.GetComponent<UnityEngine.UI.Slider>();
             playerHealthSlider.maxValue = maxPlayerHealth;
         }
 
-        if (walkingButtonGameObject != null)
+        if(walkingButtonGameObject != null)
         {
-            walkingButton = walkingButtonGameObject.GetComponent<Button>();
+            walkingButton = walkingButtonGameObject.GetComponent<UnityEngine.UI.Button>();
         }
 
-        if (runningButtonGameObject != null)
+        if(runningButtonGameObject != null)
         {
-            runningButton = runningButtonGameObject.GetComponent<Button>();
+            runningButton = runningButtonGameObject.GetComponent<UnityEngine.UI.Button>();
         }
 
-        InvokeRepeating(nameof(DoPlayerProgress), 0.1f, 0.1f);
+        if(pauseButtonGameObject != null)
+        {
+            pauseButton = pauseButtonGameObject.GetComponent<UnityEngine.UI.Button>();
+        }
+
+        InvokeRepeating(nameof(DoPlayerProgress), 1, 1);
     }
 
     private void DoPlayerProgress()
     {
-        if (playerProgressSlider != null && !gameIsPaused)
+        if(playerProgressSlider != null && !gameIsPaused)
         {
-            if (Data.walking)
+            if(Data.walking)
             {
-                Data.playerProgress += 0.1f;
+                Data.playerProgress += 1;
             }
-            if (Data.running)
+            if(Data.running)
             {
-                Data.playerProgress += 0.3f;
+                Data.playerProgress += 3;
             }
 
             playerProgressSlider.value = Data.playerProgress;
@@ -80,38 +88,126 @@ public class GameLoopGameController_Script : MonoBehaviour
 
     private void Awake()
     {
-        if (playerProgressSlider != null && playerHealthSlider != null)
+        if(playerProgressSlider != null && playerHealthSlider != null)
         {
             playerHealthSlider.value = Data.playerHealth;
             playerProgressSlider.value = Data.playerProgress;
         }
     }
 
-    private void takeDamage(int damage)
+    private void OnEnable()
+    {
+        bool healthSliderFound = false;
+        while (!healthSliderFound)
+        {
+            if (GameObject.Find("PlayerHealth_Slider") != null)
+            {
+                playerHealthSliderGameObject = GameObject.Find("PlayerHealth_Slider");
+                playerHealthSlider = playerHealthSliderGameObject.GetComponent<UnityEngine.UI.Slider>();
+                playerHealthSlider.value = Data.playerHealth;
+                healthSliderFound = true;
+            }
+        }
+        
+    }
+
+    private void Update()
+    {
+        UpdateButtonColors();
+        playerProgressSlider.value = Data.playerProgress;
+    }
+
+    private void TakeDamage(int damage)
     {
 
     }
 
-    public void startWalking()
+    public void StartWalking()
     {
-        stopRunning();
+        StopRunning();
         Data.walking = true;
     }
 
-    public void stopWalking()
+    private void StopWalking()
     {
         Data.walking = false;
     }
 
-    public void startRunning()
+    public void StartRunning()
     {
-        stopWalking();
+        StopWalking();
         Data.running = true;
     }
 
-    public void stopRunning()
+    private void StopRunning()
     {
         Data.running = false;
+    }
+
+    public void pauseGame()
+    {
+        gameIsPaused = true;
+        pausedGamePanel.SetActive(true);
+        InactivateButtons();
+    }
+
+    public void UnPauseGame()
+    {
+        ActivateButtons();
+        pausedGamePanel.SetActive(false);
+        gameIsPaused = false;
+        UpdateButtonColors();
+    }
+
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    private void InactivateButtons()
+    {
+        runningButton.interactable = false;
+        walkingButton.interactable = false;
+        pauseButton.interactable = false;
+    }
+
+    private void ActivateButtons()
+    {
+        runningButton.interactable = true;
+        walkingButton.interactable = true;
+        pauseButton.interactable = true;
+    }
+
+    private void UpdateButtonColors()
+    {
+        ColorBlock walkingButtonColors = walkingButton.colors;
+        ColorBlock runningButtonColors = runningButton.colors;
+
+        if (Data.walking)
+        {
+            walkingButtonColors.normalColor = Color.green;
+            runningButtonColors.normalColor = Color.red;
+
+            walkingButton.colors = walkingButtonColors;
+            runningButton.colors = runningButtonColors;
+            return;
+        }
+
+        if(Data.running)
+        {
+            walkingButtonColors.normalColor = Color.red;
+            runningButtonColors.normalColor = Color.green;
+
+            walkingButton.colors = walkingButtonColors;
+            runningButton.colors = runningButtonColors;
+            return;
+        }
+
+        walkingButtonColors.normalColor = Color.white;
+        runningButtonColors.normalColor = Color.white;
+
+        walkingButton.colors = walkingButtonColors;
+        runningButton.colors = runningButtonColors;
     }
     //TO - DO
     //paus

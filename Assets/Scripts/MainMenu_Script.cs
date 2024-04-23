@@ -6,10 +6,9 @@ using UnityEngine.UI;
 
 public class MainMenu_Script : MonoBehaviour
 {
-    [SerializeField] private GameObject workInProgressPanel, creditsPanel, settingsPanel, fadeBackgroundPanel;
+    [SerializeField] private GameObject workInProgressPanel, creditsPanel, settingsPanel, fadeBackgroundPanel, newGameButton, resumeGameButton, returnToPlayButton;
 
-    [SerializeField] private List<Button> classCreditsSettingsButtons;
-
+    [SerializeField] private List<Button> playCreditsSettingsButtons;
 
 
     private void Start()
@@ -18,13 +17,14 @@ public class MainMenu_Script : MonoBehaviour
         creditsPanel.SetActive(false);
         settingsPanel.SetActive(false);
         fadeBackgroundPanel.SetActive(false);
+        DeactivateNewResumeReturnButtons();
     }
 
 
 
-    private void disableAllButtons()
+    private void DisableAllButtons()
     {
-        foreach (Button button in classCreditsSettingsButtons)
+        foreach (Button button in playCreditsSettingsButtons)
         {
             button.enabled = false;
         }
@@ -32,9 +32,9 @@ public class MainMenu_Script : MonoBehaviour
 
 
 
-    private void enableAllButtons()
+    private void EnableAllButtons()
     {
-        foreach (Button button in classCreditsSettingsButtons)
+        foreach (Button button in playCreditsSettingsButtons)
         {
             button.enabled = true;
         }
@@ -42,75 +42,107 @@ public class MainMenu_Script : MonoBehaviour
 
 
 
-    public void openWorkInProgressPanel()
+    public void OpenWorkInProgressPanel()
     {
-        disableAllButtons();
+        DisableAllButtons();
         workInProgressPanel.SetActive(true);
         fadeBackgroundPanel.SetActive(true);
     }
 
 
 
-    public void closeWorkInProgressPanel()
+    public void CloseWorkInProgressPanel()
     {
-        enableAllButtons();
+        EnableAllButtons();
         workInProgressPanel.SetActive(false);
         fadeBackgroundPanel.SetActive(false);
     }
 
 
 
-    public void openCreditsPanel()
+    public void OpenCreditsPanel()
     {
-        disableAllButtons();
+        DisableAllButtons();
         creditsPanel.SetActive(true);
         fadeBackgroundPanel.SetActive(true);
     }
 
 
 
-    public void closeCreditsPanel()
+    public void CloseCreditsPanel()
     {
-        enableAllButtons();
+        EnableAllButtons();
         creditsPanel.SetActive(false);
         fadeBackgroundPanel.SetActive(false);
     }
 
 
 
-    public void openSettingsPanel()
+    public void OpenSettingsPanel()
     {
-        disableAllButtons();
+        DisableAllButtons();
         settingsPanel.SetActive(true);
         fadeBackgroundPanel.SetActive(true);
     }
 
 
 
-    public void closeSettingsPanel()
+    public void CloseSettingsPanel()
     {
-        enableAllButtons();
+        EnableAllButtons();
         settingsPanel.SetActive(false);
         fadeBackgroundPanel.SetActive(false);
     }
 
-
-
-    public void playAsWarrior()
+    public void Play()
     {
+        DisableAllButtons();
+        fadeBackgroundPanel.SetActive(true);
+        ActivatePlayResumeReturnButtons();
+
+        if (Data.playerProgress > 0)
+        {
+            resumeGameButton.GetComponent<Button>().interactable = true;
+        }
+        else
+        {
+            resumeGameButton.GetComponent<Button>().interactable = false;
+        }
+    }
+
+    public void ResumeGame()
+    {
+        Data.walking = false;
+        Data.running = false;
         SceneManager.LoadScene(1);
     }
 
-
-    public void playAsHunter()
+    public void NewGame()
     {
-        openWorkInProgressPanel();
+        Data.walking = false;
+        Data.running = false;
+        Data.Reset();
+        SceneManager.LoadScene(1);
     }
 
-
-
-    public void playAsMage()
+    public void BackFromPlay()
     {
-        openWorkInProgressPanel();
+        EnableAllButtons();
+        fadeBackgroundPanel.SetActive(false);
+        DeactivateNewResumeReturnButtons();
+    }
+
+    private void ActivatePlayResumeReturnButtons()
+    {
+        newGameButton.SetActive(true);
+        resumeGameButton.SetActive(true);
+        returnToPlayButton.SetActive(true);
+    }
+
+    private void DeactivateNewResumeReturnButtons()
+    {
+        newGameButton.SetActive(false);
+        resumeGameButton.SetActive(false);
+        returnToPlayButton.SetActive(false);
     }
 }

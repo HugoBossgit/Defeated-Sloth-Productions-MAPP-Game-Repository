@@ -12,15 +12,16 @@ public class Data : MonoBehaviour
 
     public static int activeEnemyPointer;
 
-    public void Load() {
+    public static void Load() {
 
     }
 
-    public void Reset() {
-
+    public static void Reset() {
+        playerProgress = 0;
+        playerHealth = GameLoopGameController_Script.maxPlayerHealth;
     }
 
-    public void SaveToFile() {
+    public static void SaveToFile() {
 
     }
 }
