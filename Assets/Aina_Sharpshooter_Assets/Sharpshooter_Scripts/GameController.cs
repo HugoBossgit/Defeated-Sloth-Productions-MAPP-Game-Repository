@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject tempWinText;
     [SerializeField] private GameObject tempInfoText;
     [SerializeField] private TMP_Text livesText;
+    public Boolean gameOver;
     void Start()
     {
         tempLossText.SetActive(false);
@@ -33,12 +34,18 @@ public class GameController : MonoBehaviour
     {
         tempInfoText.SetActive(false);
         points += (int)(value * multiplier);
+<<<<<<< HEAD
 
         if(points > 40)
         {
             gameOver = true;
             tempWinText.SetActive(true);
 
+=======
+        if(points > 40)
+        {
+            gameOver = true;
+>>>>>>> Develop
         }
     }
 
@@ -59,6 +66,7 @@ public class GameController : MonoBehaviour
     public void DecrementLives(int decrease)
     {
         lives -= decrease;
+<<<<<<< HEAD
 
         if(lives < 1)
         {
@@ -66,6 +74,12 @@ public class GameController : MonoBehaviour
             tempLossText.SetActive(true);
         }
 
+=======
+        if(lives < 0)
+        {
+            gameOver = true;
+        }
+>>>>>>> Develop
     }
 
     public void Loss()

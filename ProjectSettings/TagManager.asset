@@ -7,6 +7,8 @@ TagManager:
   - Spawn Area
   - Enemy
   - Target
+  - Fruit
+  - Cut
   layers:
   - Default
   - TransparentFX
@@ -14,11 +16,11 @@ TagManager:
   - 
   - Water
   - UI
+  - Cuttable
   - 
   - 
   - 
-  - 
-  - 
+  - Ground
   - 
   - 
   - 
@@ -43,4 +45,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Black
+    uniqueID: 2347113189
+    locked: 0
+  - name: Regular
+    uniqueID: 441558363
+    locked: 0
+  - name: 
+    uniqueID: 382812439
     locked: 0

@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+<<<<<<< HEAD
+=======
+using Random = System.Random;
+>>>>>>> Develop
 
 public class WarriorGameLoop_Script : MonoBehaviour
 {
@@ -229,6 +233,7 @@ public class WarriorGameLoop_Script : MonoBehaviour
         if (!zakariasBrickPlayed)
         {
             zakariasBrickPlayed = true;
+<<<<<<< HEAD
             SceneManager.LoadScene(5);
             return;
         }
@@ -245,6 +250,37 @@ public class WarriorGameLoop_Script : MonoBehaviour
             return;
         }
         print("No More Minigames");
+=======
+            SceneManager.LoadScene(2);
+            return;
+        }
+        //if (!kajsaCandyCrushPlayed)
+        //{
+        //    kajsaCandyCrushPlayed = true;
+        //    SceneManager.LoadScene(6);
+        //    return;
+        //}
+        if (!ainaSharpshooterPlayed)
+        {
+            ainaSharpshooterPlayed = true;
+            SceneManager.LoadScene(3);
+            return;
+        }
+        Random rnd50 = new Random();
+        int randomNumber = rnd50.Next(0, 2);
+        if (randomNumber == 0)
+        {
+            if (playerCurrentHealth < playerMaxHealth)
+            {
+                TakeDamage(-1);
+            }
+            return;
+        }
+        if (randomNumber == 1)
+        {
+            TakeDamage(1);
+        }
+>>>>>>> Develop
     }
 
     private void GetRandomMinigame()
@@ -253,6 +289,7 @@ public class WarriorGameLoop_Script : MonoBehaviour
         if (!zakariasBrickPlayed)
         {
             zakariasBrickPlayed = true;
+<<<<<<< HEAD
             SceneManager.LoadScene(5);
             return;
         }
@@ -269,6 +306,37 @@ public class WarriorGameLoop_Script : MonoBehaviour
             return;
         }
         print("No More Minigames");
+=======
+            SceneManager.LoadScene(2);
+            return;
+        }
+        //if (!kajsaCandyCrushPlayed)
+        //{
+        //    kajsaCandyCrushPlayed = true;
+        //    SceneManager.LoadScene(6);
+        //    return;
+        //}
+        if (!ainaSharpshooterPlayed)
+        {
+            ainaSharpshooterPlayed = true;
+            SceneManager.LoadScene(3);
+            return;
+        }
+        Random rnd25 = new Random();
+        int randomNumber = rnd25.Next(0, 4);
+        if (randomNumber == 0)
+        {
+            if (playerCurrentHealth < playerMaxHealth)
+            {
+                TakeDamage(-1);
+            }
+            return;
+        }
+        if (randomNumber >= 0)
+        {
+            TakeDamage(1);
+        }
+>>>>>>> Develop
     }
 
     public void PauseGame()
