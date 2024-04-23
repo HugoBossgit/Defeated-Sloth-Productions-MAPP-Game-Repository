@@ -8,7 +8,7 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private Transform target1, target2, target3, currentTarget;
     [SerializeField] private float speed = 2.0f;
     [SerializeField] private int damage = 1;
-    [SerializeField] private int lives = 1;
+    [SerializeField] private int lives = 2;
     [SerializeField] private int worth = 10;
     [SerializeField] private float deathTime = 0.3f;
     [SerializeField] private GameController controller;
