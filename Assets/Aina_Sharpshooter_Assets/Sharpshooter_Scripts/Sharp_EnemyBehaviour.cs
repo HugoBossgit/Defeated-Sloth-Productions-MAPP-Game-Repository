@@ -23,34 +23,41 @@ public class EnemyBehaviour : MonoBehaviour
       (hälsa sänks då fienden är vid spelaren). Sedan rör sig objektet mot target3 där det sedan förstörs/despawnar */
     void FixedUpdate()
     {
-        if(transform.position.y == target1.position.y)
-        { 
-            currentTarget = target2; 
-        }
-
-        if (transform.position.y == target2.position.y)
+        if (controller.getReady())
         {
-            currentTarget = target3;
-            controller.DecrementLives(damage);
-        }
+            if (transform.position.y == target1.position.y)
+            {
+                currentTarget = target2;
+            }
 
-        if (transform.position.y == target3.position.y)
-        {
-            Destroy(gameObject);
+            if (transform.position.y == target2.position.y)
+            {
+                currentTarget = target3;
+                controller.DecrementLives(damage);
+            }
+
+            if (transform.position.y == target3.position.y)
+            {
+                Destroy(gameObject);
+            }
+            transform.position = Vector2.MoveTowards(transform.position, currentTarget.position, speed * Time.deltaTime);
         }
-        transform.position = Vector2.MoveTowards(transform.position, currentTarget.position, speed * Time.deltaTime);
     }
 
     /*När muspekaren är över en fiende och man trycker på "fire1" och gameOver boolen i controller inte är false:
      Sätts startinformationen inaktiv, combo-metoden och addPoints i controller kallas på och detta objekt förstörs. */
     void OnMouseOver()
     {
-        if (Input.GetButtonUp("Fire1") && !controller.gameOver)
+        if (controller.getReady())
         {
-            controller.infoBalloon.SetActive(false);
-            controller.combo(true);
-            controller.addPoints(worth);
-            Destroy(gameObject);
+
+            if (Input.GetButtonUp("Fire1") && !controller.gameOver)
+            {
+                controller.infoBalloon.SetActive(false);
+                controller.combo(true);
+                controller.addPoints(worth);
+                Destroy(gameObject);
+            }
         }
 
     }

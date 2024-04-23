@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -15,41 +16,35 @@ public class GameController : MonoBehaviour
     [SerializeField] private TMP_Text pointsText;
     [SerializeField] private GameObject lossBalloon;
     [SerializeField] private GameObject winBalloon;
+    [SerializeField] private GameObject readyUpUI;
     public GameObject infoBalloon;
+    private int eliminations;
     [SerializeField] private List<GameObject> hearts = new List<GameObject>();
     [SerializeField] private List<GameObject> enemies = new List<GameObject>();
-    public Boolean gameOver;
+    public bool gameOver, gameWon;
+    private bool ready;
     void Start()
     {
         lossBalloon.SetActive(false);
         winBalloon.SetActive(false);
         infoBalloon.SetActive(true);
+        readyUpUI.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (enemies.Count == 0)
+        if(enemies.Count == eliminations && !gameOver)
         {
             Win();
         }
-
-        for(int i = enemies.Count - 1; i >= 0; i--) 
-        {
-            if (!enemies[i].CompareTag("Enemy"))
-            {
-                enemies.RemoveAt(i);
-            }
-        }
+        
     }
 
     public void addPoints(int value)
     {
+        eliminations++;
         points += (int)(value * multiplier);
-        if(points > 40)
-        {
-            gameOver = true;
-        }
     }
 
     public void combo(Boolean increase)
@@ -89,10 +84,22 @@ public class GameController : MonoBehaviour
 
     public void Win()
     {
+        gameWon = true;
         winBalloon.SetActive(true);
     }
 
     public void Restart()
     { }
+
+    public void startGame()
+    {
+        readyUpUI.SetActive(false);
+        ready = true;
+    }
+
+    public bool getReady()
+    { 
+        return ready; 
+    }
 
 }
