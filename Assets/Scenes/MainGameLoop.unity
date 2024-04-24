@@ -1529,7 +1529,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 688605756}
         m_TargetAssemblyTypeName: GameLoopGameController_Script, Assembly-CSharp
-        m_MethodName: pauseGame
+        m_MethodName: PauseGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

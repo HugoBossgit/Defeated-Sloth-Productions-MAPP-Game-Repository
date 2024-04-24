@@ -24,11 +24,20 @@ public class GameLoopGameController_Script : MonoBehaviour
 
     private UnityEngine.UI.Button walkingButton, runningButton, pauseButton;
 
-    private bool gameIsPaused;
+    private bool gameIsPaused, gameIsWon, gameIsLost;
 
     //Antal steg till spel loopens slut i walking pace (1/1) vilket blir 60 sekunder
     private int maxGameProgress = 60;
     public const int maxPlayerHealth = 10;
+
+    private void Awake()
+    {
+        if (playerProgressSlider != null && playerHealthSlider != null)
+        {
+            playerHealthSlider.value = Data.playerHealth;
+            playerProgressSlider.value = Data.playerProgress;
+        }
+    }
 
     private void Start()
     {
@@ -37,6 +46,8 @@ public class GameLoopGameController_Script : MonoBehaviour
         gameLosePanelGameObject.SetActive(false);
 
         gameIsPaused = false;
+        gameIsWon = false;
+        gameIsLost = false;
 
 
         if(gameProgressSliderGameObject != null)
@@ -86,15 +97,6 @@ public class GameLoopGameController_Script : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        if(playerProgressSlider != null && playerHealthSlider != null)
-        {
-            playerHealthSlider.value = Data.playerHealth;
-            playerProgressSlider.value = Data.playerProgress;
-        }
-    }
-
     private void OnEnable()
     {
         bool healthSliderFound = false;
@@ -115,11 +117,20 @@ public class GameLoopGameController_Script : MonoBehaviour
     {
         UpdateButtonColors();
         playerProgressSlider.value = Data.playerProgress;
-    }
 
-    private void TakeDamage(int damage)
-    {
+        if (Data.playerProgress == maxGameProgress && !gameIsWon)
+        {
+            gameIsWon = true;
+            WinGame();
+            Debug.Log("win");
+        }
 
+        if (Data.playerHealth <= 0 && !gameIsLost)
+        {
+            gameIsLost = true;
+            LoseGame();
+            Debug.Log("Launching game in game loop scene results in health = 0 which is game lose");
+        }
     }
 
     public void StartWalking()
@@ -144,7 +155,7 @@ public class GameLoopGameController_Script : MonoBehaviour
         Data.running = false;
     }
 
-    public void pauseGame()
+    public void PauseGame()
     {
         gameIsPaused = true;
         pausedGamePanel.SetActive(true);
@@ -161,6 +172,10 @@ public class GameLoopGameController_Script : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
+        gameIsPaused = false;
+        gameIsWon = false;
+        gameIsLost = false;
+        ActivateButtons();
         SceneManager.LoadScene(0);
     }
 
@@ -209,10 +224,24 @@ public class GameLoopGameController_Script : MonoBehaviour
         walkingButton.colors = walkingButtonColors;
         runningButton.colors = runningButtonColors;
     }
+
+    private void LoseGame()
+    {
+        gameLosePanelGameObject.SetActive(true);
+        gameIsPaused = true;
+        Data.Reset();
+    }
+
+    private void WinGame()
+    {
+        gameWinPanelGameObject.SetActive(true);
+        gameIsPaused = true;
+        Data.Reset();
+    }
     //TO - DO
-    //paus
-    //game win/lose
     //fiender
     //random fiende väljare
     //välja klass innan fiende och visa vilka minigames / klass
+    //Items
+    //Boss
 }
