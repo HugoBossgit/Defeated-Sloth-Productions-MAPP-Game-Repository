@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = System.Random;
 
-public class WarriorGameLoop_Script : MonoBehaviour
+public class GameLooptestScript : MonoBehaviour
 {
     private static float previousProgressMadeInSeconds;
     private static bool ainaSharpshooterPlayed, kajsaCandyCrushPlayed, zakariasBrickPlayed;
@@ -21,11 +22,12 @@ public class WarriorGameLoop_Script : MonoBehaviour
 
     private bool walking, running, playedEvent1, playedEvent2, playedEvent3, playedEvent4, playedEvent5, playedEvent6, gameWinIsCalled, gameLoseIsCalled, gameProgressIsActive;
 
-    private float playerCurrentHealth;
+    //private float playerHealth;
+    //private float playerProgress;
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -48,8 +50,8 @@ public class WarriorGameLoop_Script : MonoBehaviour
         {
             playerHealthSlider = playerHealthSliderGameObject.GetComponent<Slider>();
             playerHealthSlider.maxValue = playerMaxHealth;
-            playerCurrentHealth = playerMaxHealth;
-            playerHealthSlider.value = playerCurrentHealth;
+            Data.playerHealth = playerMaxHealth;
+            playerHealthSlider.value = Data.playerHealth;
         }
 
         if (walkingButtonGameObject != null)
@@ -61,17 +63,21 @@ public class WarriorGameLoop_Script : MonoBehaviour
         {
             runningButton = runningButtonGameObject.GetComponent<Button>();
         }
+
+        InvokeRepeating(nameof(DoPlayerProgress), 1.0f, 1.0f);
     }
 
     private void Update()
     {
-        if (playerCurrentHealth <= 0 && !gameLoseIsCalled)
+        if (Data.playerHealth <= 0 && !gameLoseIsCalled)
         {
             gameLoseIsCalled = true;
             GameLose();
         }
 
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Aina_SharpshooterGame"))
+        playerHealthSlider.value = Data.playerHealth;
+
+        /*if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("Aina_SharpshooterGame"))
         {
             GameObject gameControllerObject = GameObject.Find("Game Controller");
             GameController gameController = gameControllerObject.GetComponent<GameController>();
@@ -79,24 +85,9 @@ public class WarriorGameLoop_Script : MonoBehaviour
             {
                 SceneManager.LoadScene(1);
             }
-        }
+        }*/
 
-        playerHealthSlider.value = playerCurrentHealth;
-
-        if (playerProgressSlider != null && gameProgressIsActive)
-        {
-            if (previousProgressMadeInSeconds > 0)
-            {
-                playerProgressSlider.value = previousProgressMadeInSeconds;
-                previousProgressMadeInSeconds = 0;
-            }
-            if (walking || running)
-            {
-                playerProgressSlider.value += Time.deltaTime;
-            }
-        }
-
-        if (playerProgressSlider.value >= 4 && playerProgressSlider.value <= 5 && !playedEvent1)
+        /*if (playerProgressSlider.value >= 4 && playerProgressSlider.value <= 5 && !playedEvent1)
         {
             playedEvent1 = true;
             TimedEventHappening();
@@ -130,13 +121,47 @@ public class WarriorGameLoop_Script : MonoBehaviour
         {
             playedEvent6 = true;
             TimedEventHappening();
-        }
+        }*/
+    }
 
-        if (playerProgressSlider.value >= 30 && !gameWinIsCalled)
+    private void DoPlayerProgress() {
+        if (playerProgressSlider != null && gameProgressIsActive)
         {
-            gameWinIsCalled = true;
-            GameWin();
+            /*if (previousProgressMadeInSeconds > 0)
+            {
+                playerProgressSlider.value = previousProgressMadeInSeconds;
+                previousProgressMadeInSeconds = 0;
+            }*/
+            if (walking)
+            {
+                Data.playerProgress += 1;
+            }
+            if (running) {
+                Data.playerProgress += 1.5f;
+            }
+
+            playerProgressSlider.value = Data.playerProgress;
+
+            if (Data.playerProgress != 0 && Data.playerProgress % 5 >= 0 && Data.playerProgress % 5 <= 1) {
+                TimedEventHappening();
+            }
+
+            if (Data.playerProgress >= 30 && !gameWinIsCalled) // >= 30
+            {
+                gameWinIsCalled = true;
+                GameWin();
+            }
         }
+    }
+
+    private bool GetRunOrWalkComparison() {
+        if (running) {
+            return Data.playerProgress % 5 >= 0 && Data.playerProgress % 5 <= 1;
+        }
+        else if (walking) {
+            return Data.playerProgress % 5 == 0;
+        }
+        return false; //Should look into a way to throw an exception or something, as this could get confusing if the running and walking bools ever get desynced. Possubly you could have a running bool and the other option is walking, or aybe it a scale or something
     }
 
     private void ResetMinigameLimiters()
@@ -144,6 +169,8 @@ public class WarriorGameLoop_Script : MonoBehaviour
         ainaSharpshooterPlayed = false;
         kajsaCandyCrushPlayed = false;
         zakariasBrickPlayed = false;
+
+        //playerProgress = 0; //Resets progress
     }
 
     private void DisableWalkButton()
@@ -172,7 +199,7 @@ public class WarriorGameLoop_Script : MonoBehaviour
         EnableWalkButton();
         running = true;
         walking = false;
-        Time.timeScale = 1.5f;
+        //Time.timeScale = 1.5f;
         ResumeGameProgress();
     }
 
@@ -182,13 +209,13 @@ public class WarriorGameLoop_Script : MonoBehaviour
         EnableRunButton();
         walking = true;
         running = false;
-        StartTime();
+        //StartTime();
         ResumeGameProgress();
     }
 
     private void TakeDamage(int damage)
     {
-        playerCurrentHealth = playerCurrentHealth - damage;
+        Data.playerHealth = Data.playerHealth - damage;
     }
 
     private void GameLose()
@@ -212,19 +239,33 @@ public class WarriorGameLoop_Script : MonoBehaviour
 
     private void TimedEventHappening()
     {
+        DoPlayerProgress();
         PauseGameProgress();
-        previousProgressMadeInSeconds = playerProgressSlider.value;
-        if (walking)
+        //previousProgressMadeInSeconds = playerProgressSlider.value;
+        /*if (walking)
         {
             GetRandomMinigame();
         }
         if (running)
         {
             GetRandomMinigameOrEvent();
-        }
+        }*/
+        GetRandomMinigame();
     }
 
-    private void GetRandomMinigameOrEvent()
+    private void GetRandomMinigame() {
+        Random rnd50 = new Random();
+        int rnd = rnd50.Next(0,1);
+
+        if (rnd == 0) {
+            SceneManager.LoadScene("Zakarias");
+        }
+        //else if (rnd == 1) { //Disabled, no built in return to this scene
+        //    SceneManager.LoadScene("Aina_SharpshooterGame");
+        //}
+    }
+
+    /*private void GetRandomMinigameOrEvent()
     {
         //TEMPORARY
         if (!zakariasBrickPlayed)
@@ -249,7 +290,7 @@ public class WarriorGameLoop_Script : MonoBehaviour
         int randomNumber = rnd50.Next(0, 2);
         if (randomNumber == 0)
         {
-            if (playerCurrentHealth < playerMaxHealth)
+            if (Data.playerHealth < playerMaxHealth)
             {
                 TakeDamage(-1);
             }
@@ -259,9 +300,9 @@ public class WarriorGameLoop_Script : MonoBehaviour
         {
             TakeDamage(1);
         }
-    }
+    }*/
 
-    private void GetRandomMinigame()
+    /*private void GetRandomMinigame()
     {
         //TEMPORARY
         if (!zakariasBrickPlayed)
@@ -286,7 +327,7 @@ public class WarriorGameLoop_Script : MonoBehaviour
         int randomNumber = rnd25.Next(0, 4);
         if (randomNumber == 0)
         {
-            if (playerCurrentHealth < playerMaxHealth)
+            if (Data.playerHealth < playerMaxHealth)
             {
                 TakeDamage(-1);
             }
@@ -296,7 +337,7 @@ public class WarriorGameLoop_Script : MonoBehaviour
         {
             TakeDamage(1);
         }
-    }
+    }*/
 
     public void PauseGame()
     {
