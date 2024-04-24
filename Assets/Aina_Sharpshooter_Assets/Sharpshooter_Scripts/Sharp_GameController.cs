@@ -10,19 +10,20 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] private int points;
     [SerializeField] private float multiplier = 1.0f;
-    private int comboStarter;
     [SerializeField] private int lives = 3;
 
     [SerializeField] private TMP_Text pointsText;
     [SerializeField] private GameObject lossBalloon;
     [SerializeField] private GameObject winBalloon;
     [SerializeField] private GameObject readyUpUI;
-    public GameObject infoBalloon;
-    private int eliminations;
     [SerializeField] private List<GameObject> hearts = new List<GameObject>();
     [SerializeField] private List<GameObject> enemies = new List<GameObject>();
+    public GameObject infoBalloon;
+    
     public bool gameOver, gameWon;
     private bool ready;
+    private int comboStarter;
+    private int deleted;
     void Start()
     {
         lossBalloon.SetActive(false);
@@ -34,7 +35,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(enemies.Count == eliminations && !gameOver)
+        if(enemies.Count == deleted && !gameOver)
         {
             Win();
         }
@@ -43,7 +44,6 @@ public class GameController : MonoBehaviour
 
     public void addPoints(int value)
     {
-        eliminations++;
         points += (int)(value * multiplier);
     }
 
@@ -100,6 +100,11 @@ public class GameController : MonoBehaviour
     public bool getReady()
     { 
         return ready; 
+    }
+
+    public void addDeleted()
+    {
+        deleted++;
     }
 
 }

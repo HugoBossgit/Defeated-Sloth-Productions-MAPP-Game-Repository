@@ -245,5 +245,16 @@ MonoBehaviour:
   target3: {fileID: 0}
   currentTarget: {fileID: 0}
   speed: 2
+  damage: 1
   lives: 1
+  worth: 10
   deathTime: 0.3
+  controller: {fileID: 0}
+  death:
+  - {fileID: 8300000, guid: 4c622cbd4f819464e92e34619eeb827f, type: 3}
+  - {fileID: 8300000, guid: 974958c19de5a0e49ab4f80cc093bd4f, type: 3}
+  - {fileID: 8300000, guid: 2811a75d1bc97be44990dea21ca00840, type: 3}
+  attack:
+  - {fileID: 8300000, guid: 2c2850503bd6d55499f6a4a4b0314caa, type: 3}
+  - {fileID: 8300000, guid: e8099121088d67c48883b8dfd47fef94, type: 3}
+  - {fileID: 8300000, guid: 82c3f41d50ecc714aae419a1aa918510, type: 3}
