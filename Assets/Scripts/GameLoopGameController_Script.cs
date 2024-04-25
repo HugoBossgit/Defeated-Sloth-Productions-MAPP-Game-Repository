@@ -27,20 +27,21 @@ public class GameLoopGameController_Script : MonoBehaviour
     [SerializeField] private GameObject itemSwordGameObject;
     [SerializeField] private GameObject itemShieldGameObject;
     [SerializeField] private GameObject bossGameObject;
+    [SerializeField] private GameObject bossHealtSliderGameObject;
+    [SerializeField] private GameObject battleBossButtonGameObject;
+    [SerializeField] private GameObject winOrLoseBossBattlePanel;
 
 
-    private UnityEngine.UI.Slider playerProgressSlider, playerHealthSlider;
+    private UnityEngine.UI.Slider playerProgressSlider, playerHealthSlider, bossHealthSlider;
 
     private UnityEngine.UI.Button walkingButton, runningButton, pauseButton;
 
     private bool gameIsPaused, gameIsWon, gameIsLost;
 
-    private int bossCurrentHealth;
-
-    private int bossMaxHealth = 50;
+    public const int bossMaxHealth = 50;
 
     //Antal steg till spel loopens slut i walking pace (1/1) vilket blir 60 sekunder
-    private int maxGameProgress = 40;
+    private int maxGameProgress = 50;
     public const int maxPlayerHealth = 10;
 
     private void Awake()
@@ -57,6 +58,9 @@ public class GameLoopGameController_Script : MonoBehaviour
         pausedGamePanel.SetActive(false);
         gameWinPanelGameObject.SetActive(false);
         gameLosePanelGameObject.SetActive(false);
+        bossGameObject.SetActive(false);
+        battleBossButtonGameObject.SetActive(false);
+        winOrLoseBossBattlePanel.SetActive(false);
 
         gameIsPaused = false;
         gameIsWon = false;
@@ -131,6 +135,25 @@ public class GameLoopGameController_Script : MonoBehaviour
         UpdateButtonColors();
         playerProgressSlider.value = Data.playerProgress;
         playerHealthSlider.value = Data.playerHealth;
+        bossHealthSlider.value = Data.bossCurrentHealth;
+
+        if (Data.hasItemSheild)
+        {
+            itemShieldGameObject.SetActive(true);
+        }
+        else
+        {
+            itemShieldGameObject.SetActive(false);
+        }
+
+        if (Data.hasItemSword)
+        {
+            itemSwordGameObject.SetActive(true);
+        }
+        else
+        {
+            itemSwordGameObject.SetActive(false);
+        }
 
         if (Data.playerProgress == maxGameProgress && !gameIsWon) //win on max progress
         {
@@ -160,6 +183,12 @@ public class GameLoopGameController_Script : MonoBehaviour
                 Data.activeEventOrEnemy = "";
                 PlayerLoseInEvent();
             }
+            else if (Data.activeEventOrEnemy == "BOSS")
+            {
+                Data.playerLose = false;
+                Data.activeEventOrEnemy = "";
+                LoseRoundAgainstBoss();
+            }
 
         }
 
@@ -173,9 +202,15 @@ public class GameLoopGameController_Script : MonoBehaviour
             }
             else if (Data.activeEventOrEnemy == "EVENT")
             {
-                Data.playerWin= false;
+                Data.playerWin = false;
                 Data.activeEventOrEnemy = "";
                 PlayerWinInEvent();
+            }
+            else if (Data.activeEventOrEnemy == "BOSS")
+            {
+                Data.playerWin = false;
+                Data.activeEventOrEnemy = "";
+                WinRoundAgainstBoss();
             }
         }
 
@@ -203,6 +238,11 @@ public class GameLoopGameController_Script : MonoBehaviour
         {
             Data.encounterFourMet = true;
             GetRandomEventOrEnemy();
+        }
+
+        if (Data.playerProgress > 40)
+        {
+            BossBattle();
         }
     }
 
@@ -412,7 +452,7 @@ public class GameLoopGameController_Script : MonoBehaviour
 
         if (bossOrPlayer == "BOSS")
         {
-            bossCurrentHealth -= damage;
+            Data.bossCurrentHealth -= damage;
         }
     }
 
@@ -447,13 +487,46 @@ public class GameLoopGameController_Script : MonoBehaviour
         eventOneGameObject.SetActive(false);
         eventTwoGameObject.SetActive(false);
     }
+    
+    private void BossBattle()
+    {
+        gameIsPaused = true;
+        bossGameObject.SetActive(true);
+        walkingButtonGameObject.SetActive(false);
+        runningButtonGameObject.SetActive(false);
 
+        while (Data.bossCurrentHealth > 0 || Data.playerHealth > 0)
+        {
+            battleBossButtonGameObject.SetActive(true);
+        }
 
+    }
 
+    private void StartBossMinigame()
+    {
+        Data.activeEventOrEnemy = "BOSS";
+        winOrLoseBossBattlePanel.SetActive(true);
+    }
 
+    private void LoseRoundAgainstBoss()
+    {
+        TakeDamage(3, "PLAYER");
+    }
 
+    private void WinRoundAgainstBoss()
+    {
+        TakeDamage(10, "BOSS");
+    }
 
+    public void LoseAgainstBossButton()
+    {
+        Data.playerLose = true;
+    }
 
+    public void WinAgainstBossButton()
+    {
+        Data.playerWin = true;
+    }
 
 
 

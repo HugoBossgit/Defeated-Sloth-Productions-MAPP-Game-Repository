@@ -6,6 +6,7 @@ public class Data : MonoBehaviour
 {
     public static float playerProgress;
     public static float playerHealth;
+    public static int bossCurrentHealth;
 
     public static string activeEventOrEnemy; //Skickas in som 'EVENT' eller 'ENEMY'
 
@@ -28,6 +29,7 @@ public class Data : MonoBehaviour
     {
         playerProgress = 0;
         playerHealth = GameLoopGameController_Script.maxPlayerHealth;
+        bossCurrentHealth = GameLoopGameController_Script.bossMaxHealth;
         walking = false;
         running = false;
         enemyOneMet = false;
