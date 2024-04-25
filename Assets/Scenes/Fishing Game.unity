@@ -306,8 +306,8 @@ RectTransform:
   - {fileID: 1629008010}
   - {fileID: 1145000609}
   - {fileID: 1815162989}
-  - {fileID: 276960228}
   - {fileID: 1775343190}
+  - {fileID: 276960228}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -695,8 +695,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -6.9999084, y: 698.00006}
-  m_SizeDelta: {x: 120, y: 1490}
+  m_AnchoredPosition: {x: -0.80200195, y: 745.5}
+  m_SizeDelta: {x: 117.605, y: 1493}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1093470616
 MonoBehaviour:
@@ -768,7 +768,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 214.99998, y: 689}
+  m_AnchoredPosition: {x: 214, y: 689}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1215607040
@@ -804,7 +804,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 434.99997, y: -712}
+  m_AnchoredPosition: {x: 430, y: -761}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1366258192
@@ -1303,7 +1303,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 214.99998, y: -717.2}
+  m_AnchoredPosition: {x: 214, y: -710.4}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1934793801
@@ -1340,14 +1340,14 @@ MonoBehaviour:
   bottomPivot: {fileID: 1815162989}
   fish: {fileID: 1629008010}
   timerMultiplicator: 2
-  failTimer: 30
+  failTimer: 100
   smoothMotion: 2
   progressBarContainer: {fileID: 1215607041}
   hook: {fileID: 593092527}
   hookSize: 0.1
   hookPower: 0.4
-  hookPullPower: 0.012
-  hookGravity: 0.003
+  hookPullPower: 0.018
+  hookGravity: 0.007
   hookProgressDegradationPower: 0.2
 --- !u!4 &1934793803
 Transform:

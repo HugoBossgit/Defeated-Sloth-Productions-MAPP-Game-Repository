@@ -7,6 +7,7 @@ public class ShowScore_fruitNinja : MonoBehaviour
 {
     private int score = 0;
     public TextMeshProUGUI scoreText;
+    public GameObject gameOverGroup;
 
     void Start()
     {
@@ -22,6 +23,11 @@ public class ShowScore_fruitNinja : MonoBehaviour
     void UpdateScoreText()
     {
         scoreText.text = "" + score;
+
+        if(score == 30)
+        {
+            gameOverGroup.SetActive(true);
+        }
     }
 
     public int GetScore()

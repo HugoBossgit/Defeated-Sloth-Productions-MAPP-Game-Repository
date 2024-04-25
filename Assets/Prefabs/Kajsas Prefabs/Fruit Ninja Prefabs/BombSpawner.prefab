@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabToSpawn: {fileID: 829857167863117601, guid: 2db7ced2121cc4bb8868449d8bbe225f, type: 3}
   spawnInterval: 4
-  objectMinX: -3
-  objectMaxX: 3
+  objectMinX: -2
+  objectMaxX: 2
   objectY: -5
   objectSprites:
   - {fileID: 21300000, guid: d0038c3c419394262b362d99c7eb6ffd, type: 3}
