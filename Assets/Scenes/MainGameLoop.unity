@@ -3519,8 +3519,9 @@ MonoBehaviour:
   itemSwordGameObject: {fileID: 643479310}
   itemShieldGameObject: {fileID: 313965267}
   bossGameObject: {fileID: 1097875509}
-  bossHealtSliderGameObject: {fileID: 0}
-  battleBossButtonGameObject: {fileID: 0}
+  bossHealtSliderGameObject: {fileID: 478611785}
+  battleBossButtonGameObject: {fileID: 1029862814}
+  winOrLoseBossBattlePanel: {fileID: 0}
 --- !u!4 &688605757
 Transform:
   m_ObjectHideFlags: 0
