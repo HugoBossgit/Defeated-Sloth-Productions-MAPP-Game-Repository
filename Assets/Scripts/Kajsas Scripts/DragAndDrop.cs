@@ -1,20 +1,24 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
+using TMPro;
 
 public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public RectTransform correctForm;
     public GameObject winPanel;
     public GameObject losePanel;
-
+    public TextMeshProUGUI timerText;
 
     private RectTransform rectTransform;
     private Canvas canvas;
     private CanvasGroup canvasGroup;
     private Vector2 offset;
     private bool locked;
+
+    [SerializeField] private float timeRemaining = 15f;
 
     void Awake()
     {
@@ -72,5 +76,28 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
         {
             rectTransform.anchoredPosition = eventData.position + offset;
         }
+    }
+
+    private void Update()
+    {
+        // Uppdatera och visa timer
+        if (!locked)
+        {
+            timeRemaining -= Time.deltaTime;
+            if (timeRemaining <= 0f)
+            {
+                timeRemaining = 0f;
+                // Visa förlustpanelen eller hantera förlusten på annat sätt
+                losePanel.SetActive(true);
+            }
+            UpdateTimerDisplay();
+        }
+    }
+
+    private void UpdateTimerDisplay()
+    {
+        // Uppdatera UI-texten för att visa den återstående tiden
+        int seconds = Mathf.CeilToInt(timeRemaining);
+        timerText.text = "Time: " + seconds.ToString();
     }
 }

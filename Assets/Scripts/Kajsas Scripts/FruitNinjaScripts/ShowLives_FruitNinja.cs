@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ShowLives_FruitNinja : MonoBehaviour
 {
+    public FruitSpawner fruitSpawner;
+    public FruitSpawner bombSpawner;
+
     [SerializeField] private int numberOfLives;
 
     [SerializeField] private GameObject lifePrefab;
@@ -32,6 +35,7 @@ public class ShowLives_FruitNinja : MonoBehaviour
         {
             scoreText.SetActive(false);
             losePanel.SetActive(true);
+            fruitSpawner.SetGameStatus(false);
         }
     }
 }

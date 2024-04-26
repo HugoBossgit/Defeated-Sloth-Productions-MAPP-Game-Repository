@@ -10,6 +10,8 @@ public class FruitSpawner : MonoBehaviour
 
     [SerializeField] Sprite[] objectSprites;
 
+    private bool gameIsRunning = true;
+
     void Start()
     {
         InvokeRepeating("spawnObject", spawnInterval, spawnInterval);
@@ -17,6 +19,8 @@ public class FruitSpawner : MonoBehaviour
 
     private void spawnObject()
     {
+        if (!gameIsRunning) return;
+
         //skapr instans av fruktprefab och väljer sedan X-position för given intervall
         GameObject newObject = Instantiate(prefabToSpawn);
         newObject.transform.position = new Vector2(Random.Range(objectMinX, objectMaxX), objectY);
@@ -25,5 +29,8 @@ public class FruitSpawner : MonoBehaviour
         newObject.GetComponent<SpriteRenderer>().sprite = objectSprite;
     }
 
-   
+    public void SetGameStatus(bool status)
+    {
+        gameIsRunning = status;
+    }
 }

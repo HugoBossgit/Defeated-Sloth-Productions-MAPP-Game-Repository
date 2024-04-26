@@ -6,8 +6,12 @@ using TMPro;
 public class ShowScore_fruitNinja : MonoBehaviour
 {
     private int score = 0;
+
     public TextMeshProUGUI scoreText;
     public GameObject winPanel;
+
+    public FruitSpawner fruitSpawner;
+    public FruitSpawner bombSpawner;
 
     void Start()
     {
@@ -27,6 +31,7 @@ public class ShowScore_fruitNinja : MonoBehaviour
         if(score == 30)
         {
             winPanel.SetActive(true);
+            fruitSpawner.SetGameStatus(false);
         }
     }
 

@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &122718918 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7021841633643996534, guid: ca218a6e8b497490784da5a69af0c494, type: 3}
+  m_PrefabInstance: {fileID: 918655194}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49486f0f017744b65aef3d317d774df1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &157387904
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,6 +242,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 303183222}
   winPanel: {fileID: 1060062182}
+  fruitSpawner: {fileID: 122718918}
+  bombSpawner: {fileID: 0}
 --- !u!114 &303183222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -732,7 +745,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Fishing Game
+          m_StringArgument: MainGameLoop
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1274998514
@@ -1013,6 +1026,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a3daaf936cf4824aeffe8f05e5a619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fruitSpawner: {fileID: 122718918}
+  bombSpawner: {fileID: 0}
   numberOfLives: 3
   lifePrefab: {fileID: 1353916975212788216, guid: 308123a001da642e99c25bb7a9c9e3db, type: 3}
   scoreText: {fileID: 303183220}
@@ -1552,7 +1567,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Fishing Game
+          m_StringArgument: MainGameLoop
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1987514133
