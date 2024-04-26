@@ -7,6 +7,7 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
 {
     public RectTransform correctForm;
     public GameObject winPanel;
+    public GameObject losePanel;
 
 
     private RectTransform rectTransform;

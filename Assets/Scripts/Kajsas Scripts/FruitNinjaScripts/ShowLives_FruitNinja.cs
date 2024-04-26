@@ -10,7 +10,7 @@ public class ShowLives_FruitNinja : MonoBehaviour
 
     private List<GameObject> lives;
 
-    [SerializeField] private GameObject scoreText, gameOverGroup;
+    [SerializeField] private GameObject scoreText, losePanel;
 
     void Start()
     {
@@ -31,7 +31,7 @@ public class ShowLives_FruitNinja : MonoBehaviour
         if (numberOfLives == 0)
         {
             scoreText.SetActive(false);
-            gameOverGroup.SetActive(true);
+            losePanel.SetActive(true);
         }
     }
 }

@@ -6,6 +6,7 @@ public class FishingMiniGame : MonoBehaviour
 {
 
     public GameObject GameOverMenu;
+    public GameObject WinMenu;
 
     //Referens till punkterna som fisken kommer röra sig mellan
     [SerializeField] Transform topPivot;
@@ -129,7 +130,7 @@ public class FishingMiniGame : MonoBehaviour
     private void Win()
     {
         pause = true;
-        GameOverMenu.SetActive(true);
+        WinMenu.SetActive(true);
     }
 
     private void Lose()
