@@ -9,8 +9,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using UnityEngine.LowLevel;
 using System.Xml;
+using System.Security.Cryptography;
 
-public class GameLoopGameController_Script : MonoBehaviour
+public class GameLoopGameController_Script : MonoBehaviour 
+    //OM MAN SKA LÄGGA TILL FLER ENOUNTERS I GAME LOOP FÖLJ ALLA RELEVANTA KOMMENTARER!
+    //GLÖM INTE ATT LÄGGA TILL NYA VARIABLER I DATA OCKSÅ!
 {
     [SerializeField] private GameObject gameProgressSliderGameObject;
     [SerializeField] private GameObject pausedGamePanel;
@@ -36,7 +39,7 @@ public class GameLoopGameController_Script : MonoBehaviour
 
     private UnityEngine.UI.Button walkingButton, runningButton, pauseButton;
 
-    private bool gameIsPaused, gameIsWon, gameIsLost;
+    private bool gameIsPaused, gameIsWon, gameIsLost, bossMinigamePlaying;
 
     public const int bossMaxHealth = 50;
 
@@ -66,6 +69,11 @@ public class GameLoopGameController_Script : MonoBehaviour
         gameIsWon = false;
         gameIsLost = false;
 
+        if (bossHealtSliderGameObject != null)
+        {
+            bossHealthSlider = bossHealtSliderGameObject.GetComponent<UnityEngine.UI.Slider>();
+            bossHealthSlider.maxValue = bossMaxHealth;
+        }
 
         if(gameProgressSliderGameObject != null)
         {
@@ -131,11 +139,44 @@ public class GameLoopGameController_Script : MonoBehaviour
     }
 
     private void Update()
-    {
+    {         
         UpdateButtonColors();
         playerProgressSlider.value = Data.playerProgress;
         playerHealthSlider.value = Data.playerHealth;
-        bossHealthSlider.value = Data.bossCurrentHealth;
+
+        if(Data.bossBattleIsActive)
+        {
+            bossHealthSlider.value = Data.bossHealth;
+            Data.activeEventOrEnemy = "BOSS";
+
+            if (Data.bossHealth <= 0)
+            {
+                WinGame();
+            }
+        }
+
+        if (Data.currentActiveMinigame != 0) //Måste Expanderas! om man lämnar medans minigame är aktivt ska minigame börja om
+        {
+            if (Data.currentActiveMinigame == 1) //enemy one
+            {
+                enemyOneGameObject.SetActive(true);
+            }
+
+            if (Data.currentActiveMinigame == 2) //enemy two
+            {
+                enemyTwoGameObject.SetActive(true);
+            }
+
+            if (Data.currentActiveMinigame == 3) //event one
+            {
+                eventOneGameObject.SetActive(true);
+            }
+
+            if (Data.currentActiveMinigame == 3) //event two
+            {
+                eventTwoGameObject.SetActive(true);
+            }
+        }
 
         if (Data.hasItemSheild)
         {
@@ -155,32 +196,42 @@ public class GameLoopGameController_Script : MonoBehaviour
             itemSwordGameObject.SetActive(false);
         }
 
-        if (Data.playerProgress == maxGameProgress && !gameIsWon) //win on max progress
+        if (Data.playerProgress == maxGameProgress && !gameIsWon) //win on max progress / after boss
         {
             gameIsWon = true;
             WinGame();
-            Debug.Log("win");
+            Debug.Log("Win");
         }
 
         if (Data.playerHealth <= 0 && !gameIsLost) //lose when health is 0
         {
             gameIsLost = true;
             LoseGame();
-            Debug.Log("Launching game in game loop scene results in health = 0 which is game lose");
+            Debug.Log("Lose");
         }
 
         if (Data.playerLose) //player loses encounter
         {
+            int randomIndex = UnityEngine.Random.Range(0, 2); //justera chans att förlora item
+
             if (Data.activeEventOrEnemy == "ENEMY")
             {
                 Data.playerLose = false;
                 Data.activeEventOrEnemy = "";
+                if (randomIndex == 0)
+                {
+                    Data.hasItemSword = false;
+                }
                 PlayerLoseInEnemy();
             }
             else if(Data.activeEventOrEnemy == "EVENT")
             {
                 Data.playerLose = false;
                 Data.activeEventOrEnemy = "";
+                if (randomIndex == 0)
+                {
+                    Data.hasItemSword = false;
+                }
                 PlayerLoseInEvent();
             }
             else if (Data.activeEventOrEnemy == "BOSS")
@@ -194,16 +245,26 @@ public class GameLoopGameController_Script : MonoBehaviour
 
         if (Data.playerWin) //player wins encounter
         {
+            int randomIndex = UnityEngine.Random.Range(0, 2); //justera chans att få item
+
             if (Data.activeEventOrEnemy == "ENEMY")
             {
                 Data.playerWin = false;
                 Data.activeEventOrEnemy = "";
+                if (randomIndex == 1)
+                {
+                    Data.hasItemSword = true;
+                }
                 PlayerWinInEnemy();
             }
             else if (Data.activeEventOrEnemy == "EVENT")
             {
                 Data.playerWin = false;
                 Data.activeEventOrEnemy = "";
+                if (randomIndex == 1)
+                {
+                    Data.hasItemSheild = true;
+                }
                 PlayerWinInEvent();
             }
             else if (Data.activeEventOrEnemy == "BOSS")
@@ -214,7 +275,7 @@ public class GameLoopGameController_Script : MonoBehaviour
             }
         }
 
-        //check progress
+        //check progress //Måste Expanderas! add more ecounters and make running player skip them while walking hits all
 
         if (Data.playerProgress > 5 && !Data.encounterOneMet)
         {
@@ -240,8 +301,9 @@ public class GameLoopGameController_Script : MonoBehaviour
             GetRandomEventOrEnemy();
         }
 
-        if (Data.playerProgress > 40)
+        if (Data.playerProgress > 40 && !Data.bossBattleIsActive && !gameIsLost && !gameIsWon)
         {
+            Data.bossBattleIsActive = true;
             BossBattle();
         }
     }
@@ -272,6 +334,7 @@ public class GameLoopGameController_Script : MonoBehaviour
     {
         gameIsPaused = true;
         pausedGamePanel.SetActive(true);
+        bossGameObject.SetActive(false);
         InactivateButtons();
     }
 
@@ -280,6 +343,10 @@ public class GameLoopGameController_Script : MonoBehaviour
         ActivateButtons();
         pausedGamePanel.SetActive(false);
         gameIsPaused = false;
+        if(Data.bossBattleIsActive)
+        {
+            bossGameObject.SetActive(true);
+        }
     }
 
     public void ReturnToMainMenu()
@@ -350,16 +417,19 @@ public class GameLoopGameController_Script : MonoBehaviour
     private void LoseGame()
     {
         gameLosePanelGameObject.SetActive(true);
+        bossGameObject.SetActive(false);
         gameIsPaused = true;
     }
 
     private void WinGame()
     {
+        Data.playerProgress = maxGameProgress;
         gameWinPanelGameObject.SetActive(true);
+        bossGameObject.SetActive(false);
         gameIsPaused = true;
     }
 
-    private void GetRandomEventOrEnemy()
+    private void GetRandomEventOrEnemy() //Måste Expanderas!
     {
         gameIsPaused = true;
 
@@ -392,6 +462,7 @@ public class GameLoopGameController_Script : MonoBehaviour
             
             if (randomEncounter.Equals(enemyOneGameObject))
             {
+                Data.currentActiveMinigame = 1; //expandera med nya encounters! Data.currentActiveMinigame = n;
                 Data.enemyOneMet = true;
                 Data.activeEventOrEnemy = "ENEMY";
                 enemyOneGameObject.SetActive(true);
@@ -399,6 +470,7 @@ public class GameLoopGameController_Script : MonoBehaviour
 
             if (randomEncounter.Equals(enemyTwoGameObject))
             {
+                Data.currentActiveMinigame = 2;
                 Data.enemyTwoMet = true;
                 Data.activeEventOrEnemy = "ENEMY";
                 enemyTwoGameObject.SetActive(true);
@@ -406,6 +478,7 @@ public class GameLoopGameController_Script : MonoBehaviour
 
             if (randomEncounter.Equals(eventOneGameObject))
             {
+                Data.currentActiveMinigame = 3;
                 Data.eventOneMet = true;
                 Data.activeEventOrEnemy = "EVENT";
                 eventOneGameObject.SetActive(true);
@@ -413,6 +486,7 @@ public class GameLoopGameController_Script : MonoBehaviour
 
             if (randomEncounter.Equals(eventTwoGameObject))
             {
+                Data.currentActiveMinigame = 4;
                 Data.eventTwoMet = true;
                 Data.activeEventOrEnemy = "EVENT";
                 eventTwoGameObject.SetActive(true);
@@ -452,7 +526,7 @@ public class GameLoopGameController_Script : MonoBehaviour
 
         if (bossOrPlayer == "BOSS")
         {
-            Data.bossCurrentHealth -= damage;
+            Data.bossHealth -= damage;
         }
     }
 
@@ -471,6 +545,30 @@ public class GameLoopGameController_Script : MonoBehaviour
         Data.playerLose = true;
         DeactivateAllEncounterPanels();
         gameIsPaused = false;
+
+        if (Data.currentActiveMinigame == 1) //expandera med nya encounters! måste även addera booleans i data för nya expandering av encounters
+        {
+            Data.encounterOneComplete = true; //notera enounter one = current active minigame = 1
+            Data.currentActiveMinigame = 0;
+        }
+
+        if (Data.currentActiveMinigame == 2)
+        {
+            Data.encounterTwoComplete = true;
+            Data.currentActiveMinigame = 0;
+        }
+
+        if (Data.currentActiveMinigame == 3)
+        {
+            Data.encounterThreeComplete = true;
+            Data.currentActiveMinigame = 0;
+        }
+
+        if (Data.currentActiveMinigame == 4)
+        {
+            Data.encounterFourComplete = true;
+            Data.currentActiveMinigame = 0;
+        }
     }
 
     public void WinViaTemporaryButton()
@@ -478,6 +576,30 @@ public class GameLoopGameController_Script : MonoBehaviour
         Data.playerWin = true;
         DeactivateAllEncounterPanels();
         gameIsPaused = false;
+
+        if (Data.currentActiveMinigame == 1) //expandera med nya encounters! måste även addera booleans i data för nya expandering av encounters
+        {
+            Data.encounterOneComplete = true; //notera enounter one = current active minigame = 1
+            Data.currentActiveMinigame = 0;
+        }
+
+        if (Data.currentActiveMinigame == 2)
+        {
+            Data.encounterTwoComplete = true;
+            Data.currentActiveMinigame = 0;
+        }
+
+        if (Data.currentActiveMinigame == 3)
+        {
+            Data.encounterThreeComplete = true;
+            Data.currentActiveMinigame = 0;
+        }
+
+        if (Data.currentActiveMinigame == 4)
+        {
+            Data.encounterFourComplete = true;
+            Data.currentActiveMinigame = 0;
+        }
     }
 
     private void DeactivateAllEncounterPanels()
@@ -495,27 +617,44 @@ public class GameLoopGameController_Script : MonoBehaviour
         walkingButtonGameObject.SetActive(false);
         runningButtonGameObject.SetActive(false);
 
-        while (Data.bossCurrentHealth > 0 || Data.playerHealth > 0)
+        if (!bossMinigamePlaying)
         {
-            battleBossButtonGameObject.SetActive(true);
+            StartBossMinigame();
         }
-
+        
+        if ((Data.bossHealth > 0 || Data.playerHealth > 0) && !bossMinigamePlaying) //when returning from minigame check this
+        {
+            BossBattle();
+        }
     }
 
-    private void StartBossMinigame()
+    private void StartBossMinigame() //random 3 minispel
     {
-        Data.activeEventOrEnemy = "BOSS";
+        bossMinigamePlaying = true;
         winOrLoseBossBattlePanel.SetActive(true);
     }
 
-    private void LoseRoundAgainstBoss()
+    private void LoseRoundAgainstBoss() //justera skada och eller hälsa
     {
-        TakeDamage(3, "PLAYER");
+        if (Data.hasItemSheild)
+        {
+            TakeDamage(1, "PLAYER");
+        }
+        else
+        {
+            TakeDamage(3, "PLAYER");
+        }
     }
 
-    private void WinRoundAgainstBoss()
+    private void WinRoundAgainstBoss() //justera skada och eller hälsa
     {
-        TakeDamage(10, "BOSS");
+        if (Data.hasItemSword)
+        {
+            TakeDamage(15, "BOSS");
+        }else
+        {
+            TakeDamage(10, "BOSS");
+        }
     }
 
     public void LoseAgainstBossButton()

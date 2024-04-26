@@ -6,9 +6,9 @@ public class Data : MonoBehaviour
 {
     public static float playerProgress;
     public static float playerHealth;
-    public static int bossCurrentHealth;
+    public static float bossHealth;
 
-    public static string activeEventOrEnemy; //Skickas in som 'EVENT' eller 'ENEMY'
+    public static string activeEventOrEnemy; //Skickas in som 'EVENT' eller 'ENEMY' eller 'BOSS'
 
     public static bool walking, running;
     public static bool hasItemSword, hasItemSheild;
@@ -17,6 +17,9 @@ public class Data : MonoBehaviour
     public static bool playerWin, playerLose;
     public static bool encounterOneMet, encounterTwoMet;
     public static bool encounterThreeMet, encounterFourMet;
+    public static bool encounterOneComplete, encounterTwoComplete;
+    public static bool encounterThreeComplete, encounterFourComplete;
+    public static bool bossBattleIsActive;
 
     public static int currentActiveMinigame;
 
@@ -29,7 +32,7 @@ public class Data : MonoBehaviour
     {
         playerProgress = 0;
         playerHealth = GameLoopGameController_Script.maxPlayerHealth;
-        bossCurrentHealth = GameLoopGameController_Script.bossMaxHealth;
+        bossHealth = GameLoopGameController_Script.bossMaxHealth;
         walking = false;
         running = false;
         enemyOneMet = false;
@@ -42,6 +45,7 @@ public class Data : MonoBehaviour
         encounterFourMet = false;
         hasItemSheild = false;
         hasItemSword = false;
+        bossBattleIsActive = false;
         activeEventOrEnemy = "";
     }
 
