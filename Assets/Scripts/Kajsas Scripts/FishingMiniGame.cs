@@ -129,12 +129,14 @@ public class FishingMiniGame : MonoBehaviour
 
     private void Win()
     {
+        Data.playerWin = true;
         pause = true;
         WinMenu.SetActive(true);
     }
 
     private void Lose()
     {
+        Data.playerLose = true;
         pause = true;
         GameOverMenu.SetActive(true);
     }

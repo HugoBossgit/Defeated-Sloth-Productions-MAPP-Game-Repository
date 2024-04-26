@@ -63,6 +63,7 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
                 //Om alla element är låsta har man vunnit
                 if (GameObject.FindObjectsOfType<MoveUIObject_DD>().All(obj => obj.locked))
                 {
+                    Data.playerWin = true;
                     winPanel.SetActive(true);
                 }
             }
@@ -87,7 +88,7 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
             if (timeRemaining <= 0f)
             {
                 timeRemaining = 0f;
-                // Visa förlustpanelen eller hantera förlusten på annat sätt
+                Data.playerLose = true;
                 losePanel.SetActive(true);
             }
             UpdateTimerDisplay();

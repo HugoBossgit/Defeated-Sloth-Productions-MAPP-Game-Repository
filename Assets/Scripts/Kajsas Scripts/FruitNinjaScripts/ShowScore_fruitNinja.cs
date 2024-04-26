@@ -30,6 +30,7 @@ public class ShowScore_fruitNinja : MonoBehaviour
 
         if(score == 30)
         {
+            Data.playerWin = true;
             winPanel.SetActive(true);
             fruitSpawner.SetGameStatus(false);
         }

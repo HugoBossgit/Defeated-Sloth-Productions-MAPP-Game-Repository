@@ -33,6 +33,7 @@ public class ShowLives_FruitNinja : MonoBehaviour
         Destroy(life);
         if (numberOfLives == 0)
         {
+            Data.playerLose = true;
             scoreText.SetActive(false);
             losePanel.SetActive(true);
             fruitSpawner.SetGameStatus(false);
