@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PuzzleManager : MonoBehaviour
 {
+
     [SerializeField] private Transform board;
     [SerializeField] private Transform puzzleBit;
 
@@ -146,8 +147,19 @@ public class PuzzleManager : MonoBehaviour
                 count++;
             }
         }
+
+    }
+    private void Win()
+    {
+        Data.playerWin = true;
+        
     }
 
+    private void Lose()
+    {
+        Data.playerLose = true;
+        
+    }
 
 
 
