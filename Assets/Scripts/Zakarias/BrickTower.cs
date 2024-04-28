@@ -131,6 +131,8 @@ public class BrickTower : MonoBehaviour
     {
         gameOverPanel.SetActive(true);
         outOfTimeText.SetActive(true);
+        Data.playerLose = true;
+        Debug.Log("Player lost brick game");
     }
 
     void CountDown()
@@ -142,5 +144,7 @@ public class BrickTower : MonoBehaviour
     {
         gameOverPanel.SetActive(true);
         gameCompleteText.SetActive(true);
+        Data.playerWin = true;
+        Debug.Log("Player won brick game");
     }
 }

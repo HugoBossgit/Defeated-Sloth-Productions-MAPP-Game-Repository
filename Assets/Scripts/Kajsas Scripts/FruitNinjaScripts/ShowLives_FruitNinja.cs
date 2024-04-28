@@ -4,34 +4,39 @@ using UnityEngine;
 
 public class ShowLives_FruitNinja : MonoBehaviour
 {
+    public FruitSpawner fruitSpawner;
+    public FruitSpawner bombSpawner;
+
     [SerializeField] private int numberOfLives;
 
     [SerializeField] private GameObject lifePrefab;
 
     private List<GameObject> lives;
 
-    [SerializeField] private GameObject scoreText, gameOverGroup;
+    [SerializeField] private GameObject scoreText, losePanel;
 
     void Start()
     {
         lives = new List<GameObject>();
-        for (int lifeIndex = 0; lifeIndex < this.numberOfLives; lifeIndex++)
+        for (int lifeIndex = 0; lifeIndex < numberOfLives; lifeIndex++)
         {
-            GameObject life = Instantiate(lifePrefab, this.gameObject.transform);
+            GameObject life = Instantiate(lifePrefab, gameObject.transform);
             lives.Add(life);
         }
     }
 
     public void LooseLife()
     {
-        this.numberOfLives -= 1;
-        GameObject life = this.lives[this.lives.Count - 1];
-        this.lives.RemoveAt(this.lives.Count - 1);
+        numberOfLives -= 1;
+        GameObject life = lives[lives.Count - 1];
+        lives.RemoveAt(lives.Count - 1);
         Destroy(life);
-        if (this.numberOfLives == 0)
+        if (numberOfLives == 0)
         {
-            this.scoreText.SetActive(false);
-            this.gameOverGroup.SetActive(true);
+            Data.playerLose = true;
+            scoreText.SetActive(false);
+            losePanel.SetActive(true);
+            fruitSpawner.SetGameStatus(false);
         }
     }
 }

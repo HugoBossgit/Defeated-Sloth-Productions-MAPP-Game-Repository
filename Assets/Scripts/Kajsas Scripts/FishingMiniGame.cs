@@ -6,7 +6,9 @@ public class FishingMiniGame : MonoBehaviour
 {
 
     public GameObject GameOverMenu;
+    public GameObject WinMenu;
 
+    //Referens till punkterna som fisken kommer röra sig mellan
     [SerializeField] Transform topPivot;
     [SerializeField] Transform bottomPivot;
 
@@ -54,6 +56,7 @@ public class FishingMiniGame : MonoBehaviour
 
     private void ProgressCheck()
     {
+        //uppdaterar progressBar baserat på fiskens och krokens position
         Vector3 ls = progressBarContainer.localScale;
         ls.y = hookProgress;
         progressBarContainer.localScale = ls;
@@ -82,6 +85,7 @@ public class FishingMiniGame : MonoBehaviour
             Win();
         }
 
+        //säkerhetsställer att progressen är inom giltiga ramar
         hookProgress = Mathf.Clamp(hookProgress, 0f, 1f);
     }
 
@@ -125,12 +129,14 @@ public class FishingMiniGame : MonoBehaviour
 
     private void Win()
     {
+        Data.playerWin = true;
         pause = true;
-        GameOverMenu.SetActive(true);
+        WinMenu.SetActive(true);
     }
 
     private void Lose()
     {
+        Data.playerLose = true;
         pause = true;
         GameOverMenu.SetActive(true);
     }

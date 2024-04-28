@@ -6,29 +6,36 @@ using TMPro;
 public class ShowScore_fruitNinja : MonoBehaviour
 {
     private int score = 0;
+
     public TextMeshProUGUI scoreText;
+    public GameObject winPanel;
+
+    public FruitSpawner fruitSpawner;
+    public FruitSpawner bombSpawner;
 
     void Start()
     {
-        // Uppdatera texten när spelet startar
         UpdateScoreText();
     }
 
-    // Metod för att öka poängen
     public void IncrementScore(int incrementValue)
     {
         score += incrementValue;
         UpdateScoreText();
     }
 
-    // Metod för att uppdatera texten
     void UpdateScoreText()
     {
-        // Uppdatera texten med den aktuella poängen
         scoreText.text = "" + score;
+
+        if(score == 30)
+        {
+            Data.playerWin = true;
+            winPanel.SetActive(true);
+            fruitSpawner.SetGameStatus(false);
+        }
     }
 
-    // Metod för att hämta poängen
     public int GetScore()
     {
         return score;

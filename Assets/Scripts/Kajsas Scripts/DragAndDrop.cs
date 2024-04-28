@@ -1,19 +1,24 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
+using TMPro;
 
 public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     public RectTransform correctForm;
     public GameObject winPanel;
-
+    public GameObject losePanel;
+    public TextMeshProUGUI timerText;
 
     private RectTransform rectTransform;
     private Canvas canvas;
     private CanvasGroup canvasGroup;
     private Vector2 offset;
     private bool locked;
+
+    [SerializeField] private float timeRemaining = 15f;
 
     void Awake()
     {
@@ -22,11 +27,13 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
+    //OnPointerDown för att interagera med UI element
     public void OnPointerDown(PointerEventData eventData)
     {
         offset = rectTransform.anchoredPosition - eventData.position;
     }
 
+    //Triggas när spelaren rör ett UI element
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!locked)
@@ -53,8 +60,10 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
                     eventTrigger.enabled = false; // Inaktivera EventTrigger
                 }
 
+                //Om alla element är låsta har man vunnit
                 if (GameObject.FindObjectsOfType<MoveUIObject_DD>().All(obj => obj.locked))
                 {
+                    Data.playerWin = true;
                     winPanel.SetActive(true);
                 }
             }
@@ -68,5 +77,28 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
         {
             rectTransform.anchoredPosition = eventData.position + offset;
         }
+    }
+
+    private void Update()
+    {
+        // Uppdatera och visa timer
+        if (!locked)
+        {
+            timeRemaining -= Time.deltaTime;
+            if (timeRemaining <= 0f)
+            {
+                timeRemaining = 0f;
+                Data.playerLose = true;
+                losePanel.SetActive(true);
+            }
+            UpdateTimerDisplay();
+        }
+    }
+
+    private void UpdateTimerDisplay()
+    {
+        // Uppdatera UI-texten för att visa den återstående tiden
+        int seconds = Mathf.CeilToInt(timeRemaining);
+        timerText.text = "Time: " + seconds.ToString();
     }
 }

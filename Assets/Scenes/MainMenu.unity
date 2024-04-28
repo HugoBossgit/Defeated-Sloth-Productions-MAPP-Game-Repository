@@ -3077,7 +3077,10 @@ MonoBehaviour:
   newGameButton: {fileID: 1557617046}
   resumeGameButton: {fileID: 937730059}
   returnToPlayButton: {fileID: 939449156}
-  playCreditsSettingsButtons: []
+  playCreditsSettingsButtons:
+  - {fileID: 971600565}
+  - {fileID: 963025097}
+  - {fileID: 1526736367}
 --- !u!1 &1728994772
 GameObject:
   m_ObjectHideFlags: 0
