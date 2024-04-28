@@ -34,18 +34,17 @@ public class Tile : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount > 0) // Kontrollera om det finns någon pekning på skärmen
+        foreach (Touch touch in Input.touches) // Iterera genom alla touch-interaktioner
         {
-            Touch touch = Input.GetTouch(0); // Hämta information om den första pekningen
-
-            if (touch.phase == TouchPhase.Began) // Kontrollera om pekningen började
+            if (touch.phase == TouchPhase.Began) // Kontrollera om en touch-interaktion började
             {
-                Vector2 touchPosition = Camera.main.ScreenToWorldPoint(touch.position); // Omvandla pekpositionen från skärmpunkter till världskoordinater
-                RaycastHit2D hit = Physics2D.Raycast(touchPosition, Vector2.zero); // Gör en raycast för att avgöra om pekningen träffade en bricka
+                Vector2 touchPosition = Camera.main.ScreenToWorldPoint(touch.position); // Konvertera pekpositionen till världskoordinater
+                RaycastHit2D hit = Physics2D.Raycast(touchPosition, Vector2.zero); // Gör en raycast för att avgöra träff
 
-                if (hit.collider != null && hit.collider.gameObject == gameObject) // Kontrollera om pekningen träffade denna bricka
+                if (hit.collider != null && hit.collider.gameObject == gameObject) // Kontrollera träff
                 {
-                    OnTilePressed(); // Anropa metod för att hantera när en bricka trycks ned
+                    OnTilePressed(); // Hantera när en bricka trycks ned
+                    break; // Avbryt loopen eftersom vi har hanterat en touch-interaktion
                 }
             }
         }
