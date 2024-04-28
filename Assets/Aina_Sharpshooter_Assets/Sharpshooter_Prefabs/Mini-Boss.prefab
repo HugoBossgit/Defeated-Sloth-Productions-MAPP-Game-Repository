@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: -7847724648735552102}
   - component: {fileID: 5372277906085150241}
   - component: {fileID: 1389255524035241081}
-  - component: {fileID: 3534233286711861241}
+  - component: {fileID: -4736125673993711300}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Mini-Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -163,18 +163,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.10200071, y: -0.14280468}
+  m_Offset: {x: 0.29329944, y: -0.0018466711}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.2, y: 3.2}
+    oldSize: {x: 4.8, y: 5.8}
     newSize: {x: 3.2, y: 3.2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.400989, y: 2.8633738}
+  m_Size: {x: 4.193209, y: 5.763216}
   m_EdgeRadius: 0
 --- !u!212 &1389255524035241081
 SpriteRenderer:
@@ -217,7 +217,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 31be59dafe97adc41b7bfa8a53087c75, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c016f28f0d47a8c4394743e75d966f90, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -228,7 +228,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3534233286711861241
+--- !u!114 &-4736125673993711300
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -237,17 +237,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7591741686106349750}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70bcf3f96d5aef14386d4802e31ead5f, type: 3}
+  m_Script: {fileID: 11500000, guid: a5c8867b8a39ec64fbd81b5a76e5e6f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target1: {fileID: 0}
   target2: {fileID: 0}
   target3: {fileID: 0}
   currentTarget: {fileID: 0}
-  speed: 2
+  speed: 1.5
   damage: 1
-  lives: 1
-  worth: 10
+  lives: 2
+  worth: 20
   deathTime: 0.3
   controller: {fileID: 0}
   death:

@@ -4,14 +4,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static Unity.VisualScripting.Member;
 
-public class EnemyBehaviour : MonoBehaviour
+public class Enemy3Behaviour : MonoBehaviour
 {
     //Variabler & objekt
     [SerializeField] private Transform target1, target2, target3, currentTarget;
-                     private float speed = 2.0f;
+                     private float speed = 1f;
                      private int damage = 1;
-                     private int lives = 1;
-                     private int worth = 10;
+                     private int lives = 15;
+                     private int worth = 100;
     [SerializeField] private float deathTime = 0.3f;
     [SerializeField] private GameController controller;
     [SerializeField] private AudioClip[] death, attack;
@@ -60,13 +60,17 @@ public class EnemyBehaviour : MonoBehaviour
 
             if (Input.GetButtonUp("Fire1") && !controller.gameOver)
             {
-                currentTarget = target1;
-                controller.addDeleted();
-                makeNoise("Dead");
-                controller.infoBalloon.SetActive(false);
-                controller.combo(true);
-                controller.addPoints(worth);
-                Destroy(gameObject, 0.1f);
+                lives--; 
+                if(lives <= 0)
+                {
+                    currentTarget = target1;
+                    controller.addDeleted();
+                    makeNoise("Dead");
+                    controller.infoBalloon.SetActive(false);
+                    controller.combo(true);
+                    controller.addPoints(worth);
+                    Destroy(gameObject, 0.1f);
+                }
             }
         }
 
