@@ -23,12 +23,12 @@ public class Data : MonoBehaviour
 
     public static int currentActiveMinigame;
 
-    public static void Load() //man ska kunna komma tillbaka till gameloop scenen och ett minigame eller event om man lämnade mitt i det
+    public static void Load() //man ska kunna komma tillbaka till gameloop scenen och ett minigame eller event om man lï¿½mnade mitt i det
     {
 
     }
 
-    public static void Reset() //återställer all sparad data
+    public static void Reset() //ï¿½terstï¿½ller all sparad data
     {
         playerProgress = 0;
         playerHealth = GameLoopGameController_Script.maxPlayerHealth;
@@ -49,7 +49,7 @@ public class Data : MonoBehaviour
         activeEventOrEnemy = "";
     }
 
-    public static void SaveToFile() //för att skriva till .json
+    public static void SaveToFile() //fï¿½r att skriva till .json
     {
 
     }
