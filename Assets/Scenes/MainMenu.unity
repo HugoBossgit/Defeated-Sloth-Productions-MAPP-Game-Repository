@@ -1997,7 +1997,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1677388531}
         m_TargetAssemblyTypeName: MainMenu_Script, Assembly-CSharp
-        m_MethodName: closeSettingsPanel
+        m_MethodName: CloseSettingsPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2130,7 +2130,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1677388531}
         m_TargetAssemblyTypeName: MainMenu_Script, Assembly-CSharp
-        m_MethodName: closeCreditsPanel
+        m_MethodName: CloseCreditsPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
