@@ -12,6 +12,7 @@ public class EnemyBehaviour : MonoBehaviour
                      private int damage = 1;
                      private int lives = 1;
                      private int worth = 10;
+                     private bool dying;
     [SerializeField] private float deathTime = 0.3f;
     [SerializeField] private GameController controller;
     [SerializeField] private AudioClip[] death, attack;
@@ -58,8 +59,9 @@ public class EnemyBehaviour : MonoBehaviour
         if (controller.getReady())
         {
 
-            if (Input.GetButtonUp("Fire1") && !controller.gameOver)
+            if (Input.GetButtonUp("Fire1") && !controller.gameOver && !dying)
             {
+                dying = true;
                 currentTarget = target1;
                 controller.addDeleted();
                 makeNoise("Dead");

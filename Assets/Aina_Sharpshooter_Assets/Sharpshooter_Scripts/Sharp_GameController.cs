@@ -38,7 +38,7 @@ public class GameController : MonoBehaviour
         winBalloon.SetActive(false);
         readyUpUI.SetActive(true);
         infoBalloon.SetActive(false);
-        //difficulty = "Boss";
+        difficulty = "Boss";
 
         if(difficulty.Equals("Medium"))
         {

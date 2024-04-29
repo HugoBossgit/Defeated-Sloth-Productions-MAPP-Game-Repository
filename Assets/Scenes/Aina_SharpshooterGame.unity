@@ -2234,7 +2234,7 @@ MonoBehaviour:
   points: 0
   multiplier: 1
   lives: 3
-  difficulty: Medium
+  difficulty: Boss
   pointsText: {fileID: 1973169522}
   comboText: {fileID: 1657867952}
   lossBalloon: {fileID: 1722792965}

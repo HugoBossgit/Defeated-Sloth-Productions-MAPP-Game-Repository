@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using Unity.VisualScripting;
 using UnityEngine;
 using static Unity.VisualScripting.Member;
@@ -12,6 +13,7 @@ public class BossBehaviour : MonoBehaviour
                      private int damage = 1;
                      private int lives = 35;
                      private int worth = 1000;
+                     private bool dying;
     [SerializeField] private float deathTime = 0.3f;
     [SerializeField] private GameController controller;
     [SerializeField] private AudioClip[] death, attack;
@@ -77,9 +79,11 @@ public class BossBehaviour : MonoBehaviour
 
             if (Input.GetButtonUp("Fire1") && !controller.gameOver)
             {
-                lives--; 
-                if(lives <= 0)
+
+                    lives--; 
+                if(lives <= 0 && !controller.gameOver && !dying)
                 {
+                    dying = true;
                     currentTarget = target1;
                     controller.addDeleted();
                     makeNoise("Dead");
