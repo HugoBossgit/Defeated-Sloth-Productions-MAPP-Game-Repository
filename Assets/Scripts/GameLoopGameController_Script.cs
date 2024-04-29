@@ -23,16 +23,12 @@ public class GameLoopGameController_Script : MonoBehaviour
     [SerializeField] private GameObject pauseButtonGameObject;
     [SerializeField] private GameObject gameWinPanelGameObject;
     [SerializeField] private GameObject gameLosePanelGameObject;
-    [SerializeField] private GameObject enemyOneGameObject;
-    [SerializeField] private GameObject enemyTwoGameObject;
-    [SerializeField] private GameObject eventOneGameObject;
-    [SerializeField] private GameObject eventTwoGameObject;
     [SerializeField] private GameObject itemSwordGameObject;
     [SerializeField] private GameObject itemShieldGameObject;
     [SerializeField] private GameObject bossGameObject;
     [SerializeField] private GameObject bossHealtSliderGameObject;
     [SerializeField] private GameObject battleBossButtonGameObject;
-    [SerializeField] private GameObject winOrLoseBossBattlePanel;
+    [SerializeField] private int enemyOne, enemyTwo, eventOne, eventTwo, bossOne, bossTwo;
 
 
     private UnityEngine.UI.Slider playerProgressSlider, playerHealthSlider, bossHealthSlider;
@@ -54,6 +50,8 @@ public class GameLoopGameController_Script : MonoBehaviour
             playerHealthSlider.value = Data.playerHealth;
             playerProgressSlider.value = Data.playerProgress;
         }
+
+        Data.currentActiveMinigame = 0;
     }
 
     private void Start()
@@ -63,11 +61,14 @@ public class GameLoopGameController_Script : MonoBehaviour
         gameLosePanelGameObject.SetActive(false);
         bossGameObject.SetActive(false);
         battleBossButtonGameObject.SetActive(false);
-        winOrLoseBossBattlePanel.SetActive(false);
-
         gameIsPaused = false;
         gameIsWon = false;
         gameIsLost = false;
+
+        Data.encounterOneComplete = false;
+        Data.encounterTwoComplete = false;
+        Data.encounterThreeComplete = false;
+        Data.encounterFourComplete = false;
 
         if (bossHealtSliderGameObject != null)
         {
@@ -146,6 +147,11 @@ public class GameLoopGameController_Script : MonoBehaviour
 
         if(Data.bossBattleIsActive)
         {
+            gameIsPaused = true;
+            bossGameObject.SetActive(true);
+            battleBossButtonGameObject.SetActive(true);
+            runningButtonGameObject.SetActive(false);
+            walkingButtonGameObject.SetActive(false);
             bossHealthSlider.value = Data.bossHealth;
             Data.activeEventOrEnemy = "BOSS";
 
@@ -157,24 +163,24 @@ public class GameLoopGameController_Script : MonoBehaviour
 
         if (Data.currentActiveMinigame != 0) //Måste Expanderas! om man lämnar medans minigame är aktivt ska minigame börja om
         {
-            if (Data.currentActiveMinigame == 1) //enemy one
+            if (Data.currentActiveMinigame == 1 && !Data.enemyOneMet) //enemy one
             {
-                enemyOneGameObject.SetActive(true);
+                SceneManager.LoadScene(enemyOne);
             }
 
-            if (Data.currentActiveMinigame == 2) //enemy two
+            if (Data.currentActiveMinigame == 2 && !Data.enemyTwoMet) //enemy two
             {
-                enemyTwoGameObject.SetActive(true);
+                SceneManager.LoadScene(enemyTwo);
             }
 
-            if (Data.currentActiveMinigame == 3) //event one
+            if (Data.currentActiveMinigame == 3 && !Data.eventOneMet) //event one
             {
-                eventOneGameObject.SetActive(true);
+                SceneManager.LoadScene(eventOne);
             }
 
-            if (Data.currentActiveMinigame == 3) //event two
+            if (Data.currentActiveMinigame == 3 && !Data.eventTwoMet) //event two
             {
-                eventTwoGameObject.SetActive(true);
+                SceneManager.LoadScene(eventTwo);
             }
         }
 
@@ -433,63 +439,67 @@ public class GameLoopGameController_Script : MonoBehaviour
     {
         gameIsPaused = true;
 
-        List<GameObject> possibleEncounters = new List<GameObject>();
+        List<int> possibleEncounters = new List<int>();
 
         if (!Data.enemyOneMet)
         {
-            possibleEncounters.Add(enemyOneGameObject);
+            possibleEncounters.Add(enemyOne);
         }
 
         if (!Data.enemyTwoMet)
         {
-            possibleEncounters.Add(enemyTwoGameObject);
+            possibleEncounters.Add(enemyTwo);
         }
 
         if (!Data.eventOneMet)
         {
-            possibleEncounters.Add(eventOneGameObject);
+            possibleEncounters.Add(eventOne);
         }
 
         if (!Data.eventTwoMet)
         {
-            possibleEncounters.Add(eventTwoGameObject);
+            possibleEncounters.Add(eventTwo);
         }
 
         if (possibleEncounters.Count > 0)
         {
             int randomIndex = UnityEngine.Random.Range(0, possibleEncounters.Count);
-            GameObject randomEncounter = possibleEncounters[randomIndex];
+            int randomEncounter = possibleEncounters[randomIndex];
             
-            if (randomEncounter.Equals(enemyOneGameObject))
+            if (randomEncounter.Equals(enemyOne))
             {
                 Data.currentActiveMinigame = 1; //expandera med nya encounters! Data.currentActiveMinigame = n;
                 Data.enemyOneMet = true;
                 Data.activeEventOrEnemy = "ENEMY";
-                enemyOneGameObject.SetActive(true);
+                SceneManager.LoadScene(enemyOne);
+                return;
             }
 
-            if (randomEncounter.Equals(enemyTwoGameObject))
+            if (randomEncounter.Equals(enemyTwo))
             {
                 Data.currentActiveMinigame = 2;
                 Data.enemyTwoMet = true;
                 Data.activeEventOrEnemy = "ENEMY";
-                enemyTwoGameObject.SetActive(true);
+                SceneManager.LoadScene(enemyTwo);
+                return;
             }
 
-            if (randomEncounter.Equals(eventOneGameObject))
+            if (randomEncounter.Equals(eventOne))
             {
                 Data.currentActiveMinigame = 3;
                 Data.eventOneMet = true;
                 Data.activeEventOrEnemy = "EVENT";
-                eventOneGameObject.SetActive(true);
+                SceneManager.LoadScene(eventOne);
+                return;
             }
 
-            if (randomEncounter.Equals(eventTwoGameObject))
+            if (randomEncounter.Equals(eventTwo))
             {
                 Data.currentActiveMinigame = 4;
                 Data.eventTwoMet = true;
                 Data.activeEventOrEnemy = "EVENT";
-                eventTwoGameObject.SetActive(true);
+                SceneManager.LoadScene(eventTwo);
+                return;
             }
         }
         else
@@ -539,99 +549,34 @@ public class GameLoopGameController_Script : MonoBehaviour
             Data.playerHealth = maxPlayerHealth;
         }
     }
-
-    public void LoseViaTemporaryButton()
-    {
-        Data.playerLose = true;
-        DeactivateAllEncounterPanels();
-        gameIsPaused = false;
-
-        if (Data.currentActiveMinigame == 1) //expandera med nya encounters! måste även addera booleans i data för nya expandering av encounters
-        {
-            Data.encounterOneComplete = true; //notera enounter one = current active minigame = 1
-            Data.currentActiveMinigame = 0;
-        }
-
-        if (Data.currentActiveMinigame == 2)
-        {
-            Data.encounterTwoComplete = true;
-            Data.currentActiveMinigame = 0;
-        }
-
-        if (Data.currentActiveMinigame == 3)
-        {
-            Data.encounterThreeComplete = true;
-            Data.currentActiveMinigame = 0;
-        }
-
-        if (Data.currentActiveMinigame == 4)
-        {
-            Data.encounterFourComplete = true;
-            Data.currentActiveMinigame = 0;
-        }
-    }
-
-    public void WinViaTemporaryButton()
-    {
-        Data.playerWin = true;
-        DeactivateAllEncounterPanels();
-        gameIsPaused = false;
-
-        if (Data.currentActiveMinigame == 1) //expandera med nya encounters! måste även addera booleans i data för nya expandering av encounters
-        {
-            Data.encounterOneComplete = true; //notera enounter one = current active minigame = 1
-            Data.currentActiveMinigame = 0;
-        }
-
-        if (Data.currentActiveMinigame == 2)
-        {
-            Data.encounterTwoComplete = true;
-            Data.currentActiveMinigame = 0;
-        }
-
-        if (Data.currentActiveMinigame == 3)
-        {
-            Data.encounterThreeComplete = true;
-            Data.currentActiveMinigame = 0;
-        }
-
-        if (Data.currentActiveMinigame == 4)
-        {
-            Data.encounterFourComplete = true;
-            Data.currentActiveMinigame = 0;
-        }
-    }
-
-    private void DeactivateAllEncounterPanels()
-    {
-        enemyOneGameObject.SetActive(false);
-        enemyTwoGameObject.SetActive(false);
-        eventOneGameObject.SetActive(false);
-        eventTwoGameObject.SetActive(false);
-    }
     
     private void BossBattle()
     {
         gameIsPaused = true;
         bossGameObject.SetActive(true);
+        battleBossButtonGameObject.SetActive(true);
         walkingButtonGameObject.SetActive(false);
         runningButtonGameObject.SetActive(false);
+    }
 
-        if (!bossMinigamePlaying)
-        {
-            StartBossMinigame();
-        }
+    public void BattleBossButton()
+    {
+        int randomIndex = UnityEngine.Random.Range(0, 2);
         
-        if ((Data.bossHealth > 0 || Data.playerHealth > 0) && !bossMinigamePlaying) //when returning from minigame check this
+        if (randomIndex == 0)
         {
-            BossBattle();
+            SceneManager.LoadScene(bossOne);
+        }
+
+        if (randomIndex == 1)
+        {
+            SceneManager.LoadScene(bossTwo);
         }
     }
 
     private void StartBossMinigame() //random 3 minispel
     {
         bossMinigamePlaying = true;
-        winOrLoseBossBattlePanel.SetActive(true);
     }
 
     private void LoseRoundAgainstBoss() //justera skada och eller hälsa

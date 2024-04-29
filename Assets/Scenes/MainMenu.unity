@@ -1597,7 +1597,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1677388531}
         m_TargetAssemblyTypeName: MainMenu_Script, Assembly-CSharp
-        m_MethodName: openCreditsPanel
+        m_MethodName: OpenCreditsPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1730,7 +1730,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1677388531}
         m_TargetAssemblyTypeName: MainMenu_Script, Assembly-CSharp
-        m_MethodName: openSettingsPanel
+        m_MethodName: OpenSettingsPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
