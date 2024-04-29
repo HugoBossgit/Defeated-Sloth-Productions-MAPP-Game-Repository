@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -287,11 +288,18 @@ public class GameController : MonoBehaviour
     public void declareWin()
     {
         Data.playerWin = true;
+        SceneManager.LoadScene(1);
     }
 
     public void declareLoss()
     {
         Data.playerLose = true;
+        SceneManager.LoadScene(1);
+    }
+
+    public void declareDifficulty(String s)
+    {
+        difficulty = s;
     }
 
 }
