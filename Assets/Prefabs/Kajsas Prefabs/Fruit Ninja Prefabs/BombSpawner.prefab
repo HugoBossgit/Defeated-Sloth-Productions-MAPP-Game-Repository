@@ -50,4 +50,4 @@ MonoBehaviour:
   objectMaxX: 2
   objectY: -5
   objectSprites:
-  - {fileID: 21300000, guid: d0038c3c419394262b362d99c7eb6ffd, type: 3}
+  - {fileID: 21300000, guid: a0d2b44f244c440d795363a20ef2ef1b, type: 3}

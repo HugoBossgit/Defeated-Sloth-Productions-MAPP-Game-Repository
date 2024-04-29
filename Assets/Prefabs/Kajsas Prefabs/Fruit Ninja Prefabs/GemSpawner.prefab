@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1333150741589892875}
   - component: {fileID: 7021841633643996534}
   m_Layer: 0
-  m_Name: FruitSpawner
+  m_Name: GemSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,7 +50,7 @@ MonoBehaviour:
   objectMaxX: 1
   objectY: -5.5
   objectSprites:
-  - {fileID: 21300000, guid: 38cd0bf9df062d64898268cdd3eb135b, type: 3}
-  - {fileID: 21300002, guid: 38cd0bf9df062d64898268cdd3eb135b, type: 3}
-  - {fileID: 21300004, guid: 38cd0bf9df062d64898268cdd3eb135b, type: 3}
-  - {fileID: 21300006, guid: 38cd0bf9df062d64898268cdd3eb135b, type: 3}
+  - {fileID: 21300000, guid: 0a19c09fc15614c41bdaced5b1432825, type: 3}
+  - {fileID: 21300000, guid: 0c8fb75c5d00a4a87afd7b7a303968c4, type: 3}
+  - {fileID: 21300000, guid: 4578bd4045c6d4ee1838ac77e692e337, type: 3}
+  - {fileID: 21300000, guid: 8874aa680beb14f8f9eeb42d092e6ec2, type: 3}
