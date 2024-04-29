@@ -33,6 +33,7 @@ public class ShowScore_fruitNinja : MonoBehaviour
             Data.playerWin = true;
             winPanel.SetActive(true);
             fruitSpawner.SetGameStatus(false);
+            bombSpawner.SetGameStatus(false);
         }
     }
 
