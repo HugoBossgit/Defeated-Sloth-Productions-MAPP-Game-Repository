@@ -12,19 +12,24 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
     public GameObject losePanel;
     public TextMeshProUGUI timerText;
 
+
+    [SerializeField] private AudioClip dropSound;
+    [SerializeField] private float timeRemaining = 15f;
+
     private RectTransform rectTransform;
     private Canvas canvas;
     private CanvasGroup canvasGroup;
     private Vector2 offset;
     private bool locked;
+    private AudioSource audioSource;
 
-    [SerializeField] private float timeRemaining = 15f;
-
-    void Awake()
+    void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
+        audioSource = GetComponent<AudioSource>();
+
     }
 
     //OnPointerDown för att interagera med UI element
@@ -55,6 +60,8 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
                 rectTransform.anchoredPosition = correctForm.anchoredPosition;
                 locked = true; // Lås UI-elementet om det hamnar på rätt plats
                 EventTrigger eventTrigger = GetComponent<EventTrigger>();
+                audioSource.PlayOneShot(dropSound);
+
                 if (eventTrigger != null)
                 {
                     eventTrigger.enabled = false; // Inaktivera EventTrigger
