@@ -12,8 +12,8 @@ using System.Xml;
 using System.Security.Cryptography;
 
 public class GameLoopGameController_Script : MonoBehaviour 
-    //OM MAN SKA LÄGGA TILL FLER ENOUNTERS I GAME LOOP FÖLJ ALLA RELEVANTA KOMMENTARER!
-    //GLÖM INTE ATT LÄGGA TILL NYA VARIABLER I DATA OCKSÅ!
+    //OM MAN SKA Lï¿½GGA TILL FLER ENOUNTERS I GAME LOOP Fï¿½LJ ALLA RELEVANTA KOMMENTARER!
+    //GLï¿½M INTE ATT Lï¿½GGA TILL NYA VARIABLER I DATA OCKSï¿½!
 {
     [SerializeField] private GameObject gameProgressSliderGameObject;
     [SerializeField] private GameObject pausedGamePanel;
@@ -161,7 +161,7 @@ public class GameLoopGameController_Script : MonoBehaviour
             }
         }
 
-        if (Data.currentActiveMinigame != 0) //Måste Expanderas! om man lämnar medans minigame är aktivt ska minigame börja om
+        if (Data.currentActiveMinigame != 0) //Mï¿½ste Expanderas! om man lï¿½mnar medans minigame ï¿½r aktivt ska minigame bï¿½rja om
         {
             if (Data.currentActiveMinigame == 1 && !Data.enemyOneMet) //enemy one
             {
@@ -218,7 +218,7 @@ public class GameLoopGameController_Script : MonoBehaviour
 
         if (Data.playerLose) //player loses encounter
         {
-            int randomIndex = UnityEngine.Random.Range(0, 2); //justera chans att förlora item
+            int randomIndex = UnityEngine.Random.Range(0, 2); //justera chans att fï¿½rlora item
 
             if (Data.activeEventOrEnemy == "ENEMY")
             {
@@ -251,7 +251,7 @@ public class GameLoopGameController_Script : MonoBehaviour
 
         if (Data.playerWin) //player wins encounter
         {
-            int randomIndex = UnityEngine.Random.Range(0, 2); //justera chans att få item
+            int randomIndex = UnityEngine.Random.Range(0, 2); //justera chans att fï¿½ item
 
             if (Data.activeEventOrEnemy == "ENEMY")
             {
@@ -281,7 +281,7 @@ public class GameLoopGameController_Script : MonoBehaviour
             }
         }
 
-        //check progress //Måste Expanderas! add more ecounters and make running player skip them while walking hits all
+        //check progress //Mï¿½ste Expanderas! add more ecounters and make running player skip them while walking hits all
 
         if (Data.playerProgress > 5 && !Data.encounterOneMet)
         {
@@ -435,7 +435,7 @@ public class GameLoopGameController_Script : MonoBehaviour
         gameIsPaused = true;
     }
 
-    private void GetRandomEventOrEnemy() //Måste Expanderas!
+    private void GetRandomEventOrEnemy() //Mï¿½ste Expanderas!
     {
         gameIsPaused = true;
 
@@ -561,7 +561,7 @@ public class GameLoopGameController_Script : MonoBehaviour
 
     public void BattleBossButton()
     {
-        int randomIndex = UnityEngine.Random.Range(0, 2);
+        int randomIndex = UnityEngine.Random.Range(0, 3);
         
         if (randomIndex == 0)
         {
@@ -572,6 +572,10 @@ public class GameLoopGameController_Script : MonoBehaviour
         {
             SceneManager.LoadScene(bossTwo);
         }
+
+        if (randomIndex == 2) {
+            SceneManager.LoadScene("Aina_SharpshooterGame");
+        }
     }
 
     private void StartBossMinigame() //random 3 minispel
@@ -579,7 +583,7 @@ public class GameLoopGameController_Script : MonoBehaviour
         bossMinigamePlaying = true;
     }
 
-    private void LoseRoundAgainstBoss() //justera skada och eller hälsa
+    private void LoseRoundAgainstBoss() //justera skada och eller hï¿½lsa
     {
         if (Data.hasItemSheild)
         {
@@ -591,7 +595,7 @@ public class GameLoopGameController_Script : MonoBehaviour
         }
     }
 
-    private void WinRoundAgainstBoss() //justera skada och eller hälsa
+    private void WinRoundAgainstBoss() //justera skada och eller hï¿½lsa
     {
         if (Data.hasItemSword)
         {
@@ -618,11 +622,11 @@ public class GameLoopGameController_Script : MonoBehaviour
 
 
     //TO - DO
-    //2 fiender som är kopplat till enstaka minigames --> kan ta skada eller förlora item
-    //2 event tvingat specifikt minigame --> kan få item, hälsa eller förlora hälsa eller ingenting händer
-    //random fiende och event väljare i game loopen
-    //Items som påverkar boss fight
-    //Vid förlust mot vanlig fiende kan man förlora item
-    //Boss --> 3 olika spel för bossen
-    //Fiender med olika attribut (vissa gör mer skada andra andra har större chans att sno item ex drake vs goblin)
+    //2 fiender som ï¿½r kopplat till enstaka minigames --> kan ta skada eller fï¿½rlora item
+    //2 event tvingat specifikt minigame --> kan fï¿½ item, hï¿½lsa eller fï¿½rlora hï¿½lsa eller ingenting hï¿½nder
+    //random fiende och event vï¿½ljare i game loopen
+    //Items som pï¿½verkar boss fight
+    //Vid fï¿½rlust mot vanlig fiende kan man fï¿½rlora item
+    //Boss --> 3 olika spel fï¿½r bossen
+    //Fiender med olika attribut (vissa gï¿½r mer skada andra andra har stï¿½rre chans att sno item ex drake vs goblin)
 }
