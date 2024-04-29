@@ -37,6 +37,7 @@ public class ShowLives_FruitNinja : MonoBehaviour
             scoreText.SetActive(false);
             losePanel.SetActive(true);
             fruitSpawner.SetGameStatus(false);
+            bombSpawner.SetGameStatus(false);
         }
     }
 }

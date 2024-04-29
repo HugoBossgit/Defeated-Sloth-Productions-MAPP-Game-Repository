@@ -1837,7 +1837,7 @@ MonoBehaviour:
   bottomPivot: {fileID: 1815162989}
   fish: {fileID: 1629008010}
   timerMultiplicator: 2
-  failTimer: 25
+  failTimer: 20
   smoothMotion: 4
   progressBarContainer: {fileID: 1215607041}
   hook: {fileID: 593092527}
