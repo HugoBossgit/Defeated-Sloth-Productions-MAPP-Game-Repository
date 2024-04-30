@@ -1631,7 +1631,7 @@ GameObject:
   - component: {fileID: 1991525557}
   - component: {fileID: 1991525556}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Background panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1680,7 +1680,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 38f158b6e1ed5468594815417ca52a7f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7c238f08410e148c5bfc385d360a03c9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
