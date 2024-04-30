@@ -60,6 +60,8 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
                 rectTransform.anchoredPosition = correctForm.anchoredPosition;
                 locked = true; // Lås UI-elementet om det hamnar på rätt plats
                 EventTrigger eventTrigger = GetComponent<EventTrigger>();
+
+                audioSource.pitch = Random.Range(0.8f, 1.5f);
                 audioSource.PlayOneShot(dropSound);
 
                 if (eventTrigger != null)
