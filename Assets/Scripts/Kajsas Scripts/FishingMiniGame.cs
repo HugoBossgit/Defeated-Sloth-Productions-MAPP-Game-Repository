@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class FishingMiniGame : MonoBehaviour
 {
 
     public GameObject GameOverMenu;
     public GameObject WinMenu;
+    public TextMeshProUGUI failTimerText;
 
     //Referens till punkterna som fisken kommer röra sig mellan
     [SerializeField] Transform topPivot;
@@ -43,15 +45,24 @@ public class FishingMiniGame : MonoBehaviour
 
     bool pause = false;
 
+    private void Start()
+    {
+        fishPosition = Random.value;
+
+        UpdateFishPosition();
+    }
+
     private void Update()
     {
         if (pause)
         {
             return;
         }
+
         Fish();
         Hook();
         ProgressCheck();
+        UpdateFailTimerUI();
     }
 
     private void ProgressCheck()
@@ -64,7 +75,7 @@ public class FishingMiniGame : MonoBehaviour
         float min = hookPosition - hookSize / 2;
         float max = hookPosition + hookSize / 2;
 
-        if(min < fishPosition && fishPosition < max)
+        if (min < fishPosition && fishPosition < max)
         {
             hookProgress += hookPower * Time.deltaTime;
         }
@@ -74,7 +85,7 @@ public class FishingMiniGame : MonoBehaviour
             hookProgress -= hookProgressDegradationPower * Time.deltaTime;
 
             failTimer -= Time.deltaTime;
-            if(failTimer < 0.5f)
+            if (failTimer < 0.5f)
             {
                 Lose();
             }
@@ -125,6 +136,17 @@ public class FishingMiniGame : MonoBehaviour
 
         hookPosition = Mathf.Clamp(hookPosition, hookSize / 2, 1 - hookSize / 2);
         hook.position = Vector3.Lerp(bottomPivot.position, topPivot.position, hookPosition);
+    }
+
+    private void UpdateFishPosition()
+    {
+        fish.position = Vector3.Lerp(bottomPivot.position, topPivot.position, fishPosition);
+    }
+
+    private void UpdateFailTimerUI()
+    {
+        // Uppdatera UI-textkomponenten för failtimern med den aktuella failtimern
+        failTimerText.text = "Fail Timer: " + Mathf.RoundToInt(failTimer).ToString();
     }
 
     private void Win()
