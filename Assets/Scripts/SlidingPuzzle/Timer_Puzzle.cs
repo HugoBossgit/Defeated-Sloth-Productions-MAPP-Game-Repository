@@ -11,15 +11,15 @@ public class Timer_Puzzle : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+     {
         StartCoroutine(delay(0.5f));
         if (countdown > 0)
         {
             countdown -= Time.deltaTime;
         }
-        double b = System.Math.Round(countdown, 0);
-        tex.text = b.ToString();
-    }
+        double seconds = System.Math.Round(countdown, 0);
+        tex.text = seconds.ToString();
+     }
 
     private IEnumerator delay(float duration)
     {
