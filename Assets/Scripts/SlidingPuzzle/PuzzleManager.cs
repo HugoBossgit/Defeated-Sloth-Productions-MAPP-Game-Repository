@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PuzzleManager : MonoBehaviour
 {
 
     [SerializeField] private Transform board;
     [SerializeField] private Transform puzzleBit;
+
 
     private List<Transform> bitar;
     private int emptyLocation;
@@ -152,7 +154,7 @@ public class PuzzleManager : MonoBehaviour
     private void Win()
     {
         Data.playerWin = true;
-        
+        SceneManager.LoadScene(1);
     }
 
     private void Lose()
