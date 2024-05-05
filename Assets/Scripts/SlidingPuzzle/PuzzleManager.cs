@@ -173,6 +173,18 @@ public class PuzzleManager : MonoBehaviour
         }
 
     }
+
+    public void WinOrLose()
+    {
+        if (CheckCom() && timeRemaining > 0)
+        {
+            Win();
+        }
+        else
+        {
+            Lose();
+        }
+    }
     private void Win()
     {
         Data.playerWin = true;
@@ -182,6 +194,7 @@ public class PuzzleManager : MonoBehaviour
     private void Lose()
     {
         Data.playerLose = true;
+        SceneManager.LoadScene(1);
         
     }
 
