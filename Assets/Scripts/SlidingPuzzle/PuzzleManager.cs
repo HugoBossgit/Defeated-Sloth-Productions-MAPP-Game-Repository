@@ -1,12 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PuzzleManager : MonoBehaviour
 {
+    public Text timerText;
 
+    [SerializeField] private float timeRemaining = 20f;
     [SerializeField] private Transform board;
     [SerializeField] private Transform puzzleBit;
+
 
     private List<Transform> bitar;
     private int emptyLocation;
@@ -64,6 +70,17 @@ public class PuzzleManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        {
+            timeRemaining -= Time.deltaTime;
+            if (timeRemaining <= 0f)
+            {
+                timeRemaining = 0f;
+                Data.playerLose = true;
+            }
+            UpdateTimerDisplay();
+
+        }
+
         if (!shuff && CheckCom())
         {
             shuff = true;
@@ -89,6 +106,13 @@ public class PuzzleManager : MonoBehaviour
             }
         }
         
+    }
+
+    private void UpdateTimerDisplay()
+    {
+        // Uppdatera UI-texten för att visa den återstående tiden
+        int seconds = Mathf.CeilToInt(timeRemaining);
+        timerText.text = "Time Remaining: " + seconds.ToString();
     }
 
     private bool IfValidSwap(int i, int offset, int colCheck)
@@ -149,15 +173,28 @@ public class PuzzleManager : MonoBehaviour
         }
 
     }
+
+    public void WinOrLose()
+    {
+        if (CheckCom() && timeRemaining > 0)
+        {
+            Win();
+        }
+        else
+        {
+            Lose();
+        }
+    }
     private void Win()
     {
         Data.playerWin = true;
-        
+        SceneManager.LoadScene(1);
     }
 
     private void Lose()
     {
         Data.playerLose = true;
+        SceneManager.LoadScene(1);
         
     }
 
