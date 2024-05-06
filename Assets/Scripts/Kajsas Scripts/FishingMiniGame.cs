@@ -11,45 +11,50 @@ public class FishingMiniGame : MonoBehaviour
     public TextMeshProUGUI failTimerText;
 
     //Referens till punkterna som fisken kommer röra sig mellan
-    [SerializeField] Transform topPivot;
-    [SerializeField] Transform bottomPivot;
+    [SerializeField] private Transform topPivot;
+    [SerializeField] private Transform bottomPivot;
 
-    [SerializeField] Transform fish;
+    [SerializeField] private Transform fish;
 
-    float fishPosition;
-    float fishDestination;
+    private float fishPosition;
+    private float fishDestination;
 
     //bestämmer hur lång tid den är på en viss plats;
-    float fishTimer;
-    [SerializeField] float timerMultiplicator;
+    private float fishTimer;
+    [SerializeField] private float timerMultiplicator;
 
-    [SerializeField] float failTimer = 10f;
+    [SerializeField] private float failTimer = 10f;
 
     //hur snabbt den rör sig mellan punkter
-    float fishSpeed;
-    [SerializeField] float smoothMotion = 1f;
+    private float fishSpeed;
+    [SerializeField] private float smoothMotion = 1f;
 
     [SerializeField] Transform progressBarContainer;
 
     [SerializeField] Transform hook;
 
-    [SerializeField] float hookSize = 0.1f;
-    [SerializeField] float hookPower = 5f;
-    [SerializeField] float hookPullPower = 0.01f;
-    [SerializeField] float hookGravity = 0.005f;
-    [SerializeField] float hookProgressDegradationPower = 1f;
+    [SerializeField] private float hookSize = 0.1f;
+    [SerializeField] private float hookPower = 5f;
+    [SerializeField] private float hookPullPower = 0.01f;
+    [SerializeField] private float hookGravity = 0.005f;
+    [SerializeField] private float hookProgressDegradationPower = 1f;
 
-    float hookPosition;
-    float hookProgress;
-    float hookPullVelocity;
+    [SerializeField] private AudioClip fishSplashing;
 
-    bool pause = false;
+    private float hookPosition;
+    private float hookProgress;
+    private float hookPullVelocity;
+
+    private bool pause = false;
+
+    private AudioSource audioSource;
 
     private void Start()
     {
         fishPosition = Random.value;
 
         UpdateFishPosition();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -63,6 +68,14 @@ public class FishingMiniGame : MonoBehaviour
         Hook();
         ProgressCheck();
         UpdateFailTimerUI();
+
+        if (!pause)
+        {
+            if (hookProgress > 0 && hookProgress < 1 && !audioSource.isPlaying)
+            {
+                audioSource.PlayOneShot(fishSplashing);
+            }
+        }
     }
 
     private void ProgressCheck()
@@ -85,6 +98,7 @@ public class FishingMiniGame : MonoBehaviour
             hookProgress -= hookProgressDegradationPower * Time.deltaTime;
 
             failTimer -= Time.deltaTime;
+
             if (failTimer < 0.5f)
             {
                 Lose();
@@ -99,6 +113,7 @@ public class FishingMiniGame : MonoBehaviour
         //säkerhetsställer att progressen är inom giltiga ramar
         hookProgress = Mathf.Clamp(hookProgress, 0f, 1f);
     }
+
 
     private void Fish()
     {
