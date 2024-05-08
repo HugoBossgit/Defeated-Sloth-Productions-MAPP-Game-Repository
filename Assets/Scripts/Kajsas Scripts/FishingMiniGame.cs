@@ -161,7 +161,7 @@ public class FishingMiniGame : MonoBehaviour
     private void UpdateFailTimerUI()
     {
         // Uppdatera UI-textkomponenten för failtimern med den aktuella failtimern
-        failTimerText.text = "Fail Timer: " + Mathf.RoundToInt(failTimer).ToString();
+        failTimerText.text = Mathf.RoundToInt(failTimer).ToString();
     }
 
     private void Win()
@@ -169,6 +169,11 @@ public class FishingMiniGame : MonoBehaviour
         Data.playerWin = true;
         pause = true;
         WinMenu.SetActive(true);
+
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
     }
 
     private void Lose()
@@ -176,5 +181,10 @@ public class FishingMiniGame : MonoBehaviour
         Data.playerLose = true;
         pause = true;
         GameOverMenu.SetActive(true);
+
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
     }
 }

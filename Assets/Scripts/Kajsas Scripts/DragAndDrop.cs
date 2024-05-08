@@ -108,6 +108,6 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
     {
         // Uppdatera UI-texten för att visa den återstående tiden
         int seconds = Mathf.CeilToInt(timeRemaining);
-        timerText.text = "Time: " + seconds.ToString();
+        timerText.text = seconds.ToString();
     }
 }
