@@ -8,31 +8,47 @@ public class Brick
 {
     private int durability;
     //private SpriteIndex spriteIndex;
-    private Color color;
+    //private Color color;
+    private Sprite sprite;
 
     public int Durability { get { return durability; } set { durability = value; } }
-    public Color Color { get { return color; } }
+    //public Color Color { get { return color; } }
+    public Sprite Sprite {get { return sprite; } }
 
-    public Brick(int durability, Color color)
+    public Brick(int durability, Sprite sprite)
+    {
+        this.durability = durability;
+        this.sprite = sprite;
+    }
+
+    /*public Brick(int durability, Color color)
     {
         this.durability = durability;
         this.color = color;
-    }
+    }*/
 }
 public class BrickTower : MonoBehaviour
 {
     [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject panelPrefab;
-    //[SerializeField] private Sprite[] sprites;
-    [SerializeField] private Color[] colors;
+    [SerializeField] private Color[] colors; //Not currently in use
+    [SerializeField] private Sprite[] sprites;
     [SerializeField] private GameObject infoPanel;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject outOfTimeText;
     [SerializeField] private GameObject gameCompleteText;
+    [SerializeField] private int brickTop;
+    [SerializeField] private int brickBottom;
+    [SerializeField] private int brickSides;
+    [SerializeField] private int brickSpacing;
+    [SerializeField] private AudioClip tapSound;
+    [SerializeField] private AudioClip breakSound;
 
     private List<Brick> bricks;
     private Stack<GameObject> panels;
+    private Vector2 canvasSize;
     private int countdown = 5;
+    private AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +58,8 @@ public class BrickTower : MonoBehaviour
         StartGame();
         AddBricks();
         GeneratePanels();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -66,9 +84,11 @@ public class BrickTower : MonoBehaviour
         {
             int durability = Random.Range(0, 5);
 
-            Color color = colors[durability];
+            bricks.Add(new Brick(durability, sprites[durability]));
 
-            bricks.Add(new Brick(durability, color));
+            //Color color = colors[durability];
+
+            //bricks.Add(new Brick(durability, color));
         }
     }
 
@@ -77,11 +97,28 @@ public class BrickTower : MonoBehaviour
         for (int i = 0; i < bricks.Count; i++)
         {
             GameObject panel = Instantiate(panelPrefab, this.transform);
-            panel.GetComponent<Image>().color = bricks[i].Color;
+            panel.GetComponent<Image>().sprite = bricks[i].Sprite;
             RectTransform panelRectTransform = panel.GetComponent<RectTransform>();
-            panelRectTransform.anchoredPosition = new Vector2(0, 100 + 95 * i);
+            adjustStretching(panelRectTransform, brickSides, brickTop - brickSpacing * i, brickSides, brickBottom + brickSpacing * i);
             panels.Push(panel);
         }
+    }
+
+    void adjustStretching(RectTransform panelRectTransform, float left, float top, float right, float bottom) {
+        
+        
+        //Scaled based on Iphone 12 resolution 1170*2532
+        
+        canvasSize = canvas.GetComponent<RectTransform>().sizeDelta;
+        
+        left = left/1170 * canvasSize.x;
+        bottom = bottom/2532 * canvasSize.y;
+        right = -(right/1170 * canvasSize.x);
+        top = -(top/2532 * canvasSize.y);
+        //Debug.Log(canvasSize);
+        //Debug.Log(left + " " + top + " " + right + " " + bottom);
+        panelRectTransform.offsetMin = new Vector2(left, bottom);
+        panelRectTransform.offsetMax = new Vector2(right, top);
     }
 
     public void DamageTopBrick(int damage)
@@ -104,10 +141,12 @@ public class BrickTower : MonoBehaviour
             Destroy(panels.Peek());
             panels.Pop();
             bricks.RemoveAt(bricks.Count - 1);
+            audioSource.PlayOneShot(breakSound, 0.7f);
         }
         else
         {
-            panels.Peek().GetComponent<Image>().color = colors[durability];
+            panels.Peek().GetComponent<Image>().sprite = sprites[durability];
+            audioSource.PlayOneShot(tapSound, 0.85f);
         }
     }
 
@@ -145,6 +184,6 @@ public class BrickTower : MonoBehaviour
         gameOverPanel.SetActive(true);
         gameCompleteText.SetActive(true);
         Data.playerWin = true;
-        Debug.Log("Player won brick game");
+        //Debug.Log("Player won brick game");
     }
 }
