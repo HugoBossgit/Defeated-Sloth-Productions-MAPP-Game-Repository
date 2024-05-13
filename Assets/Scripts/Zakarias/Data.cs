@@ -20,6 +20,7 @@ public class Data : MonoBehaviour
     public static bool encounterOneComplete, encounterTwoComplete;
     public static bool encounterThreeComplete, encounterFourComplete;
     public static bool bossBattleIsActive;
+    public static bool returningToMainMenu;
 
     public static int currentActiveMinigame;
 
