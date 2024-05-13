@@ -880,6 +880,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fade
       objectReference: {fileID: 0}
+    - target: {fileID: 4041357301331053336, guid: 695308e7414514bca9159d669a47d83e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6603457227357171291, guid: 695308e7414514bca9159d669a47d83e, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1696,7 +1700,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -409.49994, y: 849}
+  m_AnchoredPosition: {x: -410, y: 850}
   m_SizeDelta: {x: 145, y: 145}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1815016354
@@ -1881,8 +1885,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -220, y: 853}
-  m_SizeDelta: {x: 495.859, y: 144.461}
+  m_AnchoredPosition: {x: -365, y: 855}
+  m_SizeDelta: {x: 495, y: 145}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1868143101
 CanvasRenderer:
@@ -1914,8 +1918,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Timer
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 876716d821a484ab990137455867d6bf, type: 2}
-  m_sharedMaterial: {fileID: 3346231917076036725, guid: 876716d821a484ab990137455867d6bf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 276d780e25fae034187b7b4ff421fc5e, type: 2}
+  m_sharedMaterial: {fileID: 1879768281355948998, guid: 276d780e25fae034187b7b4ff421fc5e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1939,8 +1943,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 29.75
-  m_fontSizeBase: 100
+  m_fontSize: 37.95
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
@@ -1975,7 +1979,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 111.93939, y: 0, z: 232.7161, w: 0}
+  m_margin: {x: 263.0447, y: 29.763142, z: 116.95202, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
