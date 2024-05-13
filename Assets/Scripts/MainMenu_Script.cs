@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,18 +7,22 @@ using UnityEngine.UI;
 
 public class MainMenu_Script : MonoBehaviour
 {
-    [SerializeField] private GameObject workInProgressPanel, creditsPanel, settingsPanel, fadeBackgroundPanel, newGameButton, resumeGameButton, returnToPlayButton;
+    [SerializeField] public GameObject creditsPanel, settingsPanel, fadeBackgroundPanel, newGameButton, resumeGameButton, returnToPlayButton, howToPlayPanel, transitionObject;
 
     [SerializeField] private List<Button> playCreditsSettingsButtons;
+
+    private Animator howToPlayAnim, LoadSceneAnim;
 
 
     private void Start()
     {
-        workInProgressPanel.SetActive(false);
         creditsPanel.SetActive(false);
         settingsPanel.SetActive(false);
         fadeBackgroundPanel.SetActive(false);
+        howToPlayPanel.SetActive(false);
         DeactivateNewResumeReturnButtons();
+        howToPlayAnim = howToPlayPanel.GetComponent<Animator>();
+        LoadSceneAnim = transitionObject.GetComponent<Animator>();
     }
 
 
@@ -26,39 +31,19 @@ public class MainMenu_Script : MonoBehaviour
     {
         foreach (Button button in playCreditsSettingsButtons)
         {
-            button.enabled = false;
+            button.interactable = false;
         }
     }
 
 
 
-    private void EnableAllButtons()
+    public void EnableAllButtons()
     {
         foreach (Button button in playCreditsSettingsButtons)
         {
-            button.enabled = true;
+            button.interactable = true;
         }
     }
-
-
-
-    public void OpenWorkInProgressPanel()
-    {
-        DisableAllButtons();
-        workInProgressPanel.SetActive(true);
-        fadeBackgroundPanel.SetActive(true);
-    }
-
-
-
-    public void CloseWorkInProgressPanel()
-    {
-        EnableAllButtons();
-        workInProgressPanel.SetActive(false);
-        fadeBackgroundPanel.SetActive(false);
-    }
-
-
 
     public void OpenCreditsPanel()
     {
@@ -67,13 +52,26 @@ public class MainMenu_Script : MonoBehaviour
         fadeBackgroundPanel.SetActive(true);
     }
 
-
-
     public void CloseCreditsPanel()
     {
         EnableAllButtons();
         creditsPanel.SetActive(false);
         fadeBackgroundPanel.SetActive(false);
+    }
+
+    public void OpenHowToPlayPanel()
+    {
+        howToPlayPanel.SetActive(true);
+        fadeBackgroundPanel.SetActive(true);
+        DisableAllButtons();
+        howToPlayAnim.SetBool("OnScreen", true);
+        howToPlayAnim.SetBool("OffScreen", false);
+    }
+
+    public void CloseHowToPlayPanel()
+    {
+        howToPlayAnim.SetBool("OffScreen", true);
+        howToPlayAnim.SetBool("OnScreen", false);
     }
 
 
@@ -96,6 +94,7 @@ public class MainMenu_Script : MonoBehaviour
 
     public void Play()
     {
+        Data.returningToMainMenu = false;
         DisableAllButtons();
         fadeBackgroundPanel.SetActive(true);
         ActivatePlayResumeReturnButtons();
@@ -103,10 +102,13 @@ public class MainMenu_Script : MonoBehaviour
         if (Data.playerProgress > 0)
         {
             resumeGameButton.GetComponent<Button>().interactable = true;
+            resumeGameButton.GetComponent<Image>().color = new Color(1, 1, 1, 1);
         }
         else
         {
+            resumeGameButton.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
             resumeGameButton.GetComponent<Button>().interactable = false;
+            
         }
     }
 
@@ -114,7 +116,7 @@ public class MainMenu_Script : MonoBehaviour
     {
         Data.walking = false;
         Data.running = false;
-        SceneManager.LoadScene(1);
+        StartCoroutine(LoadMainGameLoop());
     }
 
     public void NewGame()
@@ -122,8 +124,18 @@ public class MainMenu_Script : MonoBehaviour
         Data.walking = false;
         Data.running = false;
         Data.Reset();
+        StartCoroutine(LoadMainGameLoop());
+    }
+
+    private IEnumerator LoadMainGameLoop()
+    {
+        LoadSceneAnim.SetTrigger("Start");
+
+        yield return new WaitForSeconds(2);
+
         SceneManager.LoadScene(1);
     }
+
 
     public void BackFromPlay()
     {

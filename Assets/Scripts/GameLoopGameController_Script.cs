@@ -1,15 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-using UnityEngine.LowLevel;
-using System.Xml;
-using System.Security.Cryptography;
+using System.Collections;
 
 public class GameLoopGameController_Script : MonoBehaviour 
     //OM MAN SKA L�GGA TILL FLER ENOUNTERS I GAME LOOP F�LJ ALLA RELEVANTA KOMMENTARER!
@@ -28,6 +22,7 @@ public class GameLoopGameController_Script : MonoBehaviour
     [SerializeField] private GameObject bossGameObject;
     [SerializeField] private GameObject bossHealtSliderGameObject;
     [SerializeField] private GameObject battleBossButtonGameObject;
+    [SerializeField] private GameObject SceneTransitionObject;
     [SerializeField] private int enemyOne, enemyTwo, eventOne, eventTwo, bossOne, bossTwo;
 
 
@@ -36,6 +31,8 @@ public class GameLoopGameController_Script : MonoBehaviour
     private UnityEngine.UI.Button walkingButton, runningButton, pauseButton;
 
     private bool gameIsPaused, gameIsWon, gameIsLost, bossMinigamePlaying;
+
+    private Animator sceneTransitionAnimator;
 
     public const int bossMaxHealth = 50;
 
@@ -56,6 +53,7 @@ public class GameLoopGameController_Script : MonoBehaviour
 
     private void Start()
     {
+        sceneTransitionAnimator = SceneTransitionObject.GetComponent<Animator>();
         pausedGamePanel.SetActive(false);
         gameWinPanelGameObject.SetActive(false);
         gameLosePanelGameObject.SetActive(false);
@@ -106,9 +104,18 @@ public class GameLoopGameController_Script : MonoBehaviour
         InvokeRepeating(nameof(DoPlayerProgress), 0, 1);
     }
 
+    private IEnumerator FadeOut()
+    {
+        sceneTransitionAnimator.SetTrigger("Start");
+
+        yield return new WaitForSeconds(2);
+
+        SceneManager.LoadScene(0);
+    }
+
     private void DoPlayerProgress()
     {
-        if(playerProgressSlider != null && !gameIsPaused)
+        if(playerProgressSlider != null && !gameIsPaused && !Data.returningToMainMenu)
         {
             if(Data.walking)
             {
@@ -140,8 +147,11 @@ public class GameLoopGameController_Script : MonoBehaviour
     }
 
     private void Update()
-    {         
-        UpdateButtonColors();
+    {
+        if (!gameIsPaused && !Data.returningToMainMenu)
+        {
+            UpdateWalkAndRunButtons();
+        }
         playerProgressSlider.value = Data.playerProgress;
         playerHealthSlider.value = Data.playerHealth;
 
@@ -357,21 +367,23 @@ public class GameLoopGameController_Script : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
+        Data.returningToMainMenu = true;
         gameIsPaused = false;
         gameIsWon = false;
         gameIsLost = false;
         ActivateButtons();
-        SceneManager.LoadScene(0);
+        StartCoroutine(FadeOut());
     }
 
     public void ReturnToMainMenuAndReset()
     {
+        Data.returningToMainMenu = true;
         gameIsPaused = false;
         gameIsWon = false;
         gameIsLost = false;
         ActivateButtons();
         Data.Reset();
-        SceneManager.LoadScene(0);
+        StartCoroutine(FadeOut());
     }
 
     private void InactivateButtons()
@@ -388,36 +400,19 @@ public class GameLoopGameController_Script : MonoBehaviour
         pauseButton.interactable = true;
     }
 
-    private void UpdateButtonColors() //makes buttons appear in correct color when coming back mid game, wont need later, feedback is for my debugging
+    private void UpdateWalkAndRunButtons()
     {
-        ColorBlock walkingButtonColors = walkingButton.colors;
-        ColorBlock runningButtonColors = runningButton.colors;
-
         if (Data.walking)
         {
-            walkingButtonColors.normalColor = Color.green;
-            runningButtonColors.normalColor = Color.red;
-
-            walkingButton.colors = walkingButtonColors;
-            runningButton.colors = runningButtonColors;
+            walkingButton.Select();
             return;
         }
 
         if(Data.running)
         {
-            walkingButtonColors.normalColor = Color.red;
-            runningButtonColors.normalColor = Color.green;
-
-            walkingButton.colors = walkingButtonColors;
-            runningButton.colors = runningButtonColors;
+            runningButton.Select(); 
             return;
         }
-
-        walkingButtonColors.normalColor = Color.white;
-        runningButtonColors.normalColor = Color.white;
-
-        walkingButton.colors = walkingButtonColors;
-        runningButton.colors = runningButtonColors;
     }
 
     private void LoseGame()
