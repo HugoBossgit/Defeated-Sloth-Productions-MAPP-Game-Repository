@@ -26,7 +26,7 @@ public class MainMenu_Script : MonoBehaviour
     {
         foreach (Button button in playCreditsSettingsButtons)
         {
-            button.enabled = false;
+            button.interactable = false;
         }
     }
 
@@ -36,7 +36,7 @@ public class MainMenu_Script : MonoBehaviour
     {
         foreach (Button button in playCreditsSettingsButtons)
         {
-            button.enabled = true;
+            button.interactable = true;
         }
     }
 
@@ -103,10 +103,13 @@ public class MainMenu_Script : MonoBehaviour
         if (Data.playerProgress > 0)
         {
             resumeGameButton.GetComponent<Button>().interactable = true;
+            resumeGameButton.GetComponent<Image>().color = new Color(1, 1, 1, 1);
         }
         else
         {
+            resumeGameButton.GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
             resumeGameButton.GetComponent<Button>().interactable = false;
+            
         }
     }
 
