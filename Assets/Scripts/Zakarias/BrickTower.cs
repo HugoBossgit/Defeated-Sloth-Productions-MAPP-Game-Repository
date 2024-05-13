@@ -37,6 +37,8 @@ public class BrickTower : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject outOfTimeText;
     [SerializeField] private GameObject gameCompleteText;
+
+    [SerializeField] private GameObject timerObject;
     [SerializeField] private int brickTop;
     [SerializeField] private int brickBottom;
     [SerializeField] private int brickSides;
@@ -171,7 +173,7 @@ public class BrickTower : MonoBehaviour
         gameOverPanel.SetActive(true);
         outOfTimeText.SetActive(true);
         Data.playerLose = true;
-        Debug.Log("Player lost brick game");
+        //Debug.Log("Player lost brick game");
     }
 
     void CountDown()
@@ -184,6 +186,9 @@ public class BrickTower : MonoBehaviour
         gameOverPanel.SetActive(true);
         gameCompleteText.SetActive(true);
         Data.playerWin = true;
+
+        timerObject.GetComponent<Timer>().DisableCountDown();
+
         //Debug.Log("Player won brick game");
     }
 }
