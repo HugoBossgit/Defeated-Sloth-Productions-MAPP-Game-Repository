@@ -158,11 +158,13 @@ public class BrickTower : MonoBehaviour
         gameOverPanel.SetActive(false);
         outOfTimeText.SetActive(false);
         gameCompleteText.SetActive(false);
+        timerObject.SetActive(false);
     }
 
     public void HideInfo()
     {
         infoPanel.SetActive(false);
+        timerObject.SetActive(true);
 
         //Start Timer
         InvokeRepeating("CountDown", 1, 1);
