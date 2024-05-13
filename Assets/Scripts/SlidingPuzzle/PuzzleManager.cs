@@ -4,10 +4,13 @@ using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class PuzzleManager : MonoBehaviour
 {
     public Text timerText;
+    public GameObject winPanel;
+    public GameObject losePanel;
 
     [SerializeField] private float timeRemaining = 20f;
     [SerializeField] private Transform board;
@@ -63,6 +66,7 @@ public class PuzzleManager : MonoBehaviour
     {
         bitar = new List<Transform>();
         size = 3;
+        StartGame();
         CreatePuzzleBitar(0.01f);
         
     }
@@ -106,6 +110,13 @@ public class PuzzleManager : MonoBehaviour
             }
         }
         
+    }
+
+    void StartGame()
+    {
+        winPanel.SetActive(false);
+        losePanel.SetActive(false);
+
     }
 
     private void UpdateTimerDisplay()
@@ -185,15 +196,17 @@ public class PuzzleManager : MonoBehaviour
             Lose();
         }
     }
-    private void Win()
+    public void Win()
     {
         Data.playerWin = true;
+        losePanel.SetActive(true);
         SceneManager.LoadScene(1);
     }
 
-    private void Lose()
+    public void Lose()
     {
         Data.playerLose = true;
+        losePanel.SetActive(true);
         SceneManager.LoadScene(1);
         
     }
