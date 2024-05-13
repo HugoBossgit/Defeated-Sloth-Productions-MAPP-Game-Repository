@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2168825484277014630}
   - component: {fileID: 3226646340630975481}
   - component: {fileID: 6050461981357343545}
+  - component: {fileID: 3111410176589585548}
   m_Layer: 6
   m_Name: bomb
   m_TagString: Bomb
@@ -189,3 +190,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4876c28c0c2464018911506fd449d4ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bombAnim: {fileID: 3111410176589585548}
+  fruitSpawner: {fileID: 7021841633643996534, guid: ca218a6e8b497490784da5a69af0c494, type: 3}
+  bombSpawner: {fileID: 7823036591418145050, guid: 4860f987b50354395919f393ba922f1f, type: 3}
+--- !u!95 &3111410176589585548
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829857167863117601}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2022a48df02104f3cbd117d0b52bb9a7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
