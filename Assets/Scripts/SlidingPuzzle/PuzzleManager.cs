@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 public class PuzzleManager : MonoBehaviour
 {
     public Text timerText;
+    public GameObject startInfo;
     public GameObject winPanel;
     public GameObject losePanel;
 
@@ -66,7 +67,9 @@ public class PuzzleManager : MonoBehaviour
     {
         bitar = new List<Transform>();
         size = 3;
+        startInfo.SetActive(true);
         StartGame();
+        startInfo.SetActive(false);
         CreatePuzzleBitar(0.01f);
         
     }
@@ -114,14 +117,17 @@ public class PuzzleManager : MonoBehaviour
 
     void StartGame()
     {
+        startInfo.SetActive(true);
         winPanel.SetActive(false);
         losePanel.SetActive(false);
 
     }
 
+  
+
     private void UpdateTimerDisplay()
     {
-        // Uppdatera UI-texten för att visa den återstående tiden
+        
         int seconds = Mathf.CeilToInt(timeRemaining);
         timerText.text = "Time Remaining: " + seconds.ToString();
     }
@@ -198,15 +204,17 @@ public class PuzzleManager : MonoBehaviour
     }
     public void Win()
     {
+        winPanel.SetActive(true);
         Data.playerWin = true;
-        losePanel.SetActive(true);
+        
         SceneManager.LoadScene(1);
     }
 
     public void Lose()
     {
-        Data.playerLose = true;
         losePanel.SetActive(true);
+        Data.playerLose = true;
+
         SceneManager.LoadScene(1);
         
     }
