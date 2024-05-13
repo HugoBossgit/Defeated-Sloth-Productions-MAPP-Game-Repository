@@ -15,6 +15,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private string difficulty;
 
     [SerializeField] private TMP_Text pointsText, comboText;
+    [SerializeField] private AudioSource audSource;
+    [SerializeField] private AudioClip playMusic, waitMusic;
     [SerializeField] private GameObject lossBalloon;
     [SerializeField] private GameObject winBalloon;
     [SerializeField] private GameObject readyUpUI;
@@ -34,11 +36,13 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        audSource = GetComponent<AudioSource>();
         lossBalloon.SetActive(false);
         winBalloon.SetActive(false);
         readyUpUI.SetActive(true);
         infoBalloon.SetActive(false);
         difficulty = "Boss";
+        audSource.PlayOneShot(waitMusic);
 
         if(difficulty.Equals("Medium"))
         {
@@ -60,6 +64,7 @@ public class GameController : MonoBehaviour
             gobToSp = enemyNum / 2 + (int)UnityEngine.Random.Range(0, enemyNum / 4);
             armToSp = enemyNum - gobToSp - 4;
             bigToSp = 3;
+            infoBalloon.SetActive(true);
         }
         else
         {
@@ -221,8 +226,10 @@ public class GameController : MonoBehaviour
 
     public void startGame()
     {
+        audSource.Stop();
         readyUpUI.SetActive(false);
         ready = true;
+        audSource.PlayOneShot(playMusic);
     }
 
     public bool getReady()
@@ -243,7 +250,7 @@ public class GameController : MonoBehaviour
         {
             spawned++;
             goblinSP++;
-            Vector3 spawnArea = new Vector3(UnityEngine.Random.Range(-8, 8), UnityEngine.Random.Range(7, 12) - 2);
+            Vector3 spawnArea = new Vector3(UnityEngine.Random.Range(-1.5f, 1.5f), UnityEngine.Random.Range(1.5f, 3));
             Instantiate(goblin, spawnArea, Quaternion.identity);
         }
     }
@@ -256,7 +263,7 @@ public class GameController : MonoBehaviour
         {
             spawned++;
             armGoblinSP++;
-            Vector3 spawnArea = new Vector3(UnityEngine.Random.Range(-8, 8), UnityEngine.Random.Range(5, 8) - 2);
+            Vector3 spawnArea = new Vector3(UnityEngine.Random.Range(-1.5f, 1.5f), UnityEngine.Random.Range(1.5f, 3));
             Instantiate(armGoblin, spawnArea, Quaternion.identity);
         }
     }
@@ -268,7 +275,7 @@ public class GameController : MonoBehaviour
         {
             spawned++;
             bigGoblinSP++;
-            Vector3 spawnArea = new Vector3(UnityEngine.Random.Range(-8, 8), UnityEngine.Random.Range(5, 8) - 2);
+            Vector3 spawnArea = new Vector3(UnityEngine.Random.Range(-1.5f, 1.5f), UnityEngine.Random.Range(1.5f, 3));
             Instantiate(bigGoblin, spawnArea, Quaternion.identity);
         }
     }
@@ -280,7 +287,7 @@ public class GameController : MonoBehaviour
         {
             spawned++;
             bossSpawned = true;
-            Vector3 spawnArea = new Vector3(UnityEngine.Random.Range(-8, 8), UnityEngine.Random.Range(5, 6) - 2);
+            Vector3 spawnArea = new Vector3(UnityEngine.Random.Range(-1.5f, 1.5f), UnityEngine.Random.Range(1.5f, 3));
         Instantiate(boss, spawnArea, Quaternion.identity);
         }
     }

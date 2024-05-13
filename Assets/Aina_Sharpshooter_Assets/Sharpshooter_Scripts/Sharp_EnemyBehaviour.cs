@@ -8,7 +8,7 @@ public class EnemyBehaviour : MonoBehaviour
 {
     //Variabler & objekt
     [SerializeField] private Transform target1, target2, target3, currentTarget;
-                     private float speed = 2.0f;
+                     private float speed = 0.8f;
                      private int damage = 1;
                      private int lives = 1;
                      private int worth = 10;
@@ -29,7 +29,7 @@ public class EnemyBehaviour : MonoBehaviour
       (hälsa sänks då fienden är vid spelaren). Sedan rör sig objektet mot target3 där det sedan förstörs/despawnar */
     void FixedUpdate()
     {
-        if (controller.getReady() && transform.position.y < 15)
+        if (controller.getReady() && transform.position.y < 4)
         {
             if (transform.position.y == target1.position.y)
             {
@@ -56,6 +56,7 @@ public class EnemyBehaviour : MonoBehaviour
      Sätts startinformationen inaktiv, combo-metoden och addPoints i controller kallas på och detta objekt förstörs. */
     void OnMouseOver()
     {
+        Debug.Log("Mouse is over!");
         if (controller.getReady())
         {
 
