@@ -46,15 +46,22 @@ public class FishingMiniGame : MonoBehaviour
     private float hookPullVelocity;
 
     private bool pause = false;
+    private bool isPlayingTimerAnimation = false;
 
-    private AudioSource audioSource;
+    private AudioSource fishSFXAudioSource; // För fisken
+    private AudioSource musicAudioSource;   // För bakgrundsmusik (från hierarkin)
+
+    public Animator timerAnim;
 
     private void Start()
     {
         fishPosition = Random.value;
 
         UpdateFishPosition();
-        audioSource = GetComponent<AudioSource>();
+        fishSFXAudioSource = GetComponent<AudioSource>();
+        musicAudioSource = GameObject.Find("AudioSource").GetComponent<AudioSource>();
+
+        StartCoroutine(FadeInMusic(musicAudioSource, 2f));
     }
 
     private void Update()
@@ -71,9 +78,9 @@ public class FishingMiniGame : MonoBehaviour
 
         if (!pause)
         {
-            if (hookProgress > 0 && hookProgress < 1 && !audioSource.isPlaying)
+            if (hookProgress > 0 && hookProgress < 1 && !fishSFXAudioSource.isPlaying)
             {
-                audioSource.PlayOneShot(fishSplashing);
+                fishSFXAudioSource.PlayOneShot(fishSplashing);
             }
         }
     }
@@ -99,9 +106,9 @@ public class FishingMiniGame : MonoBehaviour
 
             failTimer -= Time.deltaTime;
 
-            if (failTimer < 0.5f)
+            if (failTimer < 0.4f)
             {
-                Lose();
+                StartCoroutine(PlayTimerAnim());
             }
         }
 
@@ -160,8 +167,57 @@ public class FishingMiniGame : MonoBehaviour
 
     private void UpdateFailTimerUI()
     {
-        // Uppdatera UI-textkomponenten för failtimern med den aktuella failtimern
-        failTimerText.text = Mathf.RoundToInt(failTimer).ToString();
+        if (isPlayingTimerAnimation == false)
+        {
+            // Om failTimer går under 0, sätt texten till 0 istället för det negativa värdet
+            failTimerText.text = Mathf.Max(0, Mathf.RoundToInt(failTimer)).ToString();
+
+            if (failTimer < 0.5f)
+            {
+                StartCoroutine(PlayTimerAnim());
+            }
+        }
+    }
+
+
+    private IEnumerator PlayTimerAnim()
+    {
+        isPlayingTimerAnimation = true;
+
+        timerAnim.SetTrigger("Shake");
+
+        yield return new WaitForSeconds(2f);
+
+        Lose();
+    }
+
+    private IEnumerator FadeOutMusic(AudioSource audioSource, float fadeDuration)
+    {
+        float startVolume = audioSource.volume;
+
+        while (audioSource.volume > 0)
+        {
+            audioSource.volume -= startVolume * Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+
+        audioSource.Stop(); // Stoppa ljuduppspelningen när volymen når noll
+        audioSource.volume = startVolume; // Återställ volymen till dess ursprungliga värde
+    }
+
+    private IEnumerator FadeInMusic(AudioSource audioSource, float fadeDuration)
+    {
+        float startVolume = audioSource.volume;
+
+        audioSource.volume = 0f;
+
+        while (audioSource.volume < startVolume)
+        {
+            audioSource.volume += startVolume * Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+
+        audioSource.volume = startVolume;
     }
 
     private void Win()
@@ -170,21 +226,26 @@ public class FishingMiniGame : MonoBehaviour
         pause = true;
         WinMenu.SetActive(true);
 
-        if (audioSource.isPlaying)
+        StartCoroutine(FadeOutMusic(musicAudioSource, 3f));
+
+        if (fishSFXAudioSource.isPlaying)
         {
-            audioSource.Stop();
+            fishSFXAudioSource.Stop();
         }
     }
 
     private void Lose()
     {
+
+        StartCoroutine(FadeOutMusic(musicAudioSource, 3f));
+
         Data.playerLose = true;
         pause = true;
         GameOverMenu.SetActive(true);
 
-        if (audioSource.isPlaying)
+        if (fishSFXAudioSource.isPlaying)
         {
-            audioSource.Stop();
+            fishSFXAudioSource.Stop();
         }
     }
 }

@@ -1677,6 +1677,7 @@ GameObject:
   - component: {fileID: 1815016353}
   - component: {fileID: 1815016355}
   - component: {fileID: 1815016354}
+  - component: {fileID: 1815016356}
   m_Layer: 5
   m_Name: TimerImage
   m_TagString: Untagged
@@ -1741,6 +1742,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815016352}
   m_CullTransparentMesh: 1
+--- !u!95 &1815016356
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1815016352}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3208251803931497897bf22184b40639, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1815162988
 GameObject:
   m_ObjectHideFlags: 0
@@ -2032,6 +2054,7 @@ MonoBehaviour:
   hookGravity: 0.007
   hookProgressDegradationPower: 0.2
   fishSplashing: {fileID: 8300000, guid: 06aebf0d9bf1d494dbfab5ce76a9fed8, type: 3}
+  timerAnim: {fileID: 1815016356}
 --- !u!4 &1934793803
 Transform:
   m_ObjectHideFlags: 0
