@@ -1,46 +1,34 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class FishingMiniGame : MonoBehaviour
 {
-
     public GameObject GameOverMenu;
     public GameObject WinMenu;
     public TextMeshProUGUI failTimerText;
 
-    //Referens till punkterna som fisken kommer röra sig mellan
     [SerializeField] private Transform topPivot;
     [SerializeField] private Transform bottomPivot;
-
     [SerializeField] private Transform fish;
-
-    private float fishPosition;
-    private float fishDestination;
-
-    //bestämmer hur lång tid den är på en viss plats;
-    private float fishTimer;
-    [SerializeField] private float timerMultiplicator;
-
-    [SerializeField] private float failTimer = 10f;
-
-    //hur snabbt den rör sig mellan punkter
-    private float fishSpeed;
-    [SerializeField] private float smoothMotion = 1f;
-
-    [SerializeField] Transform progressBarContainer;
-
-    [SerializeField] Transform hook;
+    [SerializeField] private Transform progressBarContainer;
+    [SerializeField] private Transform hook;
 
     [SerializeField] private float hookSize = 0.1f;
     [SerializeField] private float hookPower = 5f;
     [SerializeField] private float hookPullPower = 0.01f;
     [SerializeField] private float hookGravity = 0.005f;
     [SerializeField] private float hookProgressDegradationPower = 1f;
+    [SerializeField] private float timerMultiplicator;
+    [SerializeField] private float smoothMotion = 1f;
+    [SerializeField] private float failTimer = 10f;
 
     [SerializeField] private AudioClip fishSplashing;
 
+    private float fishPosition;
+    private float fishDestination;
+    private float fishTimer;
+    private float fishSpeed;
     private float hookPosition;
     private float hookProgress;
     private float hookPullVelocity;
@@ -48,46 +36,34 @@ public class FishingMiniGame : MonoBehaviour
     private bool pause = false;
     private bool isPlayingTimerAnimation = false;
 
-    private AudioSource fishSFXAudioSource; // För fisken
-    private AudioSource musicAudioSource;   // För bakgrundsmusik (från hierarkin)
+    private AudioSource fishSFXAudioSource;
+    private AudioSource musicAudioSource;
 
     public Animator timerAnim;
 
     private void Start()
     {
         fishPosition = Random.value;
-
         UpdateFishPosition();
         fishSFXAudioSource = GetComponent<AudioSource>();
         musicAudioSource = GameObject.Find("AudioSource").GetComponent<AudioSource>();
-
         StartCoroutine(FadeInMusic(musicAudioSource, 2f));
     }
 
     private void Update()
     {
         if (pause)
-        {
             return;
-        }
 
         Fish();
         Hook();
         ProgressCheck();
         UpdateFailTimerUI();
-
-        if (!pause)
-        {
-            if (hookProgress > 0 && hookProgress < 1 && !fishSFXAudioSource.isPlaying)
-            {
-                fishSFXAudioSource.PlayOneShot(fishSplashing);
-            }
-        }
+        PlayFishSplashingSound();
     }
 
     private void ProgressCheck()
     {
-        //uppdaterar progressBar baserat på fiskens och krokens position
         Vector3 ls = progressBarContainer.localScale;
         ls.y = hookProgress;
         progressBarContainer.localScale = ls;
@@ -96,31 +72,21 @@ public class FishingMiniGame : MonoBehaviour
         float max = hookPosition + hookSize / 2;
 
         if (min < fishPosition && fishPosition < max)
-        {
             hookProgress += hookPower * Time.deltaTime;
-        }
         else
         {
-            //om fisken inte är i hook så kommer hookpower långsamt gå ner
             hookProgress -= hookProgressDegradationPower * Time.deltaTime;
-
             failTimer -= Time.deltaTime;
 
             if (failTimer < 0.4f)
-            {
                 StartCoroutine(PlayTimerAnim());
-            }
         }
 
         if (hookProgress >= 1f)
-        {
             Win();
-        }
 
-        //säkerhetsställer att progressen är inom giltiga ramar
-        hookProgress = Mathf.Clamp(hookProgress, 0f, 1f);
+        hookProgress = Mathf.Clamp01(hookProgress);
     }
-
 
     private void Fish()
     {
@@ -128,7 +94,6 @@ public class FishingMiniGame : MonoBehaviour
         if (fishTimer < 0f)
         {
             fishTimer = Random.value * timerMultiplicator;
-
             fishDestination = Random.value;
         }
 
@@ -139,22 +104,14 @@ public class FishingMiniGame : MonoBehaviour
     private void Hook()
     {
         if (Input.GetMouseButton(0))
-        {
             hookPullVelocity += hookPullPower * Time.deltaTime;
-        }
-        hookPullVelocity -= hookGravity * Time.deltaTime;
 
+        hookPullVelocity -= hookGravity * Time.deltaTime;
         hookPosition += hookPullVelocity;
 
-        if(hookPosition - hookSize / 2 <= 0f && hookPullVelocity < 0f)
-        {
+        if (hookPosition - hookSize / 2 <= 0f && hookPullVelocity < 0f ||
+            hookPosition + hookSize / 2 >= 1f && hookPullVelocity > 0f)
             hookPullVelocity = 0f;
-        }
-
-        if(hookPosition + hookSize / 2 >= 1f && hookPullVelocity > 0f)
-        {
-            hookPullVelocity = 0f;
-        }
 
         hookPosition = Mathf.Clamp(hookPosition, hookSize / 2, 1 - hookSize / 2);
         hook.position = Vector3.Lerp(bottomPivot.position, topPivot.position, hookPosition);
@@ -167,56 +124,49 @@ public class FishingMiniGame : MonoBehaviour
 
     private void UpdateFailTimerUI()
     {
-        if (isPlayingTimerAnimation == false)
-        {
-            // Om failTimer går under 0, sätt texten till 0 istället för det negativa värdet
-            failTimerText.text = Mathf.Max(0, Mathf.RoundToInt(failTimer)).ToString();
+        if (isPlayingTimerAnimation == false && failTimer < 0.5f)
+            StartCoroutine(PlayTimerAnim());
 
-            if (failTimer < 0.5f)
-            {
-                StartCoroutine(PlayTimerAnim());
-            }
-        }
+        failTimerText.text = Mathf.Max(0, Mathf.RoundToInt(failTimer)).ToString();
     }
 
+    private void PlayFishSplashingSound()
+    {
+        if (!pause && hookProgress > 0 && hookProgress < 1 && !fishSFXAudioSource.isPlaying)
+            fishSFXAudioSource.PlayOneShot(fishSplashing);
+    }
 
     private IEnumerator PlayTimerAnim()
     {
         isPlayingTimerAnimation = true;
-
         timerAnim.SetTrigger("Shake");
-
         yield return new WaitForSeconds(2f);
-
+        StartCoroutine(FadeOutMusic(musicAudioSource, 3f)); // Fade out music here
         Lose();
     }
+
 
     private IEnumerator FadeOutMusic(AudioSource audioSource, float fadeDuration)
     {
         float startVolume = audioSource.volume;
-
         while (audioSource.volume > 0)
         {
             audioSource.volume -= startVolume * Time.deltaTime / fadeDuration;
             yield return null;
         }
-
-        audioSource.Stop(); // Stoppa ljuduppspelningen när volymen når noll
-        audioSource.volume = startVolume; // Återställ volymen till dess ursprungliga värde
+        audioSource.Stop();
+        audioSource.volume = startVolume;
     }
 
     private IEnumerator FadeInMusic(AudioSource audioSource, float fadeDuration)
     {
         float startVolume = audioSource.volume;
-
         audioSource.volume = 0f;
-
         while (audioSource.volume < startVolume)
         {
             audioSource.volume += startVolume * Time.deltaTime / fadeDuration;
             yield return null;
         }
-
         audioSource.volume = startVolume;
     }
 
@@ -225,27 +175,18 @@ public class FishingMiniGame : MonoBehaviour
         Data.playerWin = true;
         pause = true;
         WinMenu.SetActive(true);
-
         StartCoroutine(FadeOutMusic(musicAudioSource, 3f));
-
         if (fishSFXAudioSource.isPlaying)
-        {
             fishSFXAudioSource.Stop();
-        }
     }
 
     private void Lose()
     {
-
-        StartCoroutine(FadeOutMusic(musicAudioSource, 3f));
-
         Data.playerLose = true;
         pause = true;
         GameOverMenu.SetActive(true);
-
         if (fishSFXAudioSource.isPlaying)
-        {
             fishSFXAudioSource.Stop();
-        }
     }
 }
+
