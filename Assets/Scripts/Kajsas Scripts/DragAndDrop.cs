@@ -21,15 +21,19 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
     private CanvasGroup canvasGroup;
     private Vector2 offset;
     private bool locked;
-    private AudioSource audioSource;
+
+    private AudioSource sfxAudioSource;
+    private AudioSource musicSource;
 
     void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
-        audioSource = GetComponent<AudioSource>();
+        sfxAudioSource = GetComponent<AudioSource>();
+        musicSource = GameObject.Find("AudioSource").GetComponent<AudioSource>();
 
+        StartCoroutine(FadeInMusic(musicSource, 3f));
     }
 
     //OnPointerDown för att interagera med UI element
@@ -61,8 +65,8 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
                 locked = true; // Lås UI-elementet om det hamnar på rätt plats
                 EventTrigger eventTrigger = GetComponent<EventTrigger>();
 
-                audioSource.pitch = Random.Range(0.8f, 1.5f);
-                audioSource.PlayOneShot(dropSound);
+                sfxAudioSource.pitch = Random.Range(0.8f, 1.5f);
+                sfxAudioSource.PlayOneShot(dropSound);
 
                 if (eventTrigger != null)
                 {
@@ -73,6 +77,7 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
                 if (GameObject.FindObjectsOfType<MoveUIObject_DD>().All(obj => obj.locked))
                 {
                     Data.playerWin = true;
+                    StartCoroutine(FadeOutMusic(musicSource, 3f));
                     winPanel.SetActive(true);
                 }
             }
@@ -98,6 +103,7 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
             {
                 timeRemaining = 0f;
                 Data.playerLose = true;
+                StartCoroutine(FadeOutMusic(musicSource, 3f));
                 losePanel.SetActive(true);
             }
             UpdateTimerDisplay();
@@ -109,5 +115,29 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
         // Uppdatera UI-texten för att visa den återstående tiden
         int seconds = Mathf.CeilToInt(timeRemaining);
         timerText.text = seconds.ToString();
+    }
+
+    private IEnumerator FadeOutMusic(AudioSource audioSource, float fadeDuration)
+    {
+        float startVolume = audioSource.volume;
+        while (audioSource.volume > 0)
+        {
+            audioSource.volume -= startVolume * Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+        audioSource.Stop();
+        audioSource.volume = startVolume;
+    }
+
+    private IEnumerator FadeInMusic(AudioSource audioSource, float fadeDuration)
+    {
+        float startVolume = audioSource.volume;
+        audioSource.volume = 0f;
+        while (audioSource.volume < startVolume)
+        {
+            audioSource.volume += startVolume * Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+        audioSource.volume = startVolume;
     }
 }

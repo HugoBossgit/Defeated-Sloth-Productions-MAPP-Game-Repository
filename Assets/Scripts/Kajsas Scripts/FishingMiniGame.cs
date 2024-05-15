@@ -141,7 +141,6 @@ public class FishingMiniGame : MonoBehaviour
         isPlayingTimerAnimation = true;
         timerAnim.SetTrigger("Shake");
         yield return new WaitForSeconds(2f);
-        StartCoroutine(FadeOutMusic(musicAudioSource, 3f)); // Fade out music here
         Lose();
     }
 
@@ -182,6 +181,8 @@ public class FishingMiniGame : MonoBehaviour
 
     private void Lose()
     {
+        StartCoroutine(FadeOutMusic(musicAudioSource, 3f)); // Fade out music here
+
         Data.playerLose = true;
         pause = true;
         GameOverMenu.SetActive(true);
