@@ -13,6 +13,7 @@ public class PuzzleManager : MonoBehaviour
     public GameObject winPanel;
     public GameObject losePanel;
 
+    [SerializeField] private AudioClip dragSound;
     [SerializeField] private float timeRemaining = 20f;
     [SerializeField] private Transform board;
     [SerializeField] private Transform puzzleBit;
@@ -22,6 +23,7 @@ public class PuzzleManager : MonoBehaviour
     private int emptyLocation;
     private int size;
     private bool shuff = false;
+    private AudioSource audioSource;
 
 
     private void CreatePuzzleBitar(float gapThic)
@@ -71,6 +73,7 @@ public class PuzzleManager : MonoBehaviour
         StartGame();
         startInfo.SetActive(false);
         CreatePuzzleBitar(0.01f);
+        audioSource = GetComponent<AudioSource>();
         
     }
 
@@ -96,6 +99,7 @@ public class PuzzleManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+            audioSource.PlayOneShot(dragSound);
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
             if (hit)
             {

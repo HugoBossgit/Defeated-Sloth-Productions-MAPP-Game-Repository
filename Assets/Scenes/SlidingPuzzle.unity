@@ -234,7 +234,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.16197926, g: 0.2701962, b: 0.44025147, a: 0}
+  m_BackGroundColor: {r: 0.1874925, g: 0.2127634, b: 0.27058825, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -485,8 +485,9 @@ MonoBehaviour:
   startInfo: {fileID: 730305341}
   winPanel: {fileID: 1397997458}
   losePanel: {fileID: 961858027}
+  dragSound: {fileID: 8300000, guid: 8402a16f9b3c9db48a1a56754acb6b98, type: 3}
   timeRemaining: 20
-  board: {fileID: 971072423}
+  board: {fileID: 0}
   puzzleBit: {fileID: 3100328066111140306, guid: 40c956d7ad446c5479c5b965039f3225, type: 3}
 --- !u!1 &730305341
 GameObject:
