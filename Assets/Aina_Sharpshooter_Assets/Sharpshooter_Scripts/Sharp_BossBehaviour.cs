@@ -9,7 +9,7 @@ public class BossBehaviour : MonoBehaviour
 {
     //Variabler & objekt
     [SerializeField] private Transform target1, target2, target3, target4, target5, target6, currentTarget;
-                     private float speed = 4f;
+                     private float speed = 1f;
                      private int damage = 1;
                      private int lives = 35;
                      private int worth = 1000;
@@ -30,7 +30,7 @@ public class BossBehaviour : MonoBehaviour
       (hälsa sänks då fienden är vid spelaren). Sedan rör sig objektet mot target3 där det sedan förstörs/despawnar */
     void FixedUpdate()
     {
-        if (controller.getReady() && transform.position.y < 15)
+        if (controller.getReady() && transform.position.y < 4)
         {
             if (transform.position.y == target1.position.y)
             {

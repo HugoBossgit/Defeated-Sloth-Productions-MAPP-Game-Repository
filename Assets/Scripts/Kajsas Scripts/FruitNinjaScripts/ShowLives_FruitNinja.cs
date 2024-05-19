@@ -11,9 +11,12 @@ public class ShowLives_FruitNinja : MonoBehaviour
 
     [SerializeField] private GameObject lifePrefab;
 
+    [SerializeField] private GameObject scoreText, losePanel;
+
     private List<GameObject> lives;
 
-    [SerializeField] private GameObject scoreText, losePanel;
+    private AudioSource musicAudioSource;
+
 
     void Start()
     {
@@ -23,6 +26,21 @@ public class ShowLives_FruitNinja : MonoBehaviour
             GameObject life = Instantiate(lifePrefab, gameObject.transform);
             lives.Add(life);
         }
+
+        musicAudioSource = GameObject.Find("AudioSource").GetComponent<AudioSource>();
+
+    }
+
+    private IEnumerator FadeOutMusic(AudioSource audioSource, float fadeDuration)
+    {
+        float startVolume = audioSource.volume;
+        while (audioSource.volume > 0)
+        {
+            audioSource.volume -= startVolume * Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+        audioSource.Stop();
+        audioSource.volume = startVolume;
     }
 
     public void LooseLife()
@@ -33,6 +51,7 @@ public class ShowLives_FruitNinja : MonoBehaviour
         Destroy(life);
         if (numberOfLives == 0)
         {
+            StartCoroutine(FadeOutMusic(musicAudioSource, 3f));
             Data.playerLose = true;
             scoreText.SetActive(false);
             losePanel.SetActive(true);

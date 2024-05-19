@@ -9,6 +9,7 @@ TagManager:
   - Target
   - Fruit
   - Cut
+  - Bomb
   layers:
   - Default
   - TransparentFX

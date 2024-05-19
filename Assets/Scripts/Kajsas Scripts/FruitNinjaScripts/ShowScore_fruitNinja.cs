@@ -26,7 +26,7 @@ public class ShowScore_fruitNinja : MonoBehaviour
 
     void UpdateScoreText()
     {
-        scoreText.text = "" + score;
+        scoreText.text = "" + score + "/30";
 
         if(score == 30)
         {
