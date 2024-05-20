@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerWizard : MonoBehaviour
 {
@@ -19,13 +20,33 @@ public class PlayerWizard : MonoBehaviour
     void Update()
     {
       
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
-            Vector3 touchPos = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+            Vector3 touchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            if (touchPos.x < 0)
+            {
+                rb.AddForce(Vector2.left * moveSpeed);
+            }
+            else
+            {
+                rb.AddForce(Vector2.right * moveSpeed);
+            }
         }
         else
         {
             rb.velocity = Vector2.zero;
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "FireBall")
+        {
+            Data.playerLose = true;
+            SceneManager.LoadScene(1);
+        }
+    }
+
+
 }
