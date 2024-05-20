@@ -10,23 +10,30 @@ public class DodgeManager : MonoBehaviour
     public Transform spawnPoint;
     public float spawnRate;
 
+    [SerializeField] private GameObject startInfo;
+
 
     bool gameStarted = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        startInfo.SetActive(true);
+
     }
 
     // Update is called once per frame
     void Update()
     {
+
         if (Input.GetMouseButtonDown(0) && !gameStarted)
         {
+            startInfo.SetActive(false);
+
             StartSpawning();
 
             gameStarted = true;
+
         }
     }
 
@@ -45,5 +52,7 @@ public class DodgeManager : MonoBehaviour
 
         Instantiate(fireBall, spawnPos, Quaternion.identity);
     }
+
+
 
 }

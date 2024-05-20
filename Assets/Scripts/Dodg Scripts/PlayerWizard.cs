@@ -7,13 +7,19 @@ public class PlayerWizard : MonoBehaviour
 {
 
     public float moveSpeed;
+
     Rigidbody2D rb;
+
+    [SerializeField] private GameObject winInfo;
+    [SerializeField] private GameObject loseInfo;
 
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        loseInfo.SetActive(false);
+        winInfo.SetActive(false);
     }
 
     // Update is called once per frame
@@ -44,9 +50,19 @@ public class PlayerWizard : MonoBehaviour
         if (collision.gameObject.tag == "FireBall")
         {
             Data.playerLose = true;
+            loseInfo.SetActive(true);
+            StartCoroutine(Delay(0.1f));
+
             SceneManager.LoadScene(1);
         }
     }
+
+    private IEnumerator Delay(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+    }
+
 
 
 }
