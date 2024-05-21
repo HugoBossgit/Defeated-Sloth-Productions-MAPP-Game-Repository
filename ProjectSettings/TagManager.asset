@@ -10,6 +10,7 @@ TagManager:
   - Fruit
   - Cut
   - Bomb
+  - FireBall
   layers:
   - Default
   - TransparentFX
