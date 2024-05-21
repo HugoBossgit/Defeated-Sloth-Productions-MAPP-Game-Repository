@@ -11,9 +11,11 @@ public class Timer : MonoBehaviour
     private bool doCountDown;
     private float timeRemaining;
     private TextMeshProUGUI countdownText;
+    private AudioSource audioSource;
 
     void Start() {
         countdownText = GetComponent<TextMeshProUGUI>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void OnEnable() {
@@ -39,15 +41,18 @@ public class Timer : MonoBehaviour
         int timeInSeconds = (int)Math.Floor(timeRemaining % 60);
         if (timeInSeconds < 0) {
             timeInSeconds = 0;
+            audioSource.Stop();
         }
         countdownText.text = timeInSeconds.ToString();
     }
 
     public void EnableCountDown() {
         doCountDown = true;
+        audioSource.Play();
     }
 
     public void DisableCountDown() {
         doCountDown = false;
+        GetComponent<AudioSource>().Stop(); //Using GetComponent here to avoid audioSource not being assigned when this is called in OnEnable(). Probably is a better way to do it though
     }
 }

@@ -46,11 +46,11 @@ public class BrickTower : MonoBehaviour
     [SerializeField] private int brickSpacing;
     [SerializeField] private AudioClip tapSound;
     [SerializeField] private AudioClip breakSound;
+    [SerializeField] private int countdown = 5;
 
     private List<Brick> bricks;
     private Stack<GameObject> panels;
     private Vector2 canvasSize;
-    private int countdown = 5;
     private AudioSource audioSource;
 
     // Start is called before the first frame update
