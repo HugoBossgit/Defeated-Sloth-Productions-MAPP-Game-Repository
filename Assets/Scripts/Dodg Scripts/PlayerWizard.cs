@@ -58,8 +58,6 @@ public class PlayerWizard : MonoBehaviour
 
 
 
-
-
     private IEnumerator Delay(float duration)
     {
         yield return new WaitForSeconds(duration);

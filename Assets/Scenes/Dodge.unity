@@ -313,7 +313,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4041357301331053336, guid: 695308e7414514bca9159d669a47d83e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6603457227357171291, guid: 695308e7414514bca9159d669a47d83e, type: 3}
       propertyPath: m_Pivot.x
@@ -1013,8 +1013,8 @@ Transform:
   m_GameObject: {fileID: 807440661}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.2233, y: -3.44, z: 0}
-  m_LocalScale: {x: 0.41931263, y: 0.41740227, z: 1.0680876}
+  m_LocalPosition: {x: -0.1085, y: -3.5543, z: 0}
+  m_LocalScale: {x: 0.37448812, y: 0.37278196, z: 0.95390904}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1121,7 +1121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 989102956}
   - component: {fileID: 989102955}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1378,7 +1378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.9254902}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
