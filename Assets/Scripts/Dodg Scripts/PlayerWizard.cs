@@ -51,11 +51,12 @@ public class PlayerWizard : MonoBehaviour
         {
             Data.playerLose = true;
             loseInfo.SetActive(true);
-            StartCoroutine(Delay(0.1f));
+            CancelInvoke("SpawnFireBall");
 
-            SceneManager.LoadScene(1);
         }
     }
+
+
 
 
 

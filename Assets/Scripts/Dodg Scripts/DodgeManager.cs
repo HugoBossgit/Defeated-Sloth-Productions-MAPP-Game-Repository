@@ -63,34 +63,35 @@ public class DodgeManager : MonoBehaviour
 
         Instantiate(fireBall, spawnPos, Quaternion.identity);
 
+
+
         score++;
-
-        scoreText.text = score.ToString();
-    }
-
-    public void RisingScore(int rasingValue)
-    {
         UpdateScoreText();
+
+        if ( score == 15)
+        {
+            WinGame();
+        }
+
     }
+
+
 
     void UpdateScoreText()
     {
-        scoreText.text = score + "/30";
+        scoreText.text = score + "/15";
 
-        if (score == 30)
-        {
-            Data.playerWin = true;
-            winInfo.SetActive(true);
-            StartCoroutine(Delay(0.1f));
-
-            SceneManager.LoadScene(1);
-        }
     }
 
-    public int GetScore()
+    private void WinGame()
     {
-        return score;
+        Data.playerWin = true;
+        winInfo.SetActive(true);
+        CancelInvoke("SpawnFireBall");
+
     }
+
+
 
     private IEnumerator Delay(float duration)
     {
