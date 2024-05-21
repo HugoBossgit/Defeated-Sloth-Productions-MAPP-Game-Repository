@@ -14,12 +14,17 @@ public class PlayerWizard : MonoBehaviour
 
     [SerializeField] private GameObject loseInfo;
 
+    private AudioSource backgroundMusic;
+
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        backgroundMusic = GetComponent<AudioSource>();
         loseInfo.SetActive(false);
+        StartCoroutine(FadeInMusic(backgroundMusic, 3f));
+
     }
 
     // Update is called once per frame
@@ -63,6 +68,20 @@ public class PlayerWizard : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
     }
+
+    private IEnumerator FadeInMusic(AudioSource audioSource, float fadeDuration)
+    {
+        float startVolume = audioSource.volume;
+        audioSource.volume = 0f;
+        while (audioSource.volume < startVolume)
+        {
+            audioSource.volume += startVolume * Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+        audioSource.volume = startVolume;
+    }
+
+
 
 
 
