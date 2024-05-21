@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PlayerWizard : MonoBehaviour
 {
+    public int score = 0;
 
     public float moveSpeed;
 
     Rigidbody2D rb;
 
-    [SerializeField] private GameObject winInfo;
     [SerializeField] private GameObject loseInfo;
 
 
@@ -19,7 +20,6 @@ public class PlayerWizard : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         loseInfo.SetActive(false);
-        winInfo.SetActive(false);
     }
 
     // Update is called once per frame
@@ -56,6 +56,8 @@ public class PlayerWizard : MonoBehaviour
             SceneManager.LoadScene(1);
         }
     }
+
+
 
     private IEnumerator Delay(float duration)
     {

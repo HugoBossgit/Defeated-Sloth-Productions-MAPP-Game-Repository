@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class DodgeManager : MonoBehaviour
 {
@@ -9,16 +13,23 @@ public class DodgeManager : MonoBehaviour
     public float maxX;
     public Transform spawnPoint;
     public float spawnRate;
+    public TextMeshProUGUI scoreText;
 
     [SerializeField] private GameObject startInfo;
+    [SerializeField] private GameObject winInfo;
+
 
 
     bool gameStarted = false;
+    int score = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         startInfo.SetActive(true);
+        winInfo.SetActive(false);
+
+        UpdateScoreText();
 
     }
 
@@ -51,8 +62,41 @@ public class DodgeManager : MonoBehaviour
         spawnPos.x = Random.Range(-maxX, maxX);
 
         Instantiate(fireBall, spawnPos, Quaternion.identity);
+
+        score++;
+
+        scoreText.text = score.ToString();
     }
 
+    public void RisingScore(int rasingValue)
+    {
+        UpdateScoreText();
+    }
+
+    void UpdateScoreText()
+    {
+        scoreText.text = score + "/30";
+
+        if (score == 30)
+        {
+            Data.playerWin = true;
+            winInfo.SetActive(true);
+            StartCoroutine(Delay(0.1f));
+
+            SceneManager.LoadScene(1);
+        }
+    }
+
+    public int GetScore()
+    {
+        return score;
+    }
+
+    private IEnumerator Delay(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+    }
 
 
 }
