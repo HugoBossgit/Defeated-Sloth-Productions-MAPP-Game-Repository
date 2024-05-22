@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0a19c09fc15614c41bdaced5b1432825, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 928459f47b2f948ca87e127163a0c52a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -190,10 +190,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba442df447cce41c0a6aff021460c97a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cutSounds:
-  - {fileID: 8300000, guid: fe767c8f2e710413380ad33bc790f3b1, type: 3}
-  - {fileID: 8300000, guid: b4479389444fc496dbdfaa9d582b069f, type: 3}
-  - {fileID: 8300000, guid: 79b28136731f844ce98202163497c140, type: 3}
+  genericParticle: {fileID: 1364645031934548807, guid: 56715732dcc124a4e916f42cd945904c, type: 3}
+  gemType: 0
+  emeraldSprite: {fileID: 21300000, guid: 928459f47b2f948ca87e127163a0c52a, type: 3}
+  diamondSprite: {fileID: 21300000, guid: 4578bd4045c6d4ee1838ac77e692e337, type: 3}
+  amethystSprite: {fileID: 21300000, guid: 0c8fb75c5d00a4a87afd7b7a303968c4, type: 3}
+  rubySprite: {fileID: 21300000, guid: 8874aa680beb14f8f9eeb42d092e6ec2, type: 3}
 --- !u!82 &-6376442576674029558
 AudioSource:
   m_ObjectHideFlags: 0

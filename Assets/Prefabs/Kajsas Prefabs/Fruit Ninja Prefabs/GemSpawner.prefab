@@ -50,7 +50,7 @@ MonoBehaviour:
   objectMaxX: 1
   objectY: -5.5
   objectSprites:
-  - {fileID: 21300000, guid: 0a19c09fc15614c41bdaced5b1432825, type: 3}
+  - {fileID: 21300000, guid: 928459f47b2f948ca87e127163a0c52a, type: 3}
   - {fileID: 21300000, guid: 0c8fb75c5d00a4a87afd7b7a303968c4, type: 3}
   - {fileID: 21300000, guid: 4578bd4045c6d4ee1838ac77e692e337, type: 3}
   - {fileID: 21300000, guid: 8874aa680beb14f8f9eeb42d092e6ec2, type: 3}
