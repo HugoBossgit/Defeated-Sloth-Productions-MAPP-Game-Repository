@@ -62,13 +62,6 @@ public class PlayerWizard : MonoBehaviour
     }
 
 
-
-    private IEnumerator Delay(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-
-    }
-
     private IEnumerator FadeInMusic(AudioSource audioSource, float fadeDuration)
     {
         float startVolume = audioSource.volume;
