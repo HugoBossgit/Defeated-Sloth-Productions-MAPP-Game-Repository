@@ -2,7 +2,6 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 using TMPro;
 
 public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
@@ -11,7 +10,7 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
     public GameObject winPanel;
     public GameObject losePanel;
     public TextMeshProUGUI timerText;
-
+    public Animator timerAnim;
 
     [SerializeField] private AudioClip dropSound;
     [SerializeField] private float timeRemaining = 15f;
@@ -19,8 +18,12 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
     private RectTransform rectTransform;
     private Canvas canvas;
     private CanvasGroup canvasGroup;
+
     private Vector2 offset;
+
     private bool locked;
+    private bool isFadingOutMusic = false;
+    private bool hasLost = false;
 
     private AudioSource sfxAudioSource;
     private AudioSource musicSource;
@@ -84,7 +87,6 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
         }
     }
 
-
     public void OnDrag(PointerEventData eventData)
     {
         if (!locked)
@@ -95,20 +97,19 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
 
     private void Update()
     {
-        // Uppdatera och visa timer
         if (!locked)
         {
             timeRemaining -= Time.deltaTime;
             if (timeRemaining <= 0f)
             {
                 timeRemaining = 0f;
+                StartCoroutine(PlayTimerAnim());
                 Data.playerLose = true;
-                StartCoroutine(FadeOutMusic(musicSource, 3f));
-                losePanel.SetActive(true);
             }
             UpdateTimerDisplay();
         }
     }
+
 
     private void UpdateTimerDisplay()
     {
@@ -117,17 +118,59 @@ public class MoveUIObject_DD : MonoBehaviour, IPointerDownHandler, IBeginDragHan
         timerText.text = seconds.ToString();
     }
 
+    private IEnumerator PlayTimerAnim()
+    {
+        if (!isFadingOutMusic) 
+        {
+            StartCoroutine(FadeOutMusic(musicSource, 5f));
+        }
+        timerAnim.SetTrigger("Shake");
+        yield return new WaitForSeconds(0.5f);
+        Lose();
+    }
+
+    private void Lose()
+    {
+        if (!hasLost) 
+        {
+            StartCoroutine(LoseRoutine());
+        }
+    }
+
+    private IEnumerator LoseRoutine()
+    {
+        if (hasLost)
+            yield break;
+
+        hasLost = true;
+        yield return StartCoroutine(FadeOutMusic(musicSource, 3f));
+
+        Data.playerLose = true;
+        losePanel.SetActive(true);
+    }
+
     private IEnumerator FadeOutMusic(AudioSource audioSource, float fadeDuration)
     {
+        if (isFadingOutMusic)
+            yield break;
+
+        isFadingOutMusic = true;
         float startVolume = audioSource.volume;
-        while (audioSource.volume > 0)
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
         {
-            audioSource.volume -= startVolume * Time.deltaTime / fadeDuration;
+            elapsed += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(startVolume, 0, elapsed / fadeDuration);
             yield return null;
         }
+
         audioSource.Stop();
         audioSource.volume = startVolume;
+        isFadingOutMusic = false;
     }
+
+
 
     private IEnumerator FadeInMusic(AudioSource audioSource, float fadeDuration)
     {
