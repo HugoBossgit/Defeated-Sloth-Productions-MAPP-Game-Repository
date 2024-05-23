@@ -103,7 +103,7 @@ public class FishingMiniGame : MonoBehaviour
 
     private void Hook()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) || Input.touchCount > 0)
             hookPullVelocity += hookPullPower * Time.deltaTime;
 
         hookPullVelocity -= hookGravity * Time.deltaTime;
@@ -116,6 +116,7 @@ public class FishingMiniGame : MonoBehaviour
         hookPosition = Mathf.Clamp(hookPosition, hookSize / 2, 1 - hookSize / 2);
         hook.position = Vector3.Lerp(bottomPivot.position, topPivot.position, hookPosition);
     }
+
 
     private void UpdateFishPosition()
     {
