@@ -610,18 +610,4 @@ public class GameLoopGameController_Script : MonoBehaviour
     {
         Data.playerWin = true;
     }
-
-
-
-
-
-
-    //TO - DO
-    //2 fiender som �r kopplat till enstaka minigames --> kan ta skada eller f�rlora item
-    //2 event tvingat specifikt minigame --> kan f� item, h�lsa eller f�rlora h�lsa eller ingenting h�nder
-    //random fiende och event v�ljare i game loopen
-    //Items som p�verkar boss fight
-    //Vid f�rlust mot vanlig fiende kan man f�rlora item
-    //Boss --> 3 olika spel f�r bossen
-    //Fiender med olika attribut (vissa g�r mer skada andra andra har st�rre chans att sno item ex drake vs goblin)
 }
