@@ -103,7 +103,7 @@ public class FishingMiniGame : MonoBehaviour
 
     private void Hook()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) || Input.touchCount > 0)
             hookPullVelocity += hookPullPower * Time.deltaTime;
 
         hookPullVelocity -= hookGravity * Time.deltaTime;
@@ -116,6 +116,7 @@ public class FishingMiniGame : MonoBehaviour
         hookPosition = Mathf.Clamp(hookPosition, hookSize / 2, 1 - hookSize / 2);
         hook.position = Vector3.Lerp(bottomPivot.position, topPivot.position, hookPosition);
     }
+
 
     private void UpdateFishPosition()
     {
@@ -139,20 +140,24 @@ public class FishingMiniGame : MonoBehaviour
     private IEnumerator PlayTimerAnim()
     {
         isPlayingTimerAnimation = true;
+        StartCoroutine(FadeOutMusic(musicAudioSource, 5f));
         timerAnim.SetTrigger("Shake");
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         Lose();
     }
-
 
     private IEnumerator FadeOutMusic(AudioSource audioSource, float fadeDuration)
     {
         float startVolume = audioSource.volume;
-        while (audioSource.volume > 0)
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
         {
-            audioSource.volume -= startVolume * Time.deltaTime / fadeDuration;
+            elapsed += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(startVolume, 0, elapsed / fadeDuration);
             yield return null;
         }
+
         audioSource.Stop();
         audioSource.volume = startVolume;
     }
@@ -181,13 +186,18 @@ public class FishingMiniGame : MonoBehaviour
 
     private void Lose()
     {
-        StartCoroutine(FadeOutMusic(musicAudioSource, 3f)); // Fade out music here
+        StartCoroutine(LoseRoutine());
+    }
+
+    private IEnumerator LoseRoutine()
+    {
+        yield return StartCoroutine(FadeOutMusic(musicAudioSource, 3f));
 
         Data.playerLose = true;
         pause = true;
         GameOverMenu.SetActive(true);
+
         if (fishSFXAudioSource.isPlaying)
             fishSFXAudioSource.Stop();
     }
 }
-

@@ -284,7 +284,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 99d7afb02d3ad4bc99ac54587f5aa95a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 88e252a607c7345c0be3040fea078f07, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -455,6 +455,7 @@ MonoBehaviour:
   winPanel: {fileID: 933394806}
   losePanel: {fileID: 1477271787}
   timerText: {fileID: 168108079}
+  timerAnim: {fileID: 1785945662}
   dropSound: {fileID: 8300000, guid: 1862c1921e47b4c77a6308d3d9d88fc1, type: 3}
   timeRemaining: 15
 --- !u!61 &323122802
@@ -1651,6 +1652,7 @@ MonoBehaviour:
   winPanel: {fileID: 933394806}
   losePanel: {fileID: 1477271787}
   timerText: {fileID: 168108079}
+  timerAnim: {fileID: 1785945662}
   dropSound: {fileID: 8300000, guid: 1862c1921e47b4c77a6308d3d9d88fc1, type: 3}
   timeRemaining: 15
 --- !u!61 &1492649391
@@ -2153,6 +2155,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1642952663}
   m_CullTransparentMesh: 1
+--- !u!95 &1785945662 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8172868705026973824, guid: a625798947ccf4a7d86ea1a43d592e61, type: 3}
+  m_PrefabInstance: {fileID: 1609015673}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1849370916
 GameObject:
   m_ObjectHideFlags: 0
@@ -2444,6 +2451,7 @@ MonoBehaviour:
   winPanel: {fileID: 933394806}
   losePanel: {fileID: 1477271787}
   timerText: {fileID: 168108079}
+  timerAnim: {fileID: 1785945662}
   dropSound: {fileID: 8300000, guid: 1862c1921e47b4c77a6308d3d9d88fc1, type: 3}
   timeRemaining: 15
 --- !u!225 &2054979320
