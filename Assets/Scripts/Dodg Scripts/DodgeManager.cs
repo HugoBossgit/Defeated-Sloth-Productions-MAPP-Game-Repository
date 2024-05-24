@@ -91,4 +91,9 @@ public class DodgeManager : MonoBehaviour
 
     }
 
+    public void PlayerLose()
+    {
+        CancelInvoke("SpawnFireBall");
+    }
+
 }

@@ -625,7 +625,7 @@ MonoBehaviour:
   fireBall: {fileID: 2969299669795457353, guid: c7d8a1ad3b53c3147b6dfcac8e670827, type: 3}
   maxX: 2.05
   spawnPoint: {fileID: 1648539676}
-  spawnRate: 1.5
+  spawnRate: 1.7
   scoreText: {fileID: 740597346}
   startInfo: {fileID: 384065233}
   winInfo: {fileID: 1242410894}

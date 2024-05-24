@@ -15,6 +15,8 @@ public class PlayerWizard : MonoBehaviour
     [SerializeField] private GameObject loseInfo;
 
     private AudioSource backgroundMusic;
+    private DodgeManager dodgeManager;
+    private bool gameActive = true;
 
 
     // Start is called before the first frame update
@@ -25,12 +27,17 @@ public class PlayerWizard : MonoBehaviour
         loseInfo.SetActive(false);
         StartCoroutine(FadeInMusic(backgroundMusic, 3f));
 
+        dodgeManager = FindObjectOfType<DodgeManager>();
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-      
+
+        if (!gameActive) return;
+
         if (Input.GetMouseButton(0))
         {
             Vector3 touchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -56,7 +63,12 @@ public class PlayerWizard : MonoBehaviour
         {
             Data.playerLose = true;
             loseInfo.SetActive(true);
-            CancelInvoke("SpawnFireBall");
+            
+            if (dodgeManager != null)
+            {
+                dodgeManager.PlayerLose();
+            }
+            gameActive = false;
 
         }
     }
