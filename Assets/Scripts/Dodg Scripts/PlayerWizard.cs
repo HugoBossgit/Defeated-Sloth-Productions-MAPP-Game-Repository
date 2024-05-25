@@ -13,8 +13,10 @@ public class PlayerWizard : MonoBehaviour
     Rigidbody2D rb;
 
     [SerializeField] private GameObject loseInfo;
+    [SerializeField] private AudioClip hitSound;
 
     private AudioSource backgroundMusic;
+    private AudioSource loseSource;
     private DodgeManager dodgeManager;
     private bool gameActive = true;
 
@@ -23,7 +25,8 @@ public class PlayerWizard : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        backgroundMusic = GetComponent<AudioSource>();
+        backgroundMusic = GameObject.Find("Audio Source").GetComponent<AudioSource>();
+        loseSource = GetComponent<AudioSource>();
         loseInfo.SetActive(false);
         StartCoroutine(FadeInMusic(backgroundMusic, 3f));
 
@@ -61,6 +64,7 @@ public class PlayerWizard : MonoBehaviour
     {
         if (collision.gameObject.tag == "FireBall")
         {
+
             Data.playerLose = true;
             loseInfo.SetActive(true);
             
@@ -70,7 +74,9 @@ public class PlayerWizard : MonoBehaviour
             }
             gameActive = false;
 
+            loseSource.PlayOneShot(hitSound);
         }
+
     }
 
 
