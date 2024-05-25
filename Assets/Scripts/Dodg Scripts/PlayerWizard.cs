@@ -19,6 +19,7 @@ public class PlayerWizard : MonoBehaviour
     private AudioSource loseSource;
     private DodgeManager dodgeManager;
     private bool gameActive = true;
+    private bool isFadingOutMusic = false;
     private Animator anim;
 
 
@@ -95,6 +96,27 @@ public class PlayerWizard : MonoBehaviour
             yield return null;
         }
         audioSource.volume = startVolume;
+    }
+
+    private IEnumerator FadeOutMusic(AudioSource audioSource, float fadeDuration)
+    {
+        if (isFadingOutMusic)
+            yield break;
+
+        isFadingOutMusic = true;
+        float startVolume = audioSource.volume;
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(startVolume, 0, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = startVolume;
+        isFadingOutMusic = false;
     }
 
     public void FreezeObject(GameObject obj)
