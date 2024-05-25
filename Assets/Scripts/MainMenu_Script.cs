@@ -12,6 +12,8 @@ public class MainMenu_Script : MonoBehaviour
     [SerializeField] private List<Button> playCreditsSettingsButtons;
 
     private Animator howToPlayAnim, LoadSceneAnim;
+    private AudioSource backgroundMusic;
+
 
 
     private void Start()
@@ -23,6 +25,8 @@ public class MainMenu_Script : MonoBehaviour
         DeactivateNewResumeReturnButtons();
         howToPlayAnim = howToPlayPanel.GetComponent<Animator>();
         LoadSceneAnim = transitionObject.GetComponent<Animator>();
+        backgroundMusic = GameObject.Find("Audio Source").GetComponent<AudioSource>();
+
     }
 
 
@@ -134,6 +138,18 @@ public class MainMenu_Script : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         SceneManager.LoadScene(1);
+    }
+
+    private IEnumerator FadeInMusic(AudioSource audioSource, float fadeDuration)
+    {
+        float startVolume = audioSource.volume;
+        audioSource.volume = 0f;
+        while (audioSource.volume < startVolume)
+        {
+            audioSource.volume += startVolume * Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+        audioSource.volume = startVolume;
     }
 
 
