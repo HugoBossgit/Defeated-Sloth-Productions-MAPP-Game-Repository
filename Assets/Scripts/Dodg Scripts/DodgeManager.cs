@@ -100,7 +100,6 @@ public class DodgeManager : MonoBehaviour
         {
             playerWizard.FreezeAllFireBalls();
         }
-        Destroy(gameObject);
     }
 
 }

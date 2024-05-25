@@ -19,11 +19,13 @@ public class PlayerWizard : MonoBehaviour
     private AudioSource loseSource;
     private DodgeManager dodgeManager;
     private bool gameActive = true;
+    private Animator anim;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         backgroundMusic = GameObject.Find("Audio Source").GetComponent<AudioSource>();
         loseSource = GetComponent<AudioSource>();
@@ -64,7 +66,7 @@ public class PlayerWizard : MonoBehaviour
     {
         if (collision.gameObject.tag == "FireBall")
         {
-
+            anim.SetTrigger("WizardOnFireNew");
             Data.playerLose = true;
             loseInfo.SetActive(true);
             
