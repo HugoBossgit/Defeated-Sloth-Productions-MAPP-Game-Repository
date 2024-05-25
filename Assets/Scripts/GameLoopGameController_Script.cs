@@ -37,6 +37,8 @@ public class GameLoopGameController_Script : MonoBehaviour
 
     private Animator sceneTransitionAnimator;
 
+    private AudioSource backgroundMusic;
+
     public const int bossMaxHealth = 50;
 
     //Antal steg till spel loopens slut i walking pace (1/1) vilket blir 60 sekunder
@@ -114,6 +116,18 @@ public class GameLoopGameController_Script : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         SceneManager.LoadScene(0);
+    }
+
+    private IEnumerator FadeInMusic(AudioSource audioSource, float fadeDuration)
+    {
+        float startVolume = audioSource.volume;
+        audioSource.volume = 0f;
+        while (audioSource.volume < startVolume)
+        {
+            audioSource.volume += startVolume * Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+        audioSource.volume = startVolume;
     }
 
     private void DoPlayerProgress()
