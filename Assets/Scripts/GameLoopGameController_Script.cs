@@ -26,6 +26,7 @@ public class GameLoopGameController_Script : MonoBehaviour
     [SerializeField] private ParticleSystem swordGetPArticleEffect;
     [SerializeField] private ParticleSystem shieldGetPArticleEffect;
     [SerializeField] private AudioSource audioSourceItemGet;
+    [SerializeField] private AudioClip audioItemGet;
     [SerializeField] private int enemyOne, enemyTwo, eventOne, eventTwo, bossOne, bossTwo;
 
 
@@ -287,7 +288,7 @@ public class GameLoopGameController_Script : MonoBehaviour
                 if (randomIndex == 1)
                 {
                     Data.hasItemSword = true;
-                    StartCoroutine(TriggerParticleEffectSwordWithDelay(3f));
+                    StartCoroutine(TriggerParticleEffectSwordWithDelay(0.5f));
                 }
                 PlayerWinInEnemy();
             }
@@ -298,7 +299,7 @@ public class GameLoopGameController_Script : MonoBehaviour
                 if (randomIndex == 1)
                 {
                     Data.hasItemSheild = true;
-                    StartCoroutine(TriggerParticleEffectShieldWithDelay(3f));
+                    StartCoroutine(TriggerParticleEffectShieldWithDelay(0.5f));
                 }
                 PlayerWinInEvent();
             }
@@ -347,16 +348,14 @@ public class GameLoopGameController_Script : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         swordGetPArticleEffect.Play();
-        audioSourceItemGet.Play();
-
-
+        audioSourceItemGet.PlayOneShot(audioItemGet);
     }
 
     private IEnumerator TriggerParticleEffectShieldWithDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         shieldGetPArticleEffect.Play();
-        audioSourceItemGet.Play();
+        audioSourceItemGet.PlayOneShot(audioItemGet);
     }
 
     public void StartWalking()
