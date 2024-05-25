@@ -75,6 +75,9 @@ public class PlayerWizard : MonoBehaviour
             gameActive = false;
 
             loseSource.PlayOneShot(hitSound);
+
+            FreezeObject(gameObject);
+            FreezeAllFireBalls();
         }
 
     }
@@ -92,7 +95,29 @@ public class PlayerWizard : MonoBehaviour
         audioSource.volume = startVolume;
     }
 
+    public void FreezeObject(GameObject obj)
+    {
+        Rigidbody2D rb = obj.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero; // stops movment
+            rb.isKinematic = true; //makes so that its not affected by physics
+        }
+    }
 
+    public void FreezeAllFireBalls()
+    {
+        GameObject[] fireballs = GameObject.FindGameObjectsWithTag("FireBall");
+        foreach (GameObject fireball in fireballs)
+        {
+            Rigidbody2D rb = fireball.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = Vector2.zero;
+                rb.gravityScale = 0f;
+            }
+        }
+    }
 
 
 

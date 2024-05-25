@@ -628,7 +628,7 @@ MonoBehaviour:
   fireBall: {fileID: 2969299669795457353, guid: c7d8a1ad3b53c3147b6dfcac8e670827, type: 3}
   maxX: 2.05
   spawnPoint: {fileID: 1648539676}
-  spawnRate: 1.7
+  spawnRate: 1.5
   scoreText: {fileID: 740597346}
   startInfo: {fileID: 384065233}
   winInfo: {fileID: 1242410894}
@@ -877,6 +877,7 @@ GameObject:
   - component: {fileID: 807440662}
   - component: {fileID: 807440666}
   - component: {fileID: 807440667}
+  - component: {fileID: 807440668}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1135,6 +1136,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &807440668
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807440661}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: adc5ab41555d7ac4a817e247d7463d95, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &933359256
 GameObject:
   m_ObjectHideFlags: 0
@@ -1955,7 +1977,7 @@ Transform:
   m_GameObject: {fileID: 1648539675}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 12.158173, z: 0}
+  m_LocalPosition: {x: 0, y: 7, z: 0}
   m_LocalScale: {x: 1.9006623, y: 1.9006623, z: 1.9006623}
   m_ConstrainProportionsScale: 0
   m_Children: []

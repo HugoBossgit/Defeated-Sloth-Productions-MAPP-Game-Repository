@@ -13,7 +13,7 @@ public class DodgeManager : MonoBehaviour
     [SerializeField] private GameObject startInfo;
     [SerializeField] private GameObject winInfo;
 
-
+    private PlayerWizard playerWizard;
 
     bool gameStarted = false;
     int score = 0;
@@ -21,10 +21,13 @@ public class DodgeManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         startInfo.SetActive(true);
         winInfo.SetActive(false);
 
         UpdateScoreText();
+
+        playerWizard = FindObjectOfType<PlayerWizard>();
 
     }
 
@@ -80,15 +83,24 @@ public class DodgeManager : MonoBehaviour
 
     private void WinGame()
     {
+        PlayerLose();
         Data.playerWin = true;
         winInfo.SetActive(true);
         CancelInvoke("SpawnFireBall");
+
+        FindAnyObjectByType<PlayerWizard>().FreezeAllFireBalls();
 
     }
 
     public void PlayerLose()
     {
         CancelInvoke("SpawnFireBall");
+
+        if (playerWizard != null)
+        {
+            playerWizard.FreezeAllFireBalls();
+        }
+        Destroy(gameObject);
     }
 
 }
