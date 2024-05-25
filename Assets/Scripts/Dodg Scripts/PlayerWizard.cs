@@ -67,7 +67,7 @@ public class PlayerWizard : MonoBehaviour
     {
         if (collision.gameObject.tag == "FireBall")
         {
-            anim.SetTrigger("WizardOnFireNew");
+            anim.SetTrigger("OnFireNew");
             Data.playerLose = true;
             loseInfo.SetActive(true);
             
