@@ -31,14 +31,13 @@ public class BrickTower : MonoBehaviour
 {
     [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject panelPrefab;
-    [SerializeField] private Color[] colors; //Not currently in use
+    //[SerializeField] private Color[] colors; //Not currently in use
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private GameObject infoPanel;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject gameWinPanel;
     //[SerializeField] private GameObject outOfTimeText;
     //[SerializeField] private GameObject gameCompleteText;
-
     [SerializeField] private GameObject timerObject;
     [SerializeField] private int brickTop;
     [SerializeField] private int brickBottom;
@@ -47,6 +46,8 @@ public class BrickTower : MonoBehaviour
     [SerializeField] private AudioClip tapSound;
     [SerializeField] private AudioClip breakSound;
     [SerializeField] private int countdown = 5;
+    [SerializeField] private int durabilityScale = 3;
+    [SerializeField] private GameObject particlePrefab;
 
     private List<Brick> bricks;
     private Stack<GameObject> panels;
@@ -86,12 +87,15 @@ public class BrickTower : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             int durability = Random.Range(0, 5);
+            
+            /*if (durability * durabilityScale <= 1) {
+                bricks.Add(new Brick(5, sprites[durability]));
+            }
+            else {
+                bricks.Add(new Brick(durability * durabilityScale, sprites[durability]));
+            }*/
 
-            bricks.Add(new Brick(durability, sprites[durability]));
-
-            //Color color = colors[durability];
-
-            //bricks.Add(new Brick(durability, color));
+            bricks.Add(new Brick(durability * durabilityScale + Random.Range(0, 5), sprites[durability]));
         }
     }
 
@@ -126,6 +130,7 @@ public class BrickTower : MonoBehaviour
 
     public void DamageTopBrick(int damage)
     {
+        GenerateParticles();
         int brickCount = bricks.Count;
         if (brickCount == 0)
         {
@@ -135,6 +140,16 @@ public class BrickTower : MonoBehaviour
         durability -= damage;
         bricks[brickCount - 1].Durability = durability;
         UpdateTopPanel(durability);
+    }
+
+    void GenerateParticles() {
+        GameObject particle = Instantiate(particlePrefab);
+        Vector3 mouseScreenPos = Input.mousePosition;
+        mouseScreenPos.z = 0;
+
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+
+        particle.transform.position = mouseWorldPos;
     }
 
     void UpdateTopPanel(int durability)
@@ -148,7 +163,7 @@ public class BrickTower : MonoBehaviour
         }
         else
         {
-            panels.Peek().GetComponent<Image>().sprite = sprites[durability];
+            panels.Peek().GetComponent<Image>().sprite = sprites[durability / durabilityScale];
             audioSource.PlayOneShot(tapSound, 0.85f);
         }
     }
