@@ -6296,8 +6296,9 @@ MonoBehaviour:
   enemyTwo: 3
   eventOne: 4
   eventTwo: 5
-  bossOne: 2
-  bossTwo: 3
+  eventThree: 0
+  bossOne: 6
+  bossTwo: 7
 --- !u!4 &688605757
 Transform:
   m_ObjectHideFlags: 0
