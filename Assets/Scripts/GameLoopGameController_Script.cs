@@ -23,6 +23,10 @@ public class GameLoopGameController_Script : MonoBehaviour
     [SerializeField] private GameObject bossHealtSliderGameObject;
     [SerializeField] private GameObject battleBossButtonGameObject;
     [SerializeField] private GameObject SceneTransitionObject;
+    [SerializeField] private ParticleSystem swordGetPArticleEffect;
+    [SerializeField] private ParticleSystem shieldGetPArticleEffect;
+    [SerializeField] private AudioSource audioSourceItemGet;
+    [SerializeField] private AudioClip audioItemGet;
     [SerializeField] private int enemyOne, enemyTwo, eventOne, eventTwo, bossOne, bossTwo;
 
 
@@ -33,6 +37,8 @@ public class GameLoopGameController_Script : MonoBehaviour
     private bool gameIsPaused, gameIsWon, gameIsLost, bossMinigamePlaying;
 
     private Animator sceneTransitionAnimator;
+
+    private AudioSource backgroundMusic;
 
     public const int bossMaxHealth = 50;
 
@@ -111,6 +117,18 @@ public class GameLoopGameController_Script : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         SceneManager.LoadScene(0);
+    }
+
+    private IEnumerator FadeInMusic(AudioSource audioSource, float fadeDuration)
+    {
+        float startVolume = audioSource.volume;
+        audioSource.volume = 0f;
+        while (audioSource.volume < startVolume)
+        {
+            audioSource.volume += startVolume * Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+        audioSource.volume = startVolume;
     }
 
     private void DoPlayerProgress()
@@ -270,6 +288,7 @@ public class GameLoopGameController_Script : MonoBehaviour
                 if (randomIndex == 1)
                 {
                     Data.hasItemSword = true;
+                    StartCoroutine(TriggerParticleEffectSwordWithDelay(0.5f));
                 }
                 PlayerWinInEnemy();
             }
@@ -280,6 +299,7 @@ public class GameLoopGameController_Script : MonoBehaviour
                 if (randomIndex == 1)
                 {
                     Data.hasItemSheild = true;
+                    StartCoroutine(TriggerParticleEffectShieldWithDelay(0.5f));
                 }
                 PlayerWinInEvent();
             }
@@ -322,6 +342,20 @@ public class GameLoopGameController_Script : MonoBehaviour
             Data.bossBattleIsActive = true;
             BossBattle();
         }
+    }
+
+    private IEnumerator TriggerParticleEffectSwordWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        swordGetPArticleEffect.Play();
+        audioSourceItemGet.PlayOneShot(audioItemGet);
+    }
+
+    private IEnumerator TriggerParticleEffectShieldWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        shieldGetPArticleEffect.Play();
+        audioSourceItemGet.PlayOneShot(audioItemGet);
     }
 
     public void StartWalking()
@@ -610,18 +644,4 @@ public class GameLoopGameController_Script : MonoBehaviour
     {
         Data.playerWin = true;
     }
-
-
-
-
-
-
-    //TO - DO
-    //2 fiender som �r kopplat till enstaka minigames --> kan ta skada eller f�rlora item
-    //2 event tvingat specifikt minigame --> kan f� item, h�lsa eller f�rlora h�lsa eller ingenting h�nder
-    //random fiende och event v�ljare i game loopen
-    //Items som p�verkar boss fight
-    //Vid f�rlust mot vanlig fiende kan man f�rlora item
-    //Boss --> 3 olika spel f�r bossen
-    //Fiender med olika attribut (vissa g�r mer skada andra andra har st�rre chans att sno item ex drake vs goblin)
 }

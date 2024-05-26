@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5372277906085150241}
   - component: {fileID: 1389255524035241081}
   - component: {fileID: 3108585623621734233}
+  - component: {fileID: -292795790291944576}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -249,11 +250,24 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   deathTime: 0.3
   controller: {fileID: 0}
-  death:
-  - {fileID: 8300000, guid: 4c622cbd4f819464e92e34619eeb827f, type: 3}
-  - {fileID: 8300000, guid: 974958c19de5a0e49ab4f80cc093bd4f, type: 3}
-  - {fileID: 8300000, guid: 2811a75d1bc97be44990dea21ca00840, type: 3}
-  attack:
-  - {fileID: 8300000, guid: 2c2850503bd6d55499f6a4a4b0314caa, type: 3}
-  - {fileID: 8300000, guid: e8099121088d67c48883b8dfd47fef94, type: 3}
-  - {fileID: 8300000, guid: 82c3f41d50ecc714aae419a1aa918510, type: 3}
+--- !u!95 &-292795790291944576
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7591741686106349750}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8a1ff2deb4421bc4d9a5114bc923478f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

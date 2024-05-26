@@ -13,24 +13,37 @@ public class PlayerWizard : MonoBehaviour
     Rigidbody2D rb;
 
     [SerializeField] private GameObject loseInfo;
+    [SerializeField] private AudioClip hitSound;
 
     private AudioSource backgroundMusic;
+    private AudioSource loseSource;
+    private DodgeManager dodgeManager;
+    private bool gameActive = true;
+    private bool isFadingOutMusic = false;
+    private Animator anim;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        backgroundMusic = GetComponent<AudioSource>();
+        backgroundMusic = GameObject.Find("Audio Source").GetComponent<AudioSource>();
+        loseSource = GetComponent<AudioSource>();
         loseInfo.SetActive(false);
         StartCoroutine(FadeInMusic(backgroundMusic, 3f));
+
+        dodgeManager = FindObjectOfType<DodgeManager>();
+
 
     }
 
     // Update is called once per frame
     void Update()
     {
-      
+
+        if (!gameActive) return;
+
         if (Input.GetMouseButton(0))
         {
             Vector3 touchPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -54,11 +67,22 @@ public class PlayerWizard : MonoBehaviour
     {
         if (collision.gameObject.tag == "FireBall")
         {
+            anim.SetTrigger("OnFireNew");
             Data.playerLose = true;
             loseInfo.SetActive(true);
-            CancelInvoke("SpawnFireBall");
+            
+            if (dodgeManager != null)
+            {
+                dodgeManager.PlayerLose();
+            }
+            gameActive = false;
 
+            loseSource.PlayOneShot(hitSound);
+
+            FreezeObject(gameObject);
+            FreezeAllFireBalls();
         }
+
     }
 
 
@@ -74,7 +98,50 @@ public class PlayerWizard : MonoBehaviour
         audioSource.volume = startVolume;
     }
 
+    private IEnumerator FadeOutMusic(AudioSource audioSource, float fadeDuration)
+    {
+        if (isFadingOutMusic)
+            yield break;
 
+        isFadingOutMusic = true;
+        float startVolume = audioSource.volume;
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(startVolume, 0, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        audioSource.Stop();
+        audioSource.volume = startVolume;
+        isFadingOutMusic = false;
+    }
+
+    public void FreezeObject(GameObject obj)
+    {
+        Rigidbody2D rb = obj.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.velocity = Vector2.zero; // stops movment
+            rb.isKinematic = true; //makes so that its not affected by physics
+        }
+    }
+
+    public void FreezeAllFireBalls()
+    {
+        GameObject[] fireballs = GameObject.FindGameObjectsWithTag("FireBall");
+        foreach (GameObject fireball in fireballs)
+        {
+            Rigidbody2D rb = fireball.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = Vector2.zero;
+                rb.gravityScale = 0f;
+            }
+        }
+    }
 
 
 
