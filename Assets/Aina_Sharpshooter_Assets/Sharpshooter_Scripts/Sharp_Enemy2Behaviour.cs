@@ -14,16 +14,18 @@ public class Enemy2Behaviour : MonoBehaviour
                      private int lives = 2;
                      private int worth = 20;
                      private bool dying;
+    private bool traversing;
     [SerializeField] private float deathTime = 0.3f;
     [SerializeField] private GameController controller;
-    [SerializeField] private AudioClip[] death, attack;
-
-    private AudioSource audSour;
+    private SpriteRenderer renderer;
+    private Animator anim;
 
     void Start()
     {
+        traversing = true;
         currentTarget = target1;
-        audSour = GetComponent<AudioSource>();
+        renderer = gameObject.GetComponent<SpriteRenderer>();
+        anim = gameObject.GetComponent<Animator>();
     }
 
     /* Spelobjektet rör sig mot target1:s y-position, sedan mot target2:s, vid 2 kallas decrementLives på
@@ -32,14 +34,20 @@ public class Enemy2Behaviour : MonoBehaviour
     {
         if (controller.getReady() && transform.position.y < 4)
         {
+
             if (transform.position.y == target1.position.y)
             {
                 currentTarget = target2;
             }
 
+            if (currentTarget == target2 && transform.position.y < target2.position.y + 0.25f)
+            {
+                traversing = false;
+                Invoke("revert", 0.15f);
+            }
+
             if (transform.position.y == target2.position.y)
             {
-                makeNoise("Attacking");
                 currentTarget = target3;
                 controller.DecrementLives(damage);
             }
@@ -50,6 +58,7 @@ public class Enemy2Behaviour : MonoBehaviour
                 Destroy(gameObject);
             }
             transform.position = Vector2.MoveTowards(transform.position, currentTarget.position, speed * Time.deltaTime);
+            anim.SetBool("Traversing", traversing);
         }
     }
 
@@ -62,13 +71,15 @@ public class Enemy2Behaviour : MonoBehaviour
 
             if (Input.GetButtonUp("Fire1") && !controller.gameOver)
             {
-                lives--; 
+                lives--;
+                renderer.color = Color.red;
+                Invoke("colorBack", 0.5f);
                 if(lives <= 0 && !controller.gameOver && !dying)
                 {
                     dying = true;
                     currentTarget = target1;
                     controller.addDeleted();
-                    makeNoise("Dead");
+                    controller.makeNoise("Warrior");
                     controller.infoBalloon.SetActive(false);
                     controller.combo(true);
                     controller.addPoints(worth);
@@ -78,26 +89,13 @@ public class Enemy2Behaviour : MonoBehaviour
         }
 
     }
-
-    private void makeNoise(string s)
+    private void revert()
     {
-        int deathIndex = Random.Range(1, death.Length);
-        int attackIndex = Random.Range(1, attack.Length);
-        if (s.Equals("Dead"))
-        {
-            AudioClip deathClip = death[deathIndex];
-            audSour.PlayOneShot(deathClip);
-            death[deathIndex] = death[0];
-            death[0] = deathClip;
-        }
-
-        if (s.Equals("Attacking"))
-        {
-            AudioClip attackClip = attack[attackIndex];
-            audSour.PlayOneShot(attackClip);
-            attack[deathIndex] = attack[0];
-            attack[0] = attackClip;
-        }
+        traversing = true;
+    }
+    private void colorBack()
+    { 
+        renderer.color = Color.white; 
     }
 
 }
