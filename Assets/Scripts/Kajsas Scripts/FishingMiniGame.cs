@@ -64,17 +64,21 @@ public class FishingMiniGame : MonoBehaviour
 
     private void ProgressCheck()
     {
+        //uppdaterar UI-baren för progress
         Vector3 ls = progressBarContainer.localScale;
         ls.y = hookProgress;
         progressBarContainer.localScale = ls;
 
+        //Sätter bounds för hook
         float min = hookPosition - hookSize / 2;
         float max = hookPosition + hookSize / 2;
 
+        //om hook är innanför bounds, öka progress
         if (min < fishPosition && fishPosition < max)
             hookProgress += hookPower * Time.deltaTime;
         else
         {
+            //annars minska progress och tid, samt om tiden går ut så spelas anim
             hookProgress -= hookProgressDegradationPower * Time.deltaTime;
             failTimer -= Time.deltaTime;
 
@@ -85,7 +89,7 @@ public class FishingMiniGame : MonoBehaviour
         if (hookProgress >= 1f)
             Win();
 
-        hookProgress = Mathf.Clamp01(hookProgress);
+        hookProgress = Mathf.Clamp01(hookProgress); //hook progress är mellan 0-1, om man når 1 vinner man
     }
 
     private void Fish()

@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static Unity.VisualScripting.Member;
 
 public class GameController : MonoBehaviour
 {
@@ -13,16 +14,19 @@ public class GameController : MonoBehaviour
     [SerializeField] private float multiplier = 1.0f;
     [SerializeField] private int lives = 3;
     [SerializeField] private string difficulty;
+    private bool odd;
 
     [SerializeField] private TMP_Text pointsText, comboText;
     [SerializeField] private AudioSource audSource;
     [SerializeField] private AudioClip playMusic, waitMusic;
+    [SerializeField] private AudioClip[] batDeath, bossDeath, hunterDeath, hunterHurt, ogreDeath, warriorDeath;
     [SerializeField] private GameObject lossBalloon;
     [SerializeField] private GameObject winBalloon;
     [SerializeField] private GameObject readyUpUI;
     [SerializeField] private List<GameObject> hearts = new List<GameObject>();
     public GameObject infoBalloon;
     [SerializeField] private GameObject goblin, armGoblin, bigGoblin, boss;
+    [SerializeField] private HunterBehavior hunter;
     
     public bool gameOver, gameWon;
     private bool ready;
@@ -90,7 +94,8 @@ public class GameController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(enemyNum == deleted && !gameOver)
+        audSource.volume = 1.5f;
+        if (enemyNum == deleted && !gameOver)
         {
             Win();
         }
@@ -195,6 +200,8 @@ public class GameController : MonoBehaviour
     public void DecrementLives(int decrease)
     {
         lives -= decrease;
+        hunter.hurt();
+        makeNoise("HunterHurt");
         if (lives >= 0)
         {
             Destroy(hearts.ElementAt(lives));
@@ -203,7 +210,58 @@ public class GameController : MonoBehaviour
         
         if(lives <= 0)
         {
+            makeNoise("HunterDeath");
             Loss();
+        }
+    }
+
+    public void makeNoise(String type)
+    {
+
+        odd = !odd;
+        if (type.Equals("Bat") && odd)
+        {
+            
+            int clipIndex = UnityEngine.Random.Range(1, batDeath.Length);
+            AudioClip clip = batDeath[clipIndex];
+            audSource.PlayOneShot(clip);
+            batDeath[clipIndex] = batDeath[0];
+            batDeath[0] = clip;
+        }
+        else if(type.Equals("Warrior") && odd)
+        {
+            int clipIndex = UnityEngine.Random.Range(1, warriorDeath.Length);
+            AudioClip clip = warriorDeath[clipIndex];
+            audSource.PlayOneShot(clip);
+            warriorDeath[clipIndex] = warriorDeath[0];
+            warriorDeath[0] = clip;
+        }
+        else if(type.Equals("Ogre"))
+        {
+            int clipIndex = UnityEngine.Random.Range(1, ogreDeath.Length);
+            AudioClip clip = ogreDeath[clipIndex];
+            audSource.PlayOneShot(clip);
+            ogreDeath[clipIndex] = ogreDeath[0];
+            ogreDeath[0] = clip;
+        }
+        else if(type.Equals("Boss"))
+        {
+            int clipIndex = UnityEngine.Random.Range(0, bossDeath.Length);
+            AudioClip clip = bossDeath[clipIndex];
+            audSource.PlayOneShot(clip);
+        }
+        else if(type.Equals("HunterHurt"))
+        {
+            int clipIndex = UnityEngine.Random.Range(1, hunterHurt.Length);
+            AudioClip clip = hunterHurt[clipIndex];
+            audSource.PlayOneShot(clip);
+            hunterHurt[clipIndex] = hunterHurt[0];
+            hunterHurt[0] = clip;
+        }
+        else if(type.Equals("HunterDeath"))
+        {
+            int clipIndex = UnityEngine.Random.Range(0, hunterDeath.Length);
+            audSource.PlayOneShot(hunterDeath[clipIndex]);
         }
     }
 
