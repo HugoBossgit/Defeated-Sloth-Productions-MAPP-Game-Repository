@@ -7,7 +7,7 @@ public class GameLoopBackgroundBehaivourScript : MonoBehaviour
     void Start()
     {
         //Sätt skärmens höjd till trippla kamerastorleken, eftersom att bilden här är mycket mindre så det gör jag för att täcka hela skärmen
-        float screenHeight = Camera.main.orthographicSize * 2.0f;
+        float screenHeight = Camera.main.orthographicSize * 3.0f;
         float screenWidth = screenHeight * Camera.main.aspect;
 
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
